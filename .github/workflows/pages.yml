@@ -1,0 +1,44 @@
+name: Deploy NoodleCore site to Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deployment
+        uses: actions/deploy-pages@v4
+      # NOO-1206 (5okt): Enforce HTTPS kan NIET via GITHUB_TOKEN — bewezen
+      # 403 'Resource not accessible by integration' (run 37376237636-log).
+      # Settings-wijzigingen vereisen admin-rechten; dus: status-check die
+      # in het log zichtbaar maakt of Michael's klik nog openstaat.
+      - name: Check Enforce HTTPS status
+        run: |
+          enforced=$(curl -s "https://api.github.com/repos/${{ github.repository }}/pages" \
+            -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" | jq -r '.https_enforced')
+          if [ "$enforced" != "true" ]; then
+            echo "LET OP: Enforce HTTPS staat nog UIT (https_enforced=$enforced)."
+            echo "Actie voor Michael: repo Settings > Pages > Enforce HTTPS aanzetten."
+            echo "(Cert is geldig; de site werkt op beide schema's tot die tijd.)"
+          else
+            echo "Enforce HTTPS staat aan (https_enforced=$enforced)."
+          fi
