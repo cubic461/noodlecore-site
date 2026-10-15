@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 146 120">
+  <!-- NoodleCore icoon 7b: .NC met compileer-chevrons (Instrument Sans 800) -->
+  <circle cx="22" cy="74.5" r="3.5" fill="#ff6d00"/>
+  <g transform="translate(28.46,76.00) scale(0.0400,-0.0400)"><path d="M86 0V720H171L584 114L572 112V720H650V0H565L152 606L164 608V0Z" fill="#1d1d1f"/></g>
+  <g transform="translate(55.90,76.00) scale(0.0400,-0.0400)"><path d="M391 -10Q317 -10 254.5 17.5Q192 45 146.0 94.5Q100 144 75.0 211.5Q50 279 50 360Q50 441 75.0 508.5Q100 576 145.5 625.5Q191 675 253.5 702.5Q316 730 390 730Q471 730 535.5 697.0Q600 664 641.5 604.0Q683 544 693 464H611Q599 553 540.5 604.5Q482 656 391 656Q314 656 256.0 618.5Q198 581 166.0 514.5Q134 448 134 360Q134 272 166.0 205.5Q198 139 256.0 101.5Q314 64 390 64Q483 64 542.5 116.0Q602 168 613 256H695Q685 176 643.5 116.0Q602 56 537.5 23.0Q473 -10 391 -10Z" fill="#1d1d1f"/></g>
+  <g stroke="#ff6d00" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M90,42 L110,60 L90,78"/>
+    <path d="M108,42 L128,60 L108,78"/>
+  </g>
+</svg>
