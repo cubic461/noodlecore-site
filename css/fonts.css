@@ -1,0 +1,32 @@
+/* Zelf-gehoste fonts (NOO-1422) — geen externe font-requests, geen IP's naar Google.
+   Variabele fonts van Google Fonts (OFL-licentie), latin-subset, lokaal geserveerd. */
+
+/* Zelfde koppeling als material normaal via het font:-blok doet, nu lokaal: */
+:root {
+  --md-text-font: "Instrument Sans";
+  --md-code-font: "JetBrains Mono";
+}
+
+@font-face {
+  font-family: "Instrument Sans";
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url("../assets/fonts/instrument-sans-var.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Instrument Sans";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../assets/fonts/instrument-sans-italic-var.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("../assets/fonts/jetbrains-mono-var.woff2") format("woff2");
+}

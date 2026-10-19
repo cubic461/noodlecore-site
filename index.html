@@ -43,15 +43,11 @@
     
     
       
-        
-        
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Instrument+Sans:300,300i,400,400i,700,700i%7CJetBrains+Mono:400,400i,700,700i&display=fallback">
-        <style>:root{--md-text-font:"Instrument Sans";--md-code-font:"JetBrains Mono"}</style>
-      
     
     
       <link rel="stylesheet" href="css/noodlecore.css">
+    
+      <link rel="stylesheet" href="css/fonts.css">
     
     <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
     
@@ -371,6 +367,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hoe-het-werkt-zonder-overstap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hoe het werkt zonder overstap
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#bewijs-in-plaats-van-beloftes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -508,6 +515,87 @@
   
 
     
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="privacy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Privacy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="voorwaarden/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Voorwaarden
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
   </ul>
 </nav>
                   </div>
@@ -612,6 +700,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#hoe-het-werkt-zonder-overstap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Hoe het werkt zonder overstap
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#bewijs-in-plaats-van-beloftes" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -702,12 +801,22 @@ met de gemeten winst per soort werk. Er staat een priemgetal-loop in,
 tekstverwerking en een databasevraag.</p>
 <h2 id="voor-wie">Voor wie</h2>
 <ul>
+<li><strong>Python-teams met snelheidsproblemen</strong>: jouw script, C-snelheid — geen
+  overstap, geen herschrijven. Port de hot loops, houd de rest</li>
 <li><strong>Bedrijven met legacy-code</strong> (COBOL, VB6, RPG): moderniseren zonder
-  herschrijven, en met een weg terug</li>
-<li><strong>Python-teams die snelheid missen</strong>: port alleen de trage delen en houd
-  de rest zoals het is</li>
-<li><strong>Iedereen die snelheid én controle wil</strong> zonder C-boilerplate</li>
+  herschrijven — met terugweg</li>
+<li><strong>Iedereen die snelheid én controle wil</strong> zonder C-boilerplate of leercurve</li>
 </ul>
+<h2 id="hoe-het-werkt-zonder-overstap">Hoe het werkt zonder overstap</h2>
+<p>Je hoeft niet te kiezen tussen simpel en snel. <code>noodle run</code> versnelt je
+bestaande Python-script van binnenuit — net zoals Ruff en uv de Python-wereld
+versnelden, maar dan voor <em>jouw</em> code:</p>
+<pre><code class="language-text">hot loop in Python     217 ms
+zelfde loop via NC      34 ms    (6,4×)
+in-process (dylib)      0,9 ms   (243×)
+</code></pre>
+<p>Geen runtime-meelopers, geen tolk tussen jouw code en de CPU. De volledige
+overstap naar NC komt vanzelf — elke kernel die je port, bewijst de taal.</p>
 <h2 id="bewijs-in-plaats-van-beloftes">Bewijs in plaats van beloftes</h2>
 <p>Alle uitspraken op deze site zijn gemeten. Waar anderen een persbericht
 publiceren, publiceren wij de meetresultaten. Testruns, benchmarks en
@@ -757,6 +866,10 @@ over wat uw codebase kan besparen.</p>
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 Michael van Erp / NoodleCore · <a href="/contact/">Contact</a> · <a href="/privacy/">Privacyverklaring</a> · <a href="/voorwaarden/">Algemene voorwaarden</a>
+    </div>
   
   
     Made with
