@@ -620,7 +620,7 @@
 
 
 <h1 id="producten-diensten">Producten &amp; diensten</h1>
-<p>Laatst gecontroleerd tegen repo en git: 6 oktober 2026. Alle cijfers op deze
+<p>Laatst gecontroleerd tegen repo en git: 19 oktober 2026. Alle cijfers op deze
 site zijn gemeten (METEN = WETEN). De labels betekenen: <strong>PRODUCTION</strong> is
 dagelijks in gebruik en bewezen, <strong>WORKING</strong> betekent dat het werkt maar
 minder rijp is.</p>
@@ -763,16 +763,24 @@ al bewezen is en waar de engine heen gaat.</p>
 <td>✅ vandaag bewezen</td>
 </tr>
 <tr>
+<td>Consensus en replicatie voor meerdere knopen (Raft, CDC over TCP)</td>
+<td>✅ module bewezen, cluster op echte hardware op de roadmap</td>
+</tr>
+<tr>
 <td><strong>Adaptive Storage</strong>: de engine leert hoe data gebruikt wordt en kiest zelf, zoals <code>id</code> naar B-tree, namen naar gecomprimeerde kolommen, weinig gelezen data naar koude opslag, embeddings naar een vectorindex</td>
-<td>🔭 architectuur vastgelegd, groeit per release</td>
+<td>🚧 in ontwikkeling — module staat, koppeling aan de planner is het volgende bouwsteen</td>
 </tr>
 <tr>
 <td><strong>Zelf-optimiserend</strong>: indexen aanmaken, plannen cachen, partitionering bijstellen op echte querypatronen</td>
-<td>🔭 architectuur vastgelegd</td>
+<td>🚧 in ontwikkeling</td>
 </tr>
 <tr>
 <td><strong>JIT-queries</strong>: SQL naar planner naar eigen compiler naar machine code</td>
-<td>🔭 architectuur vastgelegd</td>
+<td>🚧 prototype bestaat, productierijping gepland</td>
+</tr>
+<tr>
+<td><strong>Vectorized execution</strong>: kolomsgewijs rekenen in SIMD-batches voor analytics</td>
+<td>🚧 module staat, koppeling aan de executor gepland</td>
 </tr>
 <tr>
 <td><strong>AI-native</strong>: VECTOR, TENSOR en embeddings als native datatypes, modellen naast hun data</td>
@@ -789,13 +797,15 @@ al bewezen is en waar de engine heen gaat.</p>
 </tbody>
 </table>
 <p><strong>Waarom wij dit kunnen bouwen en anderen niet.</strong> Elke bestaande database
-moest een compiler náár de database brengen. NoodleDB is om een compiler
+moet een compiler náár de database brengen. NoodleDB is om een compiler
 heen gegroeid. Query-JIT, adaptive storage en zelf-optimisatie zijn voor
 ons geen nieuwe afhankelijkheid maar de kern die er al staat, opnieuw
-toegepast.</p>
+toegepast. De bouwvolgorde voor de komende releases ligt vast: eerst
+crash-durabiliteit op het niveau van SQLite, dan de vectorized executor,
+dan de zelf-optimerende laag.</p>
 <p>Geen enkele visie-claim staat op deze site als factuur voor vandaag. Wat
-"✅" zegt is gemeten, wat "🔭" zegt is richting. Elke release die een 🔭
-omzet in een ✅ komt met bewijs.</p>
+"✅" zegt is gemeten, wat "🚧" zegt is in ontwikkeling en wat "🔭" zegt is
+richting. Elke release die een 🚧 of 🔭 omzet in een ✅ komt met bewijs.</p>
 <h2 id="diensten-legacy-porting-het-werk-verkoopt-zichzelf">Diensten: legacy-porting (het werk verkoopt zichzelf)</h2>
 <p>Wij zetten uw bestaande broncode om naar leesbare, compileerbare C, heen én
 terug, met bewijs in plaats van beloften:</p>
