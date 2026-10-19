@@ -220,3 +220,8 @@
   width: auto;
   height: 26px;
 }
+
+/* ── Logo's: zwart op licht, wit op donker (Michael 19okt) ── */
+.nc-logo-donker { display: none; }
+[data-md-color-scheme="slate"] .nc-logo-licht { display: none; }
+[data-md-color-scheme="slate"] .nc-logo-donker { display: inline; }
