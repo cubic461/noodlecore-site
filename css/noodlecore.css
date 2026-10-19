@@ -221,7 +221,6 @@
   height: 26px;
 }
 
-/* ── Logo's: zwart op licht, wit op donker (Michael 19okt) ── */
-.nc-logo-donker { display: none; }
-[data-md-color-scheme="slate"] .nc-logo-licht { display: none; }
-[data-md-color-scheme="slate"] .nc-logo-donker { display: inline; }
+/* ── Logo's: 1 inline SVG met currentColor — zwart op licht, wit op donker (Michael 19okt) ── */
+.nc-svg { color: #1d1d1f; }
+[data-md-color-scheme="slate"] .nc-svg { color: #ffffff; }
