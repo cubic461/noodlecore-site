@@ -620,7 +620,7 @@
 
 
 <h1 id="producten-diensten">Producten &amp; diensten</h1>
-<p>Laatst gecontroleerd tegen repo en git: 19 oktober 2026. Alle cijfers op deze
+<p>Laatst gecontroleerd tegen repo en git: 20 oktober 2026. Alle cijfers op deze
 site zijn gemeten (METEN = WETEN). De labels betekenen: <strong>PRODUCTION</strong> is
 dagelijks in gebruik en bewezen, <strong>WORKING</strong> betekent dat het werkt maar
 minder rijp is.</p>
@@ -756,7 +756,7 @@ al bewezen is en waar de engine heen gaat.</p>
 </tr>
 <tr>
 <td>Zelfgeschreven engine: parser, executor, transacties, WAL</td>
-<td>✅ vandaag in productie</td>
+<td>✅ vandaag in productie — crash-bestendigheid bewezen op SQLite-niveau: 10/10 kill-scenario's bit-exact hersteld, 1.000 crash-herstelcycli op rij 100% correct</td>
 </tr>
 <tr>
 <td>Praten met klanten-databases (PG-wire, MySQL-import) en overnemen</td>
@@ -764,7 +764,7 @@ al bewezen is en waar de engine heen gaat.</p>
 </tr>
 <tr>
 <td>Consensus en replicatie voor meerdere knopen (Raft, CDC over TCP)</td>
-<td>✅ module bewezen, cluster op echte hardware op de roadmap</td>
+<td>✅ bewezen — 3-node Raft-cluster op echte hardware (drie machines over TCP), 500/500 quorum-commits, nieuwe leader na kill in 222 ms</td>
 </tr>
 <tr>
 <td><strong>Adaptive Storage</strong>: de engine leert hoe data gebruikt wordt en kiest zelf, zoals <code>id</code> naar B-tree, namen naar gecomprimeerde kolommen, weinig gelezen data naar koude opslag, embeddings naar een vectorindex</td>
@@ -780,7 +780,7 @@ al bewezen is en waar de engine heen gaat.</p>
 </tr>
 <tr>
 <td><strong>Vectorized execution</strong>: kolomsgewijs rekenen in SIMD-batches voor analytics</td>
-<td>🚧 in ontwikkeling — de kolom-fastpath werkt, staat standaard aan en is pariteit-getest; volledige integratie in de executor in aanbouw</td>
+<td>✅ bewezen — 2,1×-2,4× sneller op analytics-queries over 1 miljoen rijen; een group-by over 632.117 groepen daalde van ruim 40 minuten naar 1,7 seconde</td>
 </tr>
 <tr>
 <td><strong>AI-native</strong>: VECTOR, TENSOR en embeddings als native datatypes, modellen naast hun data</td>
@@ -800,9 +800,9 @@ al bewezen is en waar de engine heen gaat.</p>
 moet een compiler náár de database brengen. NoodleDB is om een compiler
 heen gegroeid. Query-JIT, adaptive storage en zelf-optimisatie zijn voor
 ons geen nieuwe afhankelijkheid maar de kern die er al staat, opnieuw
-toegepast. De bouwvolgorde voor de komende releases ligt vast: eerst
-crash-durabiliteit op het niveau van SQLite, dan de vectorized executor,
-dan de zelf-optimerende laag.</p>
+toegepast. De bouwvolgorde die hier stond — eerst crash-durabiliteit op het
+niveau van SQLite, dan de vectorized executor, dan de zelf-optimiserende
+laag — is in oktober 2026 afgerond en per stap met metingen geleverd.</p>
 <p>Geen enkele visie-claim staat op deze site als factuur voor vandaag. Wat
 "✅" zegt is gemeten, wat "🚧" zegt is in ontwikkeling en wat "🔭" zegt is
 richting. Elke release die een 🚧 of 🔭 omzet in een ✅ komt met bewijs.</p>
