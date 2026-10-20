@@ -797,8 +797,8 @@ def count_bigger(rows, field, threshold):
 </table>
 <h2 id="example-3-database-noodledb-versus-sqlite">Example 3: database (NoodleDB versus SQLite)</h2>
 <p>The third pillar: the database lives inside the language. The same kinds of
-questions, A/B measured on identical machines: <strong>up to 1.8× faster than
-SQLite per query type</strong>, with the per-type measurement in the repository.</p>
+questions, A/B measured on identical machines. The per-type measurement is in
+the repository.</p>
 <div class="code-grid">
 <div>
 <p><strong>Python</strong></p>
@@ -866,8 +866,6 @@ fn main() -&gt; int {
 </tr>
 </tbody>
 </table>
-<p>The full comparison covers 16 query types; the per-type measurement is in the
-repository. We publish only what has been measured.</p>
 <h2 id="an-honest-caveat">An honest caveat</h2>
 <p>The gain depends on the kind of work: the more pure computation and the
 heavier Python's interpreter tax, the bigger the win. Scripts that mostly
