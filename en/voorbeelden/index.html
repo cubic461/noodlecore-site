@@ -715,31 +715,31 @@ compilation to native C delivers without changing anything yourself.</p>
 </code></pre>
 </div>
 </div>
-<p><strong>Measured result</strong> <em>(microbenchmarks, same machine, same algorithm)</em></p>
+<p><strong>Measured result</strong> <em>(iMac Pro, best-of-3, same algorithm)</em></p>
 <table>
 <thead>
 <tr>
 <th>Language</th>
-<th>Relative time</th>
+<th>Time</th>
 <th>Speedup</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Python 3.12</td>
-<td>100% (reference)</td>
+<td>609.1 ms</td>
 <td>—</td>
 </tr>
 <tr>
 <td>NoodleCore → C</td>
-<td>~3%</td>
-<td><strong>up to 33× faster</strong></td>
+<td>17.2 ms</td>
+<td><strong>35.4× faster</strong></td>
 </tr>
 </tbody>
 </table>
-<p>The heavier the arithmetic, the bigger the gain: across the full
-microbenchmark set the speedup on compute time goes up to 3,000×. We share
-the measurement method per claim on request.</p>
+<p>The heavier the arithmetic, the bigger the gain: on pure computation the
+speedup goes up to 3,049× (51,826 ms → 17 ms). We share the measurement
+method per claim on request.</p>
 <h2 id="example-2-text-processing-csv-parser-1-million-rows">Example 2: text processing (CSV parser, 1 million rows)</h2>
 <p>Text is where Python is at its heaviest and NC wins most clearly: reading,
 splitting and counting the same rows, without interpreter tax.</p>
@@ -773,28 +773,32 @@ def count_bigger(rows, field, threshold):
 </code></pre>
 </div>
 </div>
-<p><strong>Measured result</strong> <em>(string-parsing benchmarks, same input)</em></p>
+<p><strong>Measured result</strong> <em>(iMac Pro, best-of-3, same input)</em></p>
 <table>
 <thead>
 <tr>
 <th>Language</th>
-<th>Relative time</th>
+<th>Time</th>
 <th>Speedup</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Python 3.12</td>
-<td>100%</td>
+<td>5.1 ms</td>
 <td>—</td>
 </tr>
 <tr>
 <td>NoodleCore → C</td>
-<td>~3%</td>
-<td><strong>up to 33× faster</strong></td>
+<td>5.0 ms</td>
+<td>~1× (equal)</td>
 </tr>
 </tbody>
 </table>
+<p>Interesting is the other side: at micro level (100k string appends) NC runs
+at 99–101% of hand-written C — NoodleCore's language layer compiles away
+entirely. Python cannot reach that; the tax sits between Python and C
+(primes: 35.4×; pure computation: 3,049×).</p>
 <h2 id="example-3-database-noodledb-versus-sqlite">Example 3: database (NoodleDB versus SQLite)</h2>
 <p>The third pillar: the database lives inside the language. The same kinds of
 questions, A/B measured on identical machines. The per-type measurement is in

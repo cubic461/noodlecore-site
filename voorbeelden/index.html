@@ -715,31 +715,31 @@ compilatie naar native C oplevert zonder dat je zelf iets verandert.</p>
 </code></pre>
 </div>
 </div>
-<p><strong>Gemeten resultaat</strong> <em>(microbenchmarks, zelfde machine, zelfde algoritme)</em></p>
+<p><strong>Gemeten resultaat</strong> <em>(iMac Pro, best-of-3, zelfde algoritme)</em></p>
 <table>
 <thead>
 <tr>
 <th>Taal</th>
-<th>Relatieve tijd</th>
+<th>Tijd</th>
 <th>Snelheidswinst</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Python 3.12</td>
-<td>100% (referentie)</td>
+<td>609,1 ms</td>
 <td>—</td>
 </tr>
 <tr>
 <td>NoodleCore → C</td>
-<td>~3%</td>
-<td><strong>tot 33× sneller</strong></td>
+<td>17,2 ms</td>
+<td><strong>35,4× sneller</strong></td>
 </tr>
 </tbody>
 </table>
-<p>Hoe zwaarder het rekenwerk, hoe groter de winst: over de volledige
-microbenchmark-set loopt de winst op tot 3.000× op rekentijd. De
-meetmethodiek delen wij per claim op verzoek.</p>
+<p>Hoe zwaarder het rekenwerk, hoe groter de winst: op zuiver rekenwerk loopt
+de winst op tot 3.049× (51.826 ms → 17 ms). De meetmethodiek delen wij per
+claim op verzoek.</p>
 <h2 id="voorbeeld-2-tekstverwerking-csv-parser-1-miljoen-regels">Voorbeeld 2: tekstverwerking (CSV-parser, 1 miljoen regels)</h2>
 <p>Tekst is waar Python het zwaarst wordt en NC het duidelijkst wint: dezelfde
 regels lezen, splitsen en tellen, zonder tolkosten.</p>
@@ -773,28 +773,32 @@ def count_bigger(rows, field, threshold):
 </code></pre>
 </div>
 </div>
-<p><strong>Gemeten resultaat</strong> <em>(string-parsing benchmarks, zelfde input)</em></p>
+<p><strong>Gemeten resultaat</strong> <em>(iMac Pro, best-of-3, zelfde input)</em></p>
 <table>
 <thead>
 <tr>
 <th>Taal</th>
-<th>Relatieve tijd</th>
+<th>Tijd</th>
 <th>Snelheidswinst</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Python 3.12</td>
-<td>100%</td>
+<td>5,1 ms</td>
 <td>—</td>
 </tr>
 <tr>
 <td>NoodleCore → C</td>
-<td>~3%</td>
-<td><strong>tot 33× sneller</strong></td>
+<td>5,0 ms</td>
+<td>~1× (gelijk)</td>
 </tr>
 </tbody>
 </table>
+<p>Interessant is de andere kant: op micro-niveau (100k string-appends) is NC
+99-101% van handgeschreven C — de taal laag van NoodleCore compileert
+volledig weg. Python haalt dat niet; daar zit de tol tussen Python en C
+(priemgetallen: 35,4×; zuiver rekenwerk: 3.049×).</p>
 <h2 id="voorbeeld-3-database-noodledb-tegen-sqlite">Voorbeeld 3: database (NoodleDB tegen SQLite)</h2>
 <p>De derde pijler: de database zit in de taal. Dezelfde soorten vragen, A/B
 gemeten op identieke machines. Per query-type staat de meting in de repo.</p>
