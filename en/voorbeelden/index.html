@@ -707,7 +707,7 @@ print(loop_sum(10_000_000))
 </code></pre>
 </div>
 </div>
-<p><strong>Measured result</strong> <em>(iMac Pro, best-of-3, same algorithm)</em></p>
+<p><strong>Measured result</strong> <em>(iMac Pro, best-of-3; C sides with -O3 -march=native)</em></p>
 <table>
 <thead>
 <tr>
@@ -718,7 +718,7 @@ print(loop_sum(10_000_000))
 </thead>
 <tbody>
 <tr>
-<td>Python 3.12</td>
+<td>Python (CPython 3.11)</td>
 <td>609.1 ms</td>
 <td>—</td>
 </tr>
@@ -768,35 +768,37 @@ int main(void) {
 </code></pre>
 </div>
 </div>
-<p><strong>Measured result</strong> <em>(iMac Pro, best-of-3, -O3 -march=native for both)</em></p>
+<p><strong>Measured result</strong> <em>(iMac Pro, best-of-3; C sides with -O3 -march=native)</em></p>
 <table>
 <thead>
 <tr>
-<th>Implementation</th>
+<th>Language</th>
 <th>Time</th>
 <th>Ratio</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>Python (CPython 3.11)</td>
+<td>8.4 ms</td>
+<td>—</td>
+</tr>
+<tr>
 <td>Hand-written C</td>
 <td>5.0 ms</td>
-<td>—</td>
+<td>1.7× faster than Python</td>
 </tr>
 <tr>
 <td>NoodleCore → C</td>
 <td>5.1 ms</td>
-<td><strong>100.8% of hand-C</strong></td>
+<td>1.6× faster than Python</td>
 </tr>
 </tbody>
 </table>
-<p>The full micro suite (5 cases: allocation, array read/write, function
-calls, string append, GC-free) measures a geomean of <strong>99.1% of hand-C</strong>:
-the language layer compiles away. And across the larger 11-scenario suite
-(fib, loops, array sums, primes, sorting, string concat, vec dot, matmul)
-the average is <strong>95.9%</strong> — on string builder and vec dot the compiler even
-beats hand-C, through auto-vectorization. Python cannot reach that parity:
-that is the tax from example 1.</p>
+<p>Three languages, one test — and the core of the story: NC (5.1 ms) sits
+within 2% of hand-written C (5.0 ms), while Python needs 68% more time than
+C. The layer between Python and C disappears entirely; the tax being paid
+is Python's own.</p>
 <h2 id="example-3-database-noodledb-versus-sqlite">Example 3: database (NoodleDB versus SQLite)</h2>
 <p>The third pillar: the database lives inside the language. The same question
 over the same data — 1 million order lines — A/B measured: Python with

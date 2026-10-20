@@ -707,7 +707,7 @@ print(loop_sum(10_000_000))
 </code></pre>
 </div>
 </div>
-<p><strong>Gemeten resultaat</strong> <em>(iMac Pro, best-of-3, zelfde algoritme)</em></p>
+<p><strong>Gemeten resultaat</strong> <em>(iMac Pro, best-of-3; C-zijden met -O3 -march=native)</em></p>
 <table>
 <thead>
 <tr>
@@ -718,7 +718,7 @@ print(loop_sum(10_000_000))
 </thead>
 <tbody>
 <tr>
-<td>Python 3.12</td>
+<td>Python (CPython 3.11)</td>
 <td>609,1 ms</td>
 <td>—</td>
 </tr>
@@ -767,35 +767,37 @@ int main(void) {
 </code></pre>
 </div>
 </div>
-<p><strong>Gemeten resultaat</strong> <em>(iMac Pro, best-of-3, -O3 -march=native voor beide)</em></p>
+<p><strong>Gemeten resultaat</strong> <em>(iMac Pro, best-of-3; C-zijden met -O3 -march=native)</em></p>
 <table>
 <thead>
 <tr>
-<th>Implementatie</th>
+<th>Taal</th>
 <th>Tijd</th>
 <th>Verhouding</th>
 </tr>
 </thead>
 <tbody>
 <tr>
+<td>Python (CPython 3.11)</td>
+<td>8,4 ms</td>
+<td>—</td>
+</tr>
+<tr>
 <td>Handgeschreven C</td>
 <td>5,0 ms</td>
-<td>—</td>
+<td>1,7× sneller dan Python</td>
 </tr>
 <tr>
 <td>NoodleCore → C</td>
 <td>5,1 ms</td>
-<td><strong>100,8% van hand-C</strong></td>
+<td>1,6× sneller dan Python</td>
 </tr>
 </tbody>
 </table>
-<p>De volledige micro-suite (5 gevallen: alloceren, array-lezen/schrijven,
-functie-aanroepen, string-append, GC-vrij) meet geomean <strong>99,1% van
-hand-C</strong>: de taallaag compileert weg. En over de grotere 11-scenario-suite
-(fib, lussen, array-sommen, priemgetallen, sorteren, string-concat,
-vec-dot, matmul) is het gemiddeld <strong>95,9%</strong> — op string-builder en vec-dot
-wint de compiler het zelfs van hand-C, door autovectorisatie. Python haalt
-die pariteit niet: dát is de tol uit voorbeeld 1.</p>
+<p>Drie talen, één test — en de kern van het verhaal: NC (5,1 ms) zit bínken
+de 2% van handgeschreven C (5,0 ms), terwijl Python 68% meer tijd nodig
+heeft dan C. De taal tussen Python en C valt volledig weg; de tol die
+betaald wordt, is die van Python zelf.</p>
 <h2 id="voorbeeld-3-database-noodledb-tegen-sqlite">Voorbeeld 3: database (NoodleDB tegen SQLite)</h2>
 <p>De derde pijler: de database zit in de taal. Dezelfde vraag over dezelfde
 data — 1 miljoen orderregels — A/B gemeten: Python met SQLite tegen
