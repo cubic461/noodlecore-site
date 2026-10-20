@@ -1,0 +1,971 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Easy as Python, fast as C. Zelf-compilerende taal met ingebouwde database — bewezen met fixed-point test.">
+      
+      
+      
+        <link rel="canonical" href="https://noodlecore.io/en/">
+      
+      
+      
+        <link rel="next" href="producten/">
+      
+      
+        
+          <link rel="alternate" href="/" hreflang="nl">
+        
+          <link rel="alternate" href="/en/" hreflang="en">
+        
+      
+      
+      <link rel="icon" href="../assets/logo-icon.svg">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Home - NoodleCore</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+    
+    
+      <link rel="stylesheet" href="../css/noodlecore.css">
+    
+      <link rel="stylesheet" href="../css/fonts.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#fast-as-creadable-as-pythonand-it-compiles-itself" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="./" title="NoodleCore" class="md-header__button md-logo" aria-label="NoodleCore" data-md-component="logo">
+      
+  <img src="../assets/logo-header-v2.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            NoodleCore
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Home
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="indigo"  aria-label="Donker thema"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Donker thema" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 7H7a5 5 0 0 0-5 5 5 5 0 0 0 5 5h10a5 5 0 0 0 5-5 5 5 0 0 0-5-5m0 8a3 3 0 0 1-3-3 3 3 0 0 1 3-3 3 3 0 0 1 3 3 3 3 0 0 1-3 3"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="indigo"  aria-label="Licht thema"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Licht thema" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 6H7c-3.31 0-6 2.69-6 6s2.69 6 6 6h10c3.31 0 6-2.69 6-6s-2.69-6-6-6m0 10H7c-2.21 0-4-1.79-4-4s1.79-4 4-4h10c2.21 0 4 1.79 4 4s-1.79 4-4 4M7 9c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+      <div class="md-header__option">
+  <div class="md-select">
+    
+    <button class="md-header__button md-icon" aria-label="Select language">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m12.87 15.07-2.54-2.51.03-.03A17.5 17.5 0 0 0 14.07 6H17V4h-7V2H8v2H1v2h11.17C11.5 7.92 10.44 9.75 9 11.35 8.07 10.32 7.3 9.19 6.69 8h-2c.73 1.63 1.73 3.17 2.98 4.56l-5.09 5.02L4 19l5-5 3.11 3.11zM18.5 10h-2L12 22h2l1.12-3h4.75L21 22h2zm-2.62 7 1.62-4.33L19.12 17z"/></svg>
+    </button>
+    <div class="md-select__inner">
+      <ul class="md-select__list">
+        
+          <li class="md-select__item">
+            <a href="/" hreflang="nl" class="md-select__link">
+              Nederlands
+            </a>
+          </li>
+        
+          <li class="md-select__item">
+            <a href="/en/" hreflang="en" class="md-select__link">
+              English
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</div>
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="./" title="NoodleCore" class="md-nav__button md-logo" aria-label="NoodleCore" data-md-component="logo">
+      
+  <img src="../assets/logo-header-v2.svg" alt="logo">
+
+    </a>
+    NoodleCore
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#faster-than-hand-written-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚡ Faster than hand-written C
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compiles-itself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔁 Compiles itself
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-included" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧱 Database included
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-legacy-in-one" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Future + legacy in one
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#legacy-with-a-way-back-and-c-and-python-as-friends" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🌉 Legacy with a way back — and C and Python as friends
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-it-yourself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See it yourself
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#built-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Built for
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works-without-a-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works without a migration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proof-not-promises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proof, not promises
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contact
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="producten/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Products
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="features/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Language features
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="cobol-porting/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    COBOL → C
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="voorbeelden/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Examples
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="contact/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contact
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="voorwaarden/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Terms
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="privacy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Privacy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#faster-than-hand-written-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ⚡ Faster than hand-written C
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compiles-itself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🔁 Compiles itself
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#database-included" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🧱 Database included
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#future-legacy-in-one" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🚀 Future + legacy in one
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#legacy-with-a-way-back-and-c-and-python-as-friends" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🌉 Legacy with a way back — and C and Python as friends
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#see-it-yourself" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        See it yourself
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#built-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Built for
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#how-it-works-without-a-migration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works without a migration
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#proof-not-promises" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Proof, not promises
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#contact" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contact
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<p><svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NoodleCore" class="nc-svg" style="display:block;width:100%;max-width:280px;height:auto;margin:1rem 0 0.4rem" viewBox="0 0 246 70">
+  <g transform="translate(4.00,56.00) scale(0.0380,-0.0380)"><path d="M50 0V720H249L569 84L520 72V720H670V0H471L151 636L200 648V0Z" fill="currentColor"></path></g>
+  <g transform="translate(31.36,56.00) scale(0.0380,-0.0380)"><path d="M302 -10Q218 -10 154.5 23.5Q91 57 55.5 117.5Q20 178 20 257Q20 336 55.5 395.0Q91 454 154.5 487.0Q218 520 302 520Q387 520 450.5 487.0Q514 454 549.0 395.0Q584 336 584 257Q584 178 548.5 117.5Q513 57 449.5 23.5Q386 -10 302 -10ZM302 108Q337 108 365.5 126.0Q394 144 411.0 177.5Q428 211 428 258Q428 327 391.5 364.5Q355 402 302 402Q249 402 212.5 364.0Q176 326 176 258Q176 211 193.0 177.5Q210 144 238.5 126.0Q267 108 302 108Z" fill="currentColor"></path></g>
+  <g transform="translate(54.31,56.00) scale(0.0380,-0.0380)"><path d="M302 -10Q218 -10 154.5 23.5Q91 57 55.5 117.5Q20 178 20 257Q20 336 55.5 395.0Q91 454 154.5 487.0Q218 520 302 520Q387 520 450.5 487.0Q514 454 549.0 395.0Q584 336 584 257Q584 178 548.5 117.5Q513 57 449.5 23.5Q386 -10 302 -10ZM302 108Q337 108 365.5 126.0Q394 144 411.0 177.5Q428 211 428 258Q428 327 391.5 364.5Q355 402 302 402Q249 402 212.5 364.0Q176 326 176 258Q176 211 193.0 177.5Q210 144 238.5 126.0Q267 108 302 108Z" fill="currentColor"></path></g>
+  <g transform="translate(77.26,56.00) scale(0.0380,-0.0380)"><path d="M421 0V113L431 111Q421 56 371.5 23.0Q322 -10 253 -10Q183 -10 131.5 22.5Q80 55 52.0 114.0Q24 173 24 253Q24 334 53.0 394.0Q82 454 134.5 487.0Q187 520 257 520Q330 520 375.5 486.0Q421 452 429 393L418 392V720H568V0ZM301 110Q354 110 387.0 147.5Q420 185 420 255Q420 325 386.5 362.5Q353 400 299 400Q247 400 213.5 362.0Q180 324 180 254Q180 184 213.5 147.0Q247 110 301 110Z" fill="currentColor"></path></g>
+  <g transform="translate(101.13,56.00) scale(0.0380,-0.0380)"><path d="M60 0V720H210V0Z" fill="currentColor"></path></g>
+  <g transform="translate(111.39,56.00) scale(0.0380,-0.0380)"><path d="M300 -10Q215 -10 152.0 23.5Q89 57 54.5 117.0Q20 177 20 255Q20 334 54.5 393.5Q89 453 151.0 486.5Q213 520 295 520Q374 520 432.0 488.0Q490 456 522.0 399.0Q554 342 554 265Q554 249 553.0 235.5Q552 222 550 210H108V309H429L403 291Q403 353 373.5 382.5Q344 412 293 412Q234 412 201.5 372.0Q169 332 169 252Q169 174 201.5 136.0Q234 98 299 98Q335 98 361.0 110.0Q387 122 400 149H541Q516 75 455.5 32.5Q395 -10 300 -10Z" fill="currentColor"></path></g>
+  <g transform="translate(133.20,56.00) scale(0.0380,-0.0380)"><path d="M391 -10Q313 -10 247.0 17.5Q181 45 132.5 95.0Q84 145 57.0 213.5Q30 282 30 363Q30 444 56.5 511.0Q83 578 131.5 627.5Q180 677 246.0 703.5Q312 730 391 730Q480 730 551.5 695.5Q623 661 668.5 598.5Q714 536 724 452H574Q561 529 511.0 568.5Q461 608 392 608Q331 608 284.5 579.0Q238 550 212.0 495.5Q186 441 186 364Q186 286 212.5 229.5Q239 173 286.0 142.5Q333 112 394 112Q459 112 509.0 151.0Q559 190 574 267H726Q713 183 667.0 120.5Q621 58 550.0 24.0Q479 -10 391 -10Z" fill="currentColor"></path></g>
+  <g transform="translate(161.70,56.00) scale(0.0380,-0.0380)"><path d="M302 -10Q218 -10 154.5 23.5Q91 57 55.5 117.5Q20 178 20 257Q20 336 55.5 395.0Q91 454 154.5 487.0Q218 520 302 520Q387 520 450.5 487.0Q514 454 549.0 395.0Q584 336 584 257Q584 178 548.5 117.5Q513 57 449.5 23.5Q386 -10 302 -10ZM302 108Q337 108 365.5 126.0Q394 144 411.0 177.5Q428 211 428 258Q428 327 391.5 364.5Q355 402 302 402Q249 402 212.5 364.0Q176 326 176 258Q176 211 193.0 177.5Q210 144 238.5 126.0Q267 108 302 108Z" fill="currentColor"></path></g>
+  <g transform="translate(184.65,56.00) scale(0.0380,-0.0380)"><path d="M60 0V510H207V390H210V0ZM210 266 197 387Q215 452 256.0 486.0Q297 520 358 520Q377 520 386 516V376Q381 378 372.0 378.5Q363 379 350 379Q278 379 244.0 353.5Q210 328 210 266Z" fill="currentColor"></path></g>
+  <g transform="translate(199.78,56.00) scale(0.0380,-0.0380)"><path d="M300 -10Q215 -10 152.0 23.5Q89 57 54.5 117.0Q20 177 20 255Q20 334 54.5 393.5Q89 453 151.0 486.5Q213 520 295 520Q374 520 432.0 488.0Q490 456 522.0 399.0Q554 342 554 265Q554 249 553.0 235.5Q552 222 550 210H108V309H429L403 291Q403 353 373.5 382.5Q344 412 293 412Q234 412 201.5 372.0Q169 332 169 252Q169 174 201.5 136.0Q234 98 299 98Q335 98 361.0 110.0Q387 122 400 149H541Q516 75 455.5 32.5Q395 -10 300 -10Z" fill="currentColor"></path></g>
+  <g transform="translate(222.59,52.00) scale(0.0160,-0.0160)"><path d="M80 0V510H155V390H160V0ZM445 0V334Q445 392 416.0 421.0Q387 450 330 450Q280 450 241.5 428.0Q203 406 181.5 367.0Q160 328 160 276L147 397Q173 454 226.5 487.0Q280 520 348 520Q428 520 476.5 474.5Q525 429 525 355V0Z" fill="#ff6d00"></path></g>
+  <g transform="translate(232.17,52.00) scale(0.0160,-0.0160)"><path d="M282 -10Q212 -10 157.5 24.5Q103 59 71.5 119.5Q40 180 40 257Q40 334 71.5 393.0Q103 452 157.5 486.0Q212 520 281 520Q338 520 383.5 498.0Q429 476 458.5 435.5Q488 395 496 341H422Q412 390 376.0 421.0Q340 452 283 452Q234 452 198.0 428.0Q162 404 142.0 360.0Q122 316 122 257Q122 198 142.0 153.0Q162 108 198.5 83.0Q235 58 284 58Q339 58 376.0 88.5Q413 119 423 168H497Q488 115 457.5 74.5Q427 34 382.0 12.0Q337 -10 282 -10Z" fill="#ff6d00"></path></g>
+</svg></p>
+<div class="nc-hero">
+<p><span class="nc-tag">Easy as Python · fast as C</span></p>
+<h1 id="fast-as-creadable-as-pythonand-it-compiles-itself">Fast as C,<br><span class="nc-l2">readable as Python,</span><br><span class="nc-l3">and it compiles itself!</span></h1>
+<p><span class="nc-hero-copy">NoodleCore compiles its own code to native C.
+Measured across 11 scenarios, the result is on average 4% faster than
+hand-written C. With a database built in — not a separate product but a
+language feature: <code>SELECT</code> sits right next to <code>if</code>/<code>for</code>, in the same file,
+no server, no driver, no installation.</span></p>
+</div>
+<div class="nc-cards">
+<div class="nc-card">
+<h3 id="faster-than-hand-written-c">⚡ Faster than hand-written C</h3>
+<p>Measured across 11 scenarios: 95.9% of C's runtime on average, so 4% faster.
+No estimates — ask for the benchmark reports and you'll get them.</p>
+</div>
+<div class="nc-card">
+<h3 id="compiles-itself">🔁 Compiles itself</h3>
+<p>Proven with a fixed-point test, the same criterion GCC is held to.
+Running this way since May 2026.</p>
+</div>
+<div class="nc-card">
+<h3 id="database-included">🧱 Database included</h3>
+<p><code>SELECT</code> is a language construct, not an external server. Transactions, graph,
+vector search and full-text live in the same engine — no driver, no connector,
+no second language. Built on the lessons of the databases that already exist:
+we speak PostgreSQL fluently as well as SQLite, and your existing data plays
+along — import it and weigh what you already have. Faster than SQLite on all
+16 tested query types, A/B-tested on identical machines.</p>
+</div>
+<div class="nc-card">
+<h3 id="future-legacy-in-one">🚀 Future + legacy in one</h3>
+<p>Mature database behavior for today's work (JSON, vectors, full-text) and an
+import path for what you already have. Your existing data isn't dead weight —
+it's the starting point.</p>
+</div>
+<div class="nc-card">
+<h3 id="legacy-with-a-way-back-and-c-and-python-as-friends">🌉 Legacy with a way back — and C and Python as friends</h3>
+<p>COBOL, RPG, VB6 and Fortran become NoodleCore, and NoodleCore becomes C:
+translation works in both directions, so you're never locked in to one vendor.
+C and Python aren't strangers but neighbors: <code>noodle run</code> accelerates existing
+Python without a rewrite, and the C translation opens your system to every
+C tool you already know.</p>
+</div>
+</div>
+<p><svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NoodleCore" class="nc-svg" style="display:inline-block;width:72px;height:auto;margin:1.4rem 0 0.2rem" viewBox="0 0 146 120">
+  <circle cx="22" cy="74.5" r="3.5" fill="#ff6d00"></circle>
+  <g transform="translate(28.46,76.00) scale(0.0400,-0.0400)"><path d="M86 0V720H171L584 114L572 112V720H650V0H565L152 606L164 608V0Z" fill="currentColor"></path></g>
+  <g transform="translate(55.90,76.00) scale(0.0400,-0.0400)"><path d="M391 -10Q317 -10 254.5 17.5Q192 45 146.0 94.5Q100 144 75.0 211.5Q50 279 50 360Q50 441 75.0 508.5Q100 576 145.5 625.5Q191 675 253.5 702.5Q316 730 390 730Q471 730 535.5 697.0Q600 664 641.5 604.0Q683 544 693 464H611Q599 553 540.5 604.5Q482 656 391 656Q314 656 256.0 618.5Q198 581 166.0 514.5Q134 448 134 360Q134 272 166.0 205.5Q198 139 256.0 101.5Q314 64 390 64Q483 64 542.5 116.0Q602 168 613 256H695Q685 176 643.5 116.0Q602 56 537.5 23.0Q473 -10 391 -10Z" fill="currentColor"></path></g>
+  <g stroke="#ff6d00" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M90,42 L110,60 L90,78"></path>
+    <path d="M108,42 L128,60 L108,78"></path>
+  </g>
+</svg>
+<svg xmlns="http://www.w3.org/2000/svg" role="img" aria-label="NoodleCore" class="nc-svg" style="display:block;width:100%;max-width:340px;height:auto;margin:0 0 0.6rem" viewBox="0 0 246 70">
+  <g transform="translate(4.00,56.00) scale(0.0380,-0.0380)"><path d="M50 0V720H249L569 84L520 72V720H670V0H471L151 636L200 648V0Z" fill="currentColor"></path></g>
+  <g transform="translate(31.36,56.00) scale(0.0380,-0.0380)"><path d="M302 -10Q218 -10 154.5 23.5Q91 57 55.5 117.5Q20 178 20 257Q20 336 55.5 395.0Q91 454 154.5 487.0Q218 520 302 520Q387 520 450.5 487.0Q514 454 549.0 395.0Q584 336 584 257Q584 178 548.5 117.5Q513 57 449.5 23.5Q386 -10 302 -10ZM302 108Q337 108 365.5 126.0Q394 144 411.0 177.5Q428 211 428 258Q428 327 391.5 364.5Q355 402 302 402Q249 402 212.5 364.0Q176 326 176 258Q176 211 193.0 177.5Q210 144 238.5 126.0Q267 108 302 108Z" fill="currentColor"></path></g>
+  <g transform="translate(54.31,56.00) scale(0.0380,-0.0380)"><path d="M302 -10Q218 -10 154.5 23.5Q91 57 55.5 117.5Q20 178 20 257Q20 336 55.5 395.0Q91 454 154.5 487.0Q218 520 302 520Q387 520 450.5 487.0Q514 454 549.0 395.0Q584 336 584 257Q584 178 548.5 117.5Q513 57 449.5 23.5Q386 -10 302 -10ZM302 108Q337 108 365.5 126.0Q394 144 411.0 177.5Q428 211 428 258Q428 327 391.5 364.5Q355 402 302 402Q249 402 212.5 364.0Q176 326 176 258Q176 211 193.0 177.5Q210 144 238.5 126.0Q267 108 302 108Z" fill="currentColor"></path></g>
+  <g transform="translate(77.26,56.00) scale(0.0380,-0.0380)"><path d="M421 0V113L431 111Q421 56 371.5 23.0Q322 -10 253 -10Q183 -10 131.5 22.5Q80 55 52.0 114.0Q24 173 24 253Q24 334 53.0 394.0Q82 454 134.5 487.0Q187 520 257 520Q330 520 375.5 486.0Q421 452 429 393L418 392V720H568V0ZM301 110Q354 110 387.0 147.5Q420 185 420 255Q420 325 386.5 362.5Q353 400 299 400Q247 400 213.5 362.0Q180 324 180 254Q180 184 213.5 147.0Q247 110 301 110Z" fill="currentColor"></path></g>
+  <g transform="translate(101.13,56.00) scale(0.0380,-0.0380)"><path d="M60 0V720H210V0Z" fill="currentColor"></path></g>
+  <g transform="translate(111.39,56.00) scale(0.0380,-0.0380)"><path d="M300 -10Q215 -10 152.0 23.5Q89 57 54.5 117.0Q20 177 20 255Q20 334 54.5 393.5Q89 453 151.0 486.5Q213 520 295 520Q374 520 432.0 488.0Q490 456 522.0 399.0Q554 342 554 265Q554 249 553.0 235.5Q552 222 550 210H108V309H429L403 291Q403 353 373.5 382.5Q344 412 293 412Q234 412 201.5 372.0Q169 332 169 252Q169 174 201.5 136.0Q234 98 299 98Q335 98 361.0 110.0Q387 122 400 149H541Q516 75 455.5 32.5Q395 -10 300 -10Z" fill="currentColor"></path></g>
+  <g transform="translate(133.20,56.00) scale(0.0380,-0.0380)"><path d="M391 -10Q313 -10 247.0 17.5Q181 45 132.5 95.0Q84 145 57.0 213.5Q30 282 30 363Q30 444 56.5 511.0Q83 578 131.5 627.5Q180 677 246.0 703.5Q312 730 391 730Q480 730 551.5 695.5Q623 661 668.5 598.5Q714 536 724 452H574Q561 529 511.0 568.5Q461 608 392 608Q331 608 284.5 579.0Q238 550 212.0 495.5Q186 441 186 364Q186 286 212.5 229.5Q239 173 286.0 142.5Q333 112 394 112Q459 112 509.0 151.0Q559 190 574 267H726Q713 183 667.0 120.5Q621 58 550.0 24.0Q479 -10 391 -10Z" fill="currentColor"></path></g>
+  <g transform="translate(161.70,56.00) scale(0.0380,-0.0380)"><path d="M302 -10Q218 -10 154.5 23.5Q91 57 55.5 117.5Q20 178 20 257Q20 336 55.5 395.0Q91 454 154.5 487.0Q218 520 302 520Q387 520 450.5 487.0Q514 454 549.0 395.0Q584 336 584 257Q584 178 548.5 117.5Q513 57 449.5 23.5Q386 -10 302 -10ZM302 108Q337 108 365.5 126.0Q394 144 411.0 177.5Q428 211 428 258Q428 327 391.5 364.5Q355 402 302 402Q249 402 212.5 364.0Q176 326 176 258Q176 211 193.0 177.5Q210 144 238.5 126.0Q267 108 302 108Z" fill="currentColor"></path></g>
+  <g transform="translate(184.65,56.00) scale(0.0380,-0.0380)"><path d="M60 0V510H207V390H210V0ZM210 266 197 387Q215 452 256.0 486.0Q297 520 358 520Q377 520 386 516V376Q381 378 372.0 378.5Q363 379 350 379Q278 379 244.0 353.5Q210 328 210 266Z" fill="currentColor"></path></g>
+  <g transform="translate(199.78,56.00) scale(0.0380,-0.0380)"><path d="M300 -10Q215 -10 152.0 23.5Q89 57 54.5 117.0Q20 177 20 255Q20 334 54.5 393.5Q89 453 151.0 486.5Q213 520 295 520Q374 520 432.0 488.0Q490 456 522.0 399.0Q554 342 554 265Q554 249 553.0 235.5Q552 222 550 210H108V309H429L403 291Q403 353 373.5 382.5Q344 412 293 412Q234 412 201.5 372.0Q169 332 169 252Q169 174 201.5 136.0Q234 98 299 98Q335 98 361.0 110.0Q387 122 400 149H541Q516 75 455.5 32.5Q395 -10 300 -10Z" fill="currentColor"></path></g>
+  <g transform="translate(222.59,52.00) scale(0.0160,-0.0160)"><path d="M80 0V510H155V390H160V0ZM445 0V334Q445 392 416.0 421.0Q387 450 330 450Q280 450 241.5 428.0Q203 406 181.5 367.0Q160 328 160 276L147 397Q173 454 226.5 487.0Q280 520 348 520Q428 520 476.5 474.5Q525 429 525 355V0Z" fill="#ff6d00"></path></g>
+  <g transform="translate(232.17,52.00) scale(0.0160,-0.0160)"><path d="M282 -10Q212 -10 157.5 24.5Q103 59 71.5 119.5Q40 180 40 257Q40 334 71.5 393.0Q103 452 157.5 486.0Q212 520 281 520Q338 520 383.5 498.0Q429 476 458.5 435.5Q488 395 496 341H422Q412 390 376.0 421.0Q340 452 283 452Q234 452 198.0 428.0Q162 404 142.0 360.0Q122 316 122 257Q122 198 142.0 153.0Q162 108 198.5 83.0Q235 58 284 58Q339 58 376.0 88.5Q413 119 423 168H497Q488 115 457.5 74.5Q427 34 382.0 12.0Q337 -10 282 -10Z" fill="#ff6d00"></path></g>
+</svg></p>
+<h2 id="see-it-yourself">See it yourself</h2>
+<p>Open the <strong><a href="voorbeelden/">Examples</a></strong>: Python and NoodleCore side by side,
+with the measured gain per kind of work — a prime-number loop, text
+processing and a database query.</p>
+<h2 id="built-for">Built for</h2>
+<ul>
+<li><strong>Python teams hitting a speed wall</strong>: your script, at C speed — no
+  migration, no rewrite. Port the hot loops, keep the rest</li>
+<li><strong>Companies with legacy code</strong> (COBOL, VB6, RPG): modernize without
+  rewriting — with a way back</li>
+<li><strong>Anyone who wants speed ánd control</strong> without C boilerplate or a steep
+  learning curve</li>
+</ul>
+<h2 id="how-it-works-without-a-migration">How it works without a migration</h2>
+<p>You don't have to choose between simple and fast. <code>noodle run</code> speeds up your
+existing Python script from the inside — the way Ruff and uv sped up the
+Python world, but for <em>your</em> code:</p>
+<pre><code class="language-text">hot loop in Python     217 ms
+same loop via NC        34 ms    (6.4x)
+in-process (dylib)      0.9 ms   (243x)
+</code></pre>
+<p>No runtime tag-alongs, no interpreter standing between your code and the CPU.
+The full move to NC happens naturally — every kernel you port proves the
+language.</p>
+<h2 id="proof-not-promises">Proof, not promises</h2>
+<p>Every claim on this site is measured. Where others publish a press release,
+we publish the test results. Test runs, benchmarks and methodology are
+shared per claim on request:</p>
+<pre><code class="language-text">Language microbenchmarks  NC vs hand-C   95.9% of C time (4% faster)
+C-backend stdlib          240/240        100% compiles
+LLVM-backend stdlib       309/309        100%, bit-exact vs C backend (18/18)
+Self-hosting              proven         the compiler compiles itself, 228/228 modules
+NIST COBOL suite          459/459        100% passed
+NoodleDB vs SQLite        16/16          query types faster (A/B, identical machines)
+NDB assimilation          190,267 rows   production data, count-edges 55x -&gt; 391x
+</code></pre>
+<h2 id="contact">Contact</h2>
+<p>Interested in porting or a demo? Email
+michael@noodlecore.io or let's talk about
+what your codebase could save.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      © 2026 NoodleCore · <a href="/contact/">Contact</a> · <a href="/privacy/">Privacyverklaring</a> · <a href="/voorwaarden/">Algemene voorwaarden</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.top"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+        <script src="../js/playground.js"></script>
+      
+    
+  </body>
+</html>
