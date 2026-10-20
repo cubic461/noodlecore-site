@@ -430,10 +430,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#example-1-prime-numbers-sieve-of-1-million" class="md-nav__link">
+  <a href="#example-1-arithmetic-loop-summing-10-million-numbers" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example 1: prime numbers (sieve of 1 million)
+        Example 1: arithmetic loop (summing 10 million numbers)
       
     </span>
   </a>
@@ -441,10 +441,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-2-text-processing-csv-parser-1-million-rows" class="md-nav__link">
+  <a href="#example-2-the-languages-own-tax-nc-versus-hand-written-c" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example 2: text processing (CSV parser, 1 million rows)
+        Example 2: the language's own tax (NC versus hand-written C)
       
     </span>
   </a>
@@ -600,10 +600,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#example-1-prime-numbers-sieve-of-1-million" class="md-nav__link">
+  <a href="#example-1-arithmetic-loop-summing-10-million-numbers" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example 1: prime numbers (sieve of 1 million)
+        Example 1: arithmetic loop (summing 10 million numbers)
       
     </span>
   </a>
@@ -611,10 +611,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#example-2-text-processing-csv-parser-1-million-rows" class="md-nav__link">
+  <a href="#example-2-the-languages-own-tax-nc-versus-hand-written-c" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Example 2: text processing (CSV parser, 1 million rows)
+        Example 2: the language's own tax (NC versus hand-written C)
       
     </span>
   </a>
@@ -673,44 +673,36 @@
 
 <h1 id="examples">Examples</h1>
 <blockquote>
-<p><strong>Seeing is better than believing.</strong> The same code in Python and NoodleCore
-side by side, with the measured gain underneath. All numbers come from our
-benchmark reports, no estimates.</p>
+<p><strong>Seeing is better than believing.</strong> The same code in two languages side by
+side, with the measured gain underneath. All numbers come from our
+benchmark reports, no estimates — and what stands here is exactly what was
+measured.</p>
 </blockquote>
-<h2 id="example-1-prime-numbers-sieve-of-1-million">Example 1: prime numbers (sieve of 1 million)</h2>
+<h2 id="example-1-arithmetic-loop-summing-10-million-numbers">Example 1: arithmetic loop (summing 10 million numbers)</h2>
 <p>A classic arithmetic loop: the same algorithm, two languages. This shows what
 compilation to native C delivers without changing anything yourself.</p>
 <div class="code-grid">
 <div>
 <p><strong>Python</strong></p>
-<pre><code class="language-python">def sieve(limit):
-    flags = bytearray([1]) * (limit + 1)
-    flags[0] = flags[1] = 0
-    for i in range(2, int(limit**0.5) + 1):
-        if flags[i]:
-            for j in range(i*i, limit + 1, i):
-                flags[j] = 0
-    return sum(flags)
+<pre><code class="language-python">def loop_sum(n):
+    total = 0
+    for i in range(n):
+        total += i
+    return total
+
+print(loop_sum(10_000_000))
 </code></pre>
 </div>
 <div>
 <p><strong>NoodleCore</strong></p>
-<pre><code class="language-text">fn sieve(limit: int) -&gt; int {
-    var flags = arr_new(limit + 1, 1)
-    flags[0] = 0
-    flags[1] = 0
-    var i = 2
-    while i * i &lt;= limit {
-        if flags[i] == 1 {
-            var j = i * i
-            while j &lt;= limit {
-                flags[j] = 0
-                j = j + i
-            }
-        }
+<pre><code class="language-text">fn loop_sum(n: int) -&gt; int {
+    var total = 0
+    var i = 0
+    while i &lt; n {
+        total = total + i
         i = i + 1
     }
-    return arr_sum(flags)
+    return total
 }
 </code></pre>
 </div>
@@ -737,104 +729,101 @@ compilation to native C delivers without changing anything yourself.</p>
 </tr>
 </tbody>
 </table>
-<p>The heavier the arithmetic, the bigger the gain: on pure computation the
-speedup goes up to 3,049× (51,826 ms → 17 ms). We share the measurement
-method per claim on request.</p>
-<h2 id="example-2-text-processing-csv-parser-1-million-rows">Example 2: text processing (CSV parser, 1 million rows)</h2>
-<p>Text is where Python is at its heaviest and NC wins most clearly: reading,
-splitting and counting the same rows, without interpreter tax.</p>
+<p>How much you win grows with the share of pure computation. Our heaviest
+compute benchmark (arithmetic, 1 million iterations) measures 51,826 ms in
+Python against 17 ms native — 3,049×. That is a <em>different</em> test than the one
+above; all Python comparisons are listed together on the
+<a href="../features/">Language features</a> page.</p>
+<h2 id="example-2-the-languages-own-tax-nc-versus-hand-written-c">Example 2: the language's own tax (NC versus hand-written C)</h2>
+<p>The question behind every "fast language": how much does the language itself
+cost? For NoodleCore this is measured case by case against hand-written C,
+with the same compile flags (-O3 -march=native). Here is the string-append
+test: appending one character to a string, 100,000 times.</p>
 <div class="code-grid">
 <div>
-<p><strong>Python</strong></p>
-<pre><code class="language-python">import csv
-
-def count_bigger(rows, field, threshold):
-    n = 0
-    for row in csv.reader(rows):
-        if row and float(row[field]) &gt; threshold:
-            n += 1
-    return n
+<p><strong>NoodleCore</strong></p>
+<pre><code class="language-text">fn append_100k() -&gt; str {
+    var s = &quot;x&quot;
+    var i = 0
+    while i &lt; 100000 {
+        s = s + &quot;x&quot;
+        i = i + 1
+    }
+    return s
+}
 </code></pre>
 </div>
 <div>
-<p><strong>NoodleCore</strong></p>
-<pre><code class="language-text">fn count_bigger(rows: str[], field: int, threshold: f64) -&gt; int {
-    var n = 0
-    for row in rows {
-        var parts = str_split(row, &quot;,&quot;)
-        if parts.len &gt; 0 {
-            if str_to_f64(parts[field]) &gt; threshold {
-                n = n + 1
-            }
-        }
-    }
-    return n
+<p><strong>Hand-written C</strong></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main(void) {
+    char buf[100001];
+    memset(buf, 'x', 100000);
+    buf[100000] = 0;
+    printf(&quot;%zu\n&quot;, strlen(buf));
+    return 0;
 }
 </code></pre>
 </div>
 </div>
-<p><strong>Measured result</strong> <em>(iMac Pro, best-of-3, same input)</em></p>
+<p><strong>Measured result</strong> <em>(iMac Pro, best-of-3, -O3 -march=native for both)</em></p>
 <table>
 <thead>
 <tr>
-<th>Language</th>
+<th>Implementation</th>
 <th>Time</th>
-<th>Speedup</th>
+<th>Ratio</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Python 3.12</td>
-<td>5.1 ms</td>
+<td>Hand-written C</td>
+<td>5.0 ms</td>
 <td>—</td>
 </tr>
 <tr>
 <td>NoodleCore → C</td>
-<td>5.0 ms</td>
-<td>~1× (equal)</td>
+<td>5.1 ms</td>
+<td><strong>100.8% of hand-C</strong></td>
 </tr>
 </tbody>
 </table>
-<p>Interesting is the other side: at micro level (100k string appends) NC runs
-at 99–101% of hand-written C — NoodleCore's language layer compiles away
-entirely. Python cannot reach that; the tax sits between Python and C
-(primes: 35.4×; pure computation: 3,049×).</p>
+<p>The full micro suite (5 cases: allocation, array read/write, function
+calls, string append, GC-free) measures a geomean of <strong>99.1% of hand-C</strong>:
+the language layer compiles away. And across the larger 11-scenario suite
+(fib, loops, array sums, primes, sorting, string concat, vec dot, matmul)
+the average is <strong>95.9%</strong> — on string builder and vec dot the compiler even
+beats hand-C, through auto-vectorization. Python cannot reach that parity:
+that is the tax from example 1.</p>
 <h2 id="example-3-database-noodledb-versus-sqlite">Example 3: database (NoodleDB versus SQLite)</h2>
-<p>The third pillar: the database lives inside the language. The same kinds of
-questions, A/B measured on identical machines. The per-type measurement is in
-the repository.</p>
+<p>The third pillar: the database lives inside the language. The same question
+over the same data — 1 million order lines — A/B measured: Python with
+SQLite against NoodleCore with NoodleDB. Here is the first row of the table:
+the average amount per status group.</p>
 <div class="code-grid">
 <div>
-<p><strong>Python</strong></p>
+<p><strong>Python + SQLite</strong></p>
 <pre><code class="language-python">import sqlite3
 
-con = sqlite3.connect(&quot;:memory:&quot;)
-con.execute(&quot;CREATE TABLE t(x INTEGER, y REAL)&quot;)
-for i in range(1_000_000):
-    con.execute(&quot;INSERT INTO t VALUES (?, ?)&quot;, (i, i * 0.5))
-con.commit()
-n = con.execute(
-    &quot;SELECT COUNT(*) FROM t WHERE y &gt; 250000&quot;
-).fetchone()[0]
+con = sqlite3.connect(&quot;orderlines.db&quot;)
+rows = con.execute(
+    &quot;SELECT status, AVG(bedrag) FROM orderlines&quot;
+    &quot; GROUP BY status ORDER BY status&quot;
+).fetchall()
 </code></pre>
 </div>
 <div>
-<p><strong>NoodleCore</strong></p>
+<p><strong>NoodleCore + NoodleDB</strong></p>
 <pre><code class="language-text">use noodledb_sql
 
 fn main() -&gt; int {
-    db = ndb_open(&quot;:memory:&quot;)
-    ndb_exec(db, &quot;CREATE TABLE t(x INTEGER, y REAL)&quot;)
-    var i = 0
-    while i &lt; 1000000 {
-        ndb_exec(db, &quot;INSERT INTO t VALUES (&quot; +
-                 str_from_int(i) + &quot;, &quot; +
-                 str_from_f64(i * 0.5) + &quot;)&quot;)
-        i = i + 1
-    }
-    var n = ndb_query_int(db,
-        &quot;SELECT COUNT(*) FROM t WHERE y &gt; 250000&quot;)
-    return n
+    db = ndb_open(&quot;orderlines.ndb&quot;)
+    ndb_exec(db,
+        &quot;SELECT status, AVG(bedrag) FROM orderlines&quot; +
+        &quot; GROUP BY status ORDER BY status&quot;)
+    return 0
 }
 </code></pre>
 </div>

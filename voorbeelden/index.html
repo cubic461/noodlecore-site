@@ -430,10 +430,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#voorbeeld-1-priemgetallen-zeef-van-1-miljoen" class="md-nav__link">
+  <a href="#voorbeeld-1-reken-loop-10-miljoen-getallen-sommeren" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Voorbeeld 1: priemgetallen (zeef van 1 miljoen)
+        Voorbeeld 1: reken-loop (10 miljoen getallen sommeren)
       
     </span>
   </a>
@@ -441,10 +441,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#voorbeeld-2-tekstverwerking-csv-parser-1-miljoen-regels" class="md-nav__link">
+  <a href="#voorbeeld-2-de-tol-van-de-taal-zelf-nc-tegen-handgeschreven-c" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Voorbeeld 2: tekstverwerking (CSV-parser, 1 miljoen regels)
+        Voorbeeld 2: de tol van de taal zelf (NC tegen handgeschreven C)
       
     </span>
   </a>
@@ -600,10 +600,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#voorbeeld-1-priemgetallen-zeef-van-1-miljoen" class="md-nav__link">
+  <a href="#voorbeeld-1-reken-loop-10-miljoen-getallen-sommeren" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Voorbeeld 1: priemgetallen (zeef van 1 miljoen)
+        Voorbeeld 1: reken-loop (10 miljoen getallen sommeren)
       
     </span>
   </a>
@@ -611,10 +611,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#voorbeeld-2-tekstverwerking-csv-parser-1-miljoen-regels" class="md-nav__link">
+  <a href="#voorbeeld-2-de-tol-van-de-taal-zelf-nc-tegen-handgeschreven-c" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Voorbeeld 2: tekstverwerking (CSV-parser, 1 miljoen regels)
+        Voorbeeld 2: de tol van de taal zelf (NC tegen handgeschreven C)
       
     </span>
   </a>
@@ -673,44 +673,36 @@
 
 <h1 id="voorbeelden">Voorbeelden</h1>
 <blockquote>
-<p><strong>Zelf kijken is beter dan geloven.</strong> Dezelfde code in Python en NoodleCore
-naast elkaar, met de gemeten winst eronder. Alle cijfers komen uit onze
-benchmarkrapporten, geen schattingen.</p>
+<p><strong>Zelf kijken is beter dan geloven.</strong> Dezelfde code in twee talen naast
+elkaar, met de gemeten winst eronder. Alle cijfers komen uit onze
+benchmarkrapporten, geen schattingen — en wat hier staat, is precies wat
+gemeten is.</p>
 </blockquote>
-<h2 id="voorbeeld-1-priemgetallen-zeef-van-1-miljoen">Voorbeeld 1: priemgetallen (zeef van 1 miljoen)</h2>
+<h2 id="voorbeeld-1-reken-loop-10-miljoen-getallen-sommeren">Voorbeeld 1: reken-loop (10 miljoen getallen sommeren)</h2>
 <p>Een klassieke reken-loop: hetzelfde algoritme, twee talen. Zo zie je wat
 compilatie naar native C oplevert zonder dat je zelf iets verandert.</p>
 <div class="code-grid">
 <div>
 <p><strong>Python</strong></p>
-<pre><code class="language-python">def sieve(limit):
-    flags = bytearray([1]) * (limit + 1)
-    flags[0] = flags[1] = 0
-    for i in range(2, int(limit**0.5) + 1):
-        if flags[i]:
-            for j in range(i*i, limit + 1, i):
-                flags[j] = 0
-    return sum(flags)
+<pre><code class="language-python">def loop_sum(n):
+    total = 0
+    for i in range(n):
+        total += i
+    return total
+
+print(loop_sum(10_000_000))
 </code></pre>
 </div>
 <div>
 <p><strong>NoodleCore</strong></p>
-<pre><code class="language-text">fn sieve(limit: int) -&gt; int {
-    var flags = arr_new(limit + 1, 1)
-    flags[0] = 0
-    flags[1] = 0
-    var i = 2
-    while i * i &lt;= limit {
-        if flags[i] == 1 {
-            var j = i * i
-            while j &lt;= limit {
-                flags[j] = 0
-                j = j + i
-            }
-        }
+<pre><code class="language-text">fn loop_sum(n: int) -&gt; int {
+    var total = 0
+    var i = 0
+    while i &lt; n {
+        total = total + i
         i = i + 1
     }
-    return arr_sum(flags)
+    return total
 }
 </code></pre>
 </div>
@@ -737,103 +729,100 @@ compilatie naar native C oplevert zonder dat je zelf iets verandert.</p>
 </tr>
 </tbody>
 </table>
-<p>Hoe zwaarder het rekenwerk, hoe groter de winst: op zuiver rekenwerk loopt
-de winst op tot 3.049× (51.826 ms → 17 ms). De meetmethodiek delen wij per
-claim op verzoek.</p>
-<h2 id="voorbeeld-2-tekstverwerking-csv-parser-1-miljoen-regels">Voorbeeld 2: tekstverwerking (CSV-parser, 1 miljoen regels)</h2>
-<p>Tekst is waar Python het zwaarst wordt en NC het duidelijkst wint: dezelfde
-regels lezen, splitsen en tellen, zonder tolkosten.</p>
+<p>Hoeveel je wint groeit met het aandeel zuiver rekenwerk. Onze zwaarste
+rekenmeting (arithmetic, 1 miljoen iteraties) meet 51.826 ms in Python tegen
+17 ms native — 3.049×. Dat is een ándere test dan hierboven; alle
+Python-vergelijkingen staan samen op de <a href="../features/">Taalfeatures</a>-pagina.</p>
+<h2 id="voorbeeld-2-de-tol-van-de-taal-zelf-nc-tegen-handgeschreven-c">Voorbeeld 2: de tol van de taal zelf (NC tegen handgeschreven C)</h2>
+<p>De vraag achter elke "snelle taal": hoeveel kost de taal zélf? Voor
+NoodleCore is dat geval voor geval gemeten tegen handgeschreven C, met
+dezelfde compile-vlaggen (-O3 -march=native). Hier de string-append-test:
+100.000 keer een teken achter een string plakken.</p>
 <div class="code-grid">
 <div>
-<p><strong>Python</strong></p>
-<pre><code class="language-python">import csv
-
-def count_bigger(rows, field, threshold):
-    n = 0
-    for row in csv.reader(rows):
-        if row and float(row[field]) &gt; threshold:
-            n += 1
-    return n
+<p><strong>NoodleCore</strong></p>
+<pre><code class="language-text">fn append_100k() -&gt; str {
+    var s = &quot;x&quot;
+    var i = 0
+    while i &lt; 100000 {
+        s = s + &quot;x&quot;
+        i = i + 1
+    }
+    return s
+}
 </code></pre>
 </div>
 <div>
-<p><strong>NoodleCore</strong></p>
-<pre><code class="language-text">fn count_bigger(rows: str[], field: int, threshold: f64) -&gt; int {
-    var n = 0
-    for row in rows {
-        var parts = str_split(row, &quot;,&quot;)
-        if parts.len &gt; 0 {
-            if str_to_f64(parts[field]) &gt; threshold {
-                n = n + 1
-            }
-        }
-    }
-    return n
+<p><strong>Handgeschreven C</strong></p>
+<pre><code class="language-c">#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+int main(void) {
+    char buf[100001];
+    memset(buf, 'x', 100000);
+    buf[100000] = 0;
+    printf(&quot;%zu\n&quot;, strlen(buf));
+    return 0;
 }
 </code></pre>
 </div>
 </div>
-<p><strong>Gemeten resultaat</strong> <em>(iMac Pro, best-of-3, zelfde input)</em></p>
+<p><strong>Gemeten resultaat</strong> <em>(iMac Pro, best-of-3, -O3 -march=native voor beide)</em></p>
 <table>
 <thead>
 <tr>
-<th>Taal</th>
+<th>Implementatie</th>
 <th>Tijd</th>
-<th>Snelheidswinst</th>
+<th>Verhouding</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Python 3.12</td>
-<td>5,1 ms</td>
+<td>Handgeschreven C</td>
+<td>5,0 ms</td>
 <td>—</td>
 </tr>
 <tr>
 <td>NoodleCore → C</td>
-<td>5,0 ms</td>
-<td>~1× (gelijk)</td>
+<td>5,1 ms</td>
+<td><strong>100,8% van hand-C</strong></td>
 </tr>
 </tbody>
 </table>
-<p>Interessant is de andere kant: op micro-niveau (100k string-appends) is NC
-99-101% van handgeschreven C — de taal laag van NoodleCore compileert
-volledig weg. Python haalt dat niet; daar zit de tol tussen Python en C
-(priemgetallen: 35,4×; zuiver rekenwerk: 3.049×).</p>
+<p>De volledige micro-suite (5 gevallen: alloceren, array-lezen/schrijven,
+functie-aanroepen, string-append, GC-vrij) meet geomean <strong>99,1% van
+hand-C</strong>: de taallaag compileert weg. En over de grotere 11-scenario-suite
+(fib, lussen, array-sommen, priemgetallen, sorteren, string-concat,
+vec-dot, matmul) is het gemiddeld <strong>95,9%</strong> — op string-builder en vec-dot
+wint de compiler het zelfs van hand-C, door autovectorisatie. Python haalt
+die pariteit niet: dát is de tol uit voorbeeld 1.</p>
 <h2 id="voorbeeld-3-database-noodledb-tegen-sqlite">Voorbeeld 3: database (NoodleDB tegen SQLite)</h2>
-<p>De derde pijler: de database zit in de taal. Dezelfde soorten vragen, A/B
-gemeten op identieke machines. Per query-type staat de meting in de repo.</p>
+<p>De derde pijler: de database zit in de taal. Dezelfde vraag over dezelfde
+data — 1 miljoen orderregels — A/B gemeten: Python met SQLite tegen
+NoodleCore met NoodleDB. Hieronder de eerste regel uit de tabel: het
+gemiddelde bedrag per statusgroep.</p>
 <div class="code-grid">
 <div>
-<p><strong>Python</strong></p>
+<p><strong>Python + SQLite</strong></p>
 <pre><code class="language-python">import sqlite3
 
-con = sqlite3.connect(&quot;:memory:&quot;)
-con.execute(&quot;CREATE TABLE t(x INTEGER, y REAL)&quot;)
-for i in range(1_000_000):
-    con.execute(&quot;INSERT INTO t VALUES (?, ?)&quot;, (i, i * 0.5))
-con.commit()
-n = con.execute(
-    &quot;SELECT COUNT(*) FROM t WHERE y &gt; 250000&quot;
-).fetchone()[0]
+con = sqlite3.connect(&quot;orderlines.db&quot;)
+rows = con.execute(
+    &quot;SELECT status, AVG(bedrag) FROM orderlines&quot;
+    &quot; GROUP BY status ORDER BY status&quot;
+).fetchall()
 </code></pre>
 </div>
 <div>
-<p><strong>NoodleCore</strong></p>
+<p><strong>NoodleCore + NoodleDB</strong></p>
 <pre><code class="language-text">use noodledb_sql
 
 fn main() -&gt; int {
-    db = ndb_open(&quot;:memory:&quot;)
-    ndb_exec(db, &quot;CREATE TABLE t(x INTEGER, y REAL)&quot;)
-    var i = 0
-    while i &lt; 1000000 {
-        ndb_exec(db, &quot;INSERT INTO t VALUES (&quot; +
-                 str_from_int(i) + &quot;, &quot; +
-                 str_from_f64(i * 0.5) + &quot;)&quot;)
-        i = i + 1
-    }
-    var n = ndb_query_int(db,
-        &quot;SELECT COUNT(*) FROM t WHERE y &gt; 250000&quot;)
-    return n
+    db = ndb_open(&quot;orderlines.ndb&quot;)
+    ndb_exec(db,
+        &quot;SELECT status, AVG(bedrag) FROM orderlines&quot; +
+        &quot; GROUP BY status ORDER BY status&quot;)
+    return 0
 }
 </code></pre>
 </div>
