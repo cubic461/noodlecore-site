@@ -797,8 +797,8 @@ def count_bigger(rows, field, threshold):
 </table>
 <h2 id="voorbeeld-3-database-noodledb-tegen-sqlite">Voorbeeld 3: database (NoodleDB tegen SQLite)</h2>
 <p>De derde pijler: de database zit in de taal. Dezelfde soorten vragen, A/B
-gemeten op identieke machines: <strong>op alle 16 query-types sneller dan SQLite</strong>,
-tot 377.590 transacties per seconde.</p>
+gemeten op identieke machines: <strong>per query-type tot 1,8× sneller dan SQLite</strong>,
+met de meting per type in de repo.</p>
 <div class="code-grid">
 <div>
 <p><strong>Python</strong></p>
@@ -835,11 +835,11 @@ fn main() -&gt; int {
 </code></pre>
 </div>
 </div>
-<p><strong>Gemeten</strong> <em>(iMac Pro, A/B-getest)</em></p>
+<p><strong>Gemeten</strong> <em>(iMac Pro, 1 miljoen rijen, mediaan van 5 runs — 20 oktober 2026)</em></p>
 <table>
 <thead>
 <tr>
-<th>Operatie</th>
+<th>Vraag</th>
 <th>SQLite</th>
 <th>NoodleDB</th>
 <th>Winst</th>
@@ -847,31 +847,27 @@ fn main() -&gt; int {
 </thead>
 <tbody>
 <tr>
-<td>INSERT (1k rijen)</td>
-<td>trager</td>
-<td>4,7 ms</td>
-<td>sneller</td>
+<td>Gemiddelde per groep (AVG + GROUP BY)</td>
+<td>988,0 ms</td>
+<td>545,4 ms</td>
+<td><strong>1,8× sneller</strong></td>
 </tr>
 <tr>
-<td>SELECT WHERE (1k)</td>
-<td>trager</td>
-<td>3,6 ms</td>
-<td>sneller</td>
+<td>Telling in bereik (COUNT + WHERE)</td>
+<td>126,9 ms</td>
+<td>80,7 ms</td>
+<td><strong>1,6× sneller</strong></td>
 </tr>
 <tr>
-<td>TRANSACTIE (1k)</td>
-<td>2,6 ms gem.</td>
-<td>377.590 per sec</td>
-<td>sneller</td>
-</tr>
-<tr>
-<td>16 query-types</td>
-<td>—</td>
-<td>—</td>
-<td><strong>16/16 NC</strong></td>
+<td>Telling op klantbereik (COUNT + WHERE)</td>
+<td>60,5 ms</td>
+<td>57,6 ms</td>
+<td>1,05× sneller</td>
 </tr>
 </tbody>
 </table>
+<p>De volledige vergelijking beslaat 16 query-types; per type staat de meting
+in de repo. Wij publiceren alleen wat gemeten is.</p>
 <h2 id="eerlijke-kanttekening">Eerlijke kanttekening</h2>
 <p>De winst hangt af van het soort werk: hoe meer zuiver rekenwerk en hoe
 zwaarder de tolkosten van Python, hoe groter de winst. Scripts die vooral op

@@ -797,8 +797,8 @@ def count_bigger(rows, field, threshold):
 </table>
 <h2 id="example-3-database-noodledb-versus-sqlite">Example 3: database (NoodleDB versus SQLite)</h2>
 <p>The third pillar: the database lives inside the language. The same kinds of
-questions, A/B measured on identical machines: <strong>faster than SQLite on all 16
-query types</strong>, up to 377,590 transactions per second.</p>
+questions, A/B measured on identical machines: <strong>up to 1.8× faster than
+SQLite per query type</strong>, with the per-type measurement in the repository.</p>
 <div class="code-grid">
 <div>
 <p><strong>Python</strong></p>
@@ -835,11 +835,11 @@ fn main() -&gt; int {
 </code></pre>
 </div>
 </div>
-<p><strong>Measured</strong> <em>(iMac Pro, A/B tested)</em></p>
+<p><strong>Measured</strong> <em>(iMac Pro, 1 million rows, median of 5 runs — 20 October 2026)</em></p>
 <table>
 <thead>
 <tr>
-<th>Operation</th>
+<th>Query</th>
 <th>SQLite</th>
 <th>NoodleDB</th>
 <th>Gain</th>
@@ -847,31 +847,27 @@ fn main() -&gt; int {
 </thead>
 <tbody>
 <tr>
-<td>INSERT (1k rows)</td>
-<td>slower</td>
-<td>4.7 ms</td>
-<td>faster</td>
+<td>Average per group (AVG + GROUP BY)</td>
+<td>988.0 ms</td>
+<td>545.4 ms</td>
+<td><strong>1.8× faster</strong></td>
 </tr>
 <tr>
-<td>SELECT WHERE (1k)</td>
-<td>slower</td>
-<td>3.6 ms</td>
-<td>faster</td>
+<td>Count in range (COUNT + WHERE)</td>
+<td>126.9 ms</td>
+<td>80.7 ms</td>
+<td><strong>1.6× faster</strong></td>
 </tr>
 <tr>
-<td>TRANSACTION (1k)</td>
-<td>2.6 ms avg</td>
-<td>377,590 per sec</td>
-<td>faster</td>
-</tr>
-<tr>
-<td>16 query types</td>
-<td>—</td>
-<td>—</td>
-<td><strong>16/16 NC</strong></td>
+<td>Count on customer range (COUNT + WHERE)</td>
+<td>60.5 ms</td>
+<td>57.6 ms</td>
+<td>1.05× faster</td>
 </tr>
 </tbody>
 </table>
+<p>The full comparison covers 16 query types; the per-type measurement is in the
+repository. We publish only what has been measured.</p>
 <h2 id="an-honest-caveat">An honest caveat</h2>
 <p>The gain depends on the kind of work: the more pure computation and the
 heavier Python's interpreter tax, the bigger the win. Scripts that mostly
