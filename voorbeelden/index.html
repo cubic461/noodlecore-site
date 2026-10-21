@@ -731,7 +731,7 @@
 <blockquote>
 <p><strong>Zelf kijken is beter dan geloven.</strong> Dezelfde code in twee talen naast
 elkaar, met de gemeten winst eronder. Alle cijfers komen uit onze
-benchmarkrapporten, geen schattingen — en wat hier staat, is precies wat
+benchmarkrapporten, geen schattingen. Wat hier staat, is precies wat
 gemeten is.</p>
 </blockquote>
 <h2 id="voorbeeld-1-reken-loop-10-miljoen-getallen-sommeren">Voorbeeld 1: reken-loop (10 miljoen getallen sommeren)</h2>
@@ -763,7 +763,7 @@ print(loop_sum(10_000_000))
 </code></pre>
 </div>
 </div>
-<p><strong>Gemeten resultaat</strong> <em>(iMac Pro, best-of-3; C-zijden met -O3 -march=native)</em></p>
+<p><strong>Gemeten resultaat</strong> <em>(iMac Pro, snelste van 3 runs; C-zijde met -O3 -march=native)</em></p>
 <table>
 <thead>
 <tr>
@@ -787,7 +787,7 @@ print(loop_sum(10_000_000))
 </table>
 <p>Hoeveel je wint groeit met het aandeel zuiver rekenwerk. Onze zwaarste
 rekenmeting (arithmetic, 1 miljoen iteraties) meet 51.826 ms in Python tegen
-17 ms native — 3.049×. Dat is een ándere test dan hierboven; alle
+17 ms native: 3.049×. Dat is een ándere test dan hierboven; alle
 Python-vergelijkingen staan samen op de <a href="../features/">Taalfeatures</a>-pagina.</p>
 <h2 id="voorbeeld-2-de-tol-van-de-taal-zelf-nc-tegen-handgeschreven-c">Voorbeeld 2: de tol van de taal zelf (NC tegen handgeschreven C)</h2>
 <p>De vraag achter elke "snelle taal": hoeveel kost de taal zélf? Voor
@@ -823,7 +823,7 @@ int main(void) {
 </code></pre>
 </div>
 </div>
-<p><strong>Gemeten resultaat</strong> <em>(iMac Pro, best-of-3; C-zijden met -O3 -march=native)</em></p>
+<p><strong>Gemeten resultaat</strong> <em>(iMac Pro, snelste van 3 runs; C-zijde met -O3 -march=native)</em></p>
 <table>
 <thead>
 <tr>
@@ -850,13 +850,13 @@ int main(void) {
 </tr>
 </tbody>
 </table>
-<p>Drie talen, één test — en de kern van het verhaal: NC (5,1 ms) zit bínken
+<p>Drie talen, één test, en de kern van het verhaal: NC (5,1 ms) zit bínken
 de 2% van handgeschreven C (5,0 ms), terwijl Python 68% meer tijd nodig
 heeft dan C. De taal tussen Python en C valt volledig weg; de tol die
 betaald wordt, is die van Python zelf.</p>
 <h2 id="voorbeeld-3-database-noodledb-tegen-sqlite">Voorbeeld 3: database (NoodleDB tegen SQLite)</h2>
 <p>De derde pijler: de database zit in de taal. Dezelfde vraag over dezelfde
-data — 1 miljoen orderregels — A/B gemeten: Python met SQLite tegen
+data (1 miljoen orderregels), A/B gemeten: Python met SQLite tegen
 NoodleCore met NoodleDB. Hieronder de eerste regel uit de tabel: het
 gemiddelde bedrag per statusgroep.</p>
 <div class="code-grid">
@@ -920,11 +920,11 @@ fn main() -&gt; int {
 
 <h2 id="voorbeeld-4-vier-databases-een-meetlat">Voorbeeld 4: vier databases, één meetlat</h2>
 <p>Compatibel zijn is het ene; aantoonbaar zijn is het andere. Dezelfde
-vraag, de zelfde data, op dezelfde machine - maar nu vier engines naast
+vraag, dezelfde data, op dezelfde machine, maar nu vier engines naast
 elkaar: NoodleDB, PostgreSQL 18, SQLite en DuckDB. Eén benchmark-suite,
-mediaan van 5 runs, correctheid hard gecheckt per query.</p>
-<p>Geen cherry-picking: de tabel laat ook de klassen zien waar NoodleDB
-nog niet wint - het volledige verbetertraject staat eronder.</p>
+mediaan van 5 runs, correctheid per query streng gecontroleerd.</p>
+<p>Niet alleen de winst: de tabel laat ook de klassen zien waar NoodleDB
+nog niet wint. Het volledige verbetertraject staat eronder.</p>
 <p><em>(iMac Pro, 100.000 rijen (seed 42), mediaan van 5 runs — 2026-10-21)</em></p>
 <table>
 <thead>
@@ -994,7 +994,7 @@ nog niet wint - het volledige verbetertraject staat eronder.</p>
 <td style="text-align: right;"><strong>5.77</strong></td>
 </tr>
 <tr>
-<td>Geindexeerd tekstzoeken</td>
+<td>Geïndexeerd tekstzoeken</td>
 <td style="text-align: right;"><strong>0.26</strong></td>
 <td style="text-align: right;">1.71</td>
 <td style="text-align: right;">0.37</td>
@@ -1070,7 +1070,7 @@ nog niet wint - het volledige verbetertraject staat eronder.</p>
 <td style="text-align: right;">13.7</td>
 </tr>
 <tr>
-<td>Geindexeerd tekstzoeken</td>
+<td>Geïndexeerd tekstzoeken</td>
 <td style="text-align: right;">0.28</td>
 <td style="text-align: right;">-</td>
 <td style="text-align: right;">-</td>
@@ -1084,17 +1084,17 @@ nog niet wint - het volledige verbetertraject staat eronder.</p>
 </tbody>
 </table>
 <p>* Join over 3 tabellen: NoodleDB voert de geneste vorm uit (twee keer
-hash-join), de overige engines de platte vorm - zelfde uitkomst, zelfde
-data. De 3-join plat is een bekend optimalisatie-traject.</p>
+hash-join), de overige engines de platte vorm: dezelfde uitkomst, dezelfde
+data. De platte 3-join is een bekend optimalisatie-traject.</p>
 <p>Waar NoodleDB wint: bulk-inladen t.o.v. PostgreSQL (2,3x), aggregaten
 (3,6x t.o.v. PostgreSQL, 12x t.o.v. SQLite), 2-hop graaftelling (3,2x
 t.o.v. PostgreSQL, 6,2x t.o.v. SQLite), tekstzoeken op SQL-niveau en
 geïndexeerd tekstzoeken t.o.v. PostgreSQL (6,6x). Waar de anderen nog
 winnen: punt-opzoeking en kleine updates (SQLite), bereik-scans en joins
-(PostgreSQL, DuckDB) - dat is precies het verbetertraject.</p>
+(PostgreSQL, DuckDB). Dat is precies het verbetertraject.</p>
 <p>De draadprotocol-tabel toont dezelfde NoodleDB-engine via het
 PostgreSQL- en MySQL-protocol: dezelfde queries, maar nu betaal je de
-vertaling + roundtrip. Na de protocol-fix van 21 oktober 2026 betalen
+vertaling en de retourtijd. Na de protocol-fix van 21 oktober 2026 betalen
 beide draadroutes alléén nog de vertaal- en framing-vloer van het
 protocol zelf: punt-opzoekingen via het MySQL-protocol werden 245×
 sneller (90,9 ms → 0,37 ms), en de minimale vraag meet via het
@@ -1111,7 +1111,7 @@ delen, geen hele programma's, en daarom publiceren wij per claim de methodiek.</
 <h2 id="volgende-stap">Volgende stap</h2>
 <p>Wil je een eigen traag stuk code doorgerekend hebben? Mail naar
 michael@noodlecore.io: wij vertalen, meten en sturen je het rapport toe.
-Een live zandbak waarin je zelf code kunt plakken staat op de planning.</p>
+Een live testomgeving waarin je zelf code kunt plakken staat op de planning.</p>
 
 
 

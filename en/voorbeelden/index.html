@@ -763,7 +763,7 @@ print(loop_sum(10_000_000))
 </code></pre>
 </div>
 </div>
-<p><strong>Measured result</strong> <em>(iMac Pro, best-of-3; C sides with -O3 -march=native)</em></p>
+<p><strong>Measured result</strong> <em>(iMac Pro, fastest of 3 runs; C side with -O3 -march=native)</em></p>
 <table>
 <thead>
 <tr>
@@ -824,7 +824,7 @@ int main(void) {
 </code></pre>
 </div>
 </div>
-<p><strong>Measured result</strong> <em>(iMac Pro, best-of-3; C sides with -O3 -march=native)</em></p>
+<p><strong>Measured result</strong> <em>(iMac Pro, fastest of 3 runs; C side with -O3 -march=native)</em></p>
 <table>
 <thead>
 <tr>
@@ -923,7 +923,7 @@ fn main() -&gt; int {
 <p>Being compatible is one thing; being measurably fast is another. The same
 query, the same data, on the same machine - but now four engines side by
 side: NoodleDB, PostgreSQL 18, SQLite and DuckDB. One benchmark suite,
-median of 5 runs, correctness hard-checked per query.</p>
+median of 5 runs, correctness verified per query.</p>
 <p>No cherry-picking: the table also shows the classes where NoodleDB
 does not win yet - the full improvement track is noted below.</p>
 <p><em>(iMac Pro, 100,000 rows (seed 42), median of 5 runs — 2026-10-21)</em></p>
@@ -1095,7 +1095,7 @@ lookups and small updates (SQLite), range scans and joins (PostgreSQL,
 DuckDB) - exactly the improvement track.</p>
 <p>The wire-protocol table shows the same NoodleDB engine over the
 PostgreSQL and MySQL protocols: same queries, but now paying translation
-plus roundtrip. After the protocol fix of 21 October 2026 both wire
+plus the network round trip. After the protocol fix of 21 October 2026 both wire
 routes pay only the protocol's own translation and framing floor:
 point lookups over the MySQL protocol became 245× faster
 (90.9 ms → 0.37 ms), and the PostgreSQL protocol measures a 0.24 ms
