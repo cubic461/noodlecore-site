@@ -685,17 +685,22 @@ there's nothing to rewrite.</p>
 <tr>
 <td>PostgreSQL (and every database speaking the PG protocol)</td>
 <td>direct connection; every PG client works: psql, DBeaver, ORMs</td>
-<td>measured on 100k rows: 3.4x faster on a graph join, 5.5x on bulk update, 6.8x on indexed lookup</td>
+<td>measured on 100k rows: 5.5x faster on bulk update, 6.8x on indexed lookup, 3.4x on graph edge counting; joins are not yet faster than PostgreSQL at this moment — improvement track running</td>
 </tr>
 <tr>
 <td>MySQL / MariaDB</td>
 <td>import via mysqldump into NDB; direct connection is planned</td>
-<td>importer: 120k rows error-free; MySQL protocol connected (63/63 checks), query times equal to or faster than over the PG protocol</td>
+<td>importer: 120k rows error-free; MySQL protocol connected (63/63 checks), query times within 3% of the PG protocol route</td>
 </tr>
 <tr>
-<td>SQLite / DuckDB (embedded)</td>
+<td>SQLite (embedded)</td>
 <td>direct comparison: up to 1.8× faster per query type</td>
 <td>A/B on identical machines</td>
+</tr>
+<tr>
+<td>DuckDB (embedded)</td>
+<td>direct connection via import</td>
+<td>comparison follows from the multi-database benchmark suite (NOO-1470)</td>
 </tr>
 <tr>
 <td>CSV, JSON, loose files</td>

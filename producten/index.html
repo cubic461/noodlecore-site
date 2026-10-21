@@ -686,17 +686,22 @@ nieuwe kant hoeft u niets te herschrijven.</p>
 <tr>
 <td>PostgreSQL (en elke database die het PG-protocol spreekt)</td>
 <td>directe verbinding; elke PG-client werkt: psql, DBeaver, ORM's</td>
-<td>gemeten op 100k rijen: 3,4× sneller op graph-join, 5,5× op bulk-update, 6,8× op geïndexeerd zoeken</td>
+<td>gemeten op 100k rijen: 5,5× sneller op bulk-update, 6,8× op geïndexeerd zoeken, 3,4× op graph-edge-telling; joins zijn op dit moment nog niet sneller dan PostgreSQL — verbetertraject loopt</td>
 </tr>
 <tr>
 <td>MySQL / MariaDB</td>
 <td>import via mysqldump naar NDB; directe verbinding staat gepland</td>
-<td>importer: 120k rijen foutloos; MySQL-protocol verbonden (63/63 checks), querytijden gelijk aan of sneller dan via het PG-protocol</td>
+<td>importer: 120k rijen foutloos; MySQL-protocol verbonden (63/63 checks), querytijden binnen 3% van de PG-protocolroute</td>
 </tr>
 <tr>
-<td>SQLite / DuckDB (ingesloten)</td>
+<td>SQLite (ingesloten)</td>
 <td>directe vergelijking: tot 1,8× sneller per type vraag</td>
 <td>A/B op identieke machines</td>
+</tr>
+<tr>
+<td>DuckDB (ingesloten)</td>
+<td>directe verbinding via import</td>
+<td>vergelijking volgt uit de multi-database benchmarksuite (NOO-1470)</td>
 </tr>
 <tr>
 <td>CSV, JSON, losse bestanden</td>
