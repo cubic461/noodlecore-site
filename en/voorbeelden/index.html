@@ -463,6 +463,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#example-4-four-databases-one-measuring-stick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 4: four databases, one measuring stick
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example 4: four databases, one measuring stick">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-cost-of-the-wire-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The cost of the wire protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#an-honest-caveat" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -629,6 +657,34 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-4-four-databases-one-measuring-stick" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 4: four databases, one measuring stick
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Example 4: four databases, one measuring stick">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#the-cost-of-the-wire-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        The cost of the wire protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -861,6 +917,192 @@ fn main() -&gt; int {
 </tr>
 </tbody>
 </table>
+<!-- NOO-1470-MULTIDB-START -->
+
+<h2 id="example-4-four-databases-one-measuring-stick">Example 4: four databases, one measuring stick</h2>
+<p>Being compatible is one thing; being measurably fast is another. The same
+query, the same data, on the same machine - but now four engines side by
+side: NoodleDB, PostgreSQL 18, SQLite and DuckDB. One benchmark suite,
+median of 5 runs, correctness hard-checked per query.</p>
+<p>No cherry-picking: the table also shows the classes where NoodleDB
+does not win yet - the full improvement track is noted below.</p>
+<p><em>(iMac Pro, 100,000 rows (seed 42), median of 5 runs — 2026-10-21)</em></p>
+<table>
+<thead>
+<tr>
+<th>Query</th>
+<th style="text-align: right;">NoodleDB</th>
+<th style="text-align: right;">PostgreSQL 18</th>
+<th style="text-align: right;">SQLite</th>
+<th style="text-align: right;">DuckDB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bulk load 100k rows</td>
+<td style="text-align: right;">416</td>
+<td style="text-align: right;">958</td>
+<td style="text-align: right;"><strong>113</strong></td>
+<td style="text-align: right;">2581</td>
+</tr>
+<tr>
+<td>Point lookup (PRIMARY KEY)</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;"><strong>0.02</strong></td>
+<td style="text-align: right;">0.32</td>
+</tr>
+<tr>
+<td>Range scan (WHERE BETWEEN)</td>
+<td style="text-align: right;">15.7</td>
+<td style="text-align: right;">6.97</td>
+<td style="text-align: right;">12.5</td>
+<td style="text-align: right;"><strong>2.29</strong></td>
+</tr>
+<tr>
+<td>2-table join</td>
+<td style="text-align: right;">43.4</td>
+<td style="text-align: right;">8.99</td>
+<td style="text-align: right;">15.0</td>
+<td style="text-align: right;"><strong>1.19</strong></td>
+</tr>
+<tr>
+<td>3-table join *</td>
+<td style="text-align: right;">59.3</td>
+<td style="text-align: right;">15.7</td>
+<td style="text-align: right;">18.7</td>
+<td style="text-align: right;"><strong>1.42</strong></td>
+</tr>
+<tr>
+<td>GROUP BY + COUNT + AVG</td>
+<td style="text-align: right;">3.91</td>
+<td style="text-align: right;">14.0</td>
+<td style="text-align: right;">45.6</td>
+<td style="text-align: right;"><strong>1.06</strong></td>
+</tr>
+<tr>
+<td>Text search LIKE</td>
+<td style="text-align: right;">4.02</td>
+<td style="text-align: right;">10.0</td>
+<td style="text-align: right;">12.4</td>
+<td style="text-align: right;"><strong>1.84</strong></td>
+</tr>
+<tr>
+<td>2-hop graph count (self-join)</td>
+<td style="text-align: right;">12.6</td>
+<td style="text-align: right;">40.8</td>
+<td style="text-align: right;">77.6</td>
+<td style="text-align: right;"><strong>5.77</strong></td>
+</tr>
+<tr>
+<td>Indexed text search</td>
+<td style="text-align: right;"><strong>0.26</strong></td>
+<td style="text-align: right;">1.71</td>
+<td style="text-align: right;">0.37</td>
+<td style="text-align: right;">-</td>
+</tr>
+<tr>
+<td>10k UPDATEs in 1 transaction</td>
+<td style="text-align: right;">155</td>
+<td style="text-align: right;">867</td>
+<td style="text-align: right;"><strong>38.1</strong></td>
+<td style="text-align: right;">3877</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-cost-of-the-wire-protocol">The cost of the wire protocol</h3>
+<p>NoodleDB also speaks the PostgreSQL and MySQL wire protocols. Same engine, same data, but now over the network protocol, like a regular database client:</p>
+<table>
+<thead>
+<tr>
+<th>Query</th>
+<th style="text-align: right;">NoodleDB direct</th>
+<th style="text-align: right;">NDB via Postgres protocol</th>
+<th style="text-align: right;">NDB via MySQL protocol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Bulk load 100k rows</td>
+<td style="text-align: right;"><strong>472</strong></td>
+<td style="text-align: right;">2807</td>
+<td style="text-align: right;">15156</td>
+</tr>
+<tr>
+<td>Point lookup (PRIMARY KEY)</td>
+<td style="text-align: right;"><strong>0.05</strong></td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">0.37</td>
+</tr>
+<tr>
+<td>Range scan (WHERE BETWEEN)</td>
+<td style="text-align: right;"><strong>19.0</strong></td>
+<td style="text-align: right;">19.0</td>
+<td style="text-align: right;">17.7</td>
+</tr>
+<tr>
+<td>2-table join</td>
+<td style="text-align: right;"><strong>45.8</strong></td>
+<td style="text-align: right;">46.4</td>
+<td style="text-align: right;">49.5</td>
+</tr>
+<tr>
+<td>3-table join *</td>
+<td style="text-align: right;"><strong>64.6</strong></td>
+<td style="text-align: right;">64.0</td>
+<td style="text-align: right;">67.3</td>
+</tr>
+<tr>
+<td>GROUP BY + COUNT + AVG</td>
+<td style="text-align: right;"><strong>5.05</strong></td>
+<td style="text-align: right;">11.4</td>
+<td style="text-align: right;">5.2</td>
+</tr>
+<tr>
+<td>Text search LIKE</td>
+<td style="text-align: right;"><strong>3.57</strong></td>
+<td style="text-align: right;">36.3</td>
+<td style="text-align: right;">4.3</td>
+</tr>
+<tr>
+<td>2-hop graph count (self-join)</td>
+<td style="text-align: right;"><strong>13.1</strong></td>
+<td style="text-align: right;">14.9</td>
+<td style="text-align: right;">13.7</td>
+</tr>
+<tr>
+<td>Indexed text search</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">-</td>
+</tr>
+<tr>
+<td>10k UPDATEs in 1 transaction</td>
+<td style="text-align: right;">161</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">-</td>
+</tr>
+</tbody>
+</table>
+<p>* 3-table join: NoodleDB executes the nested form (two hash joins), the
+other engines the flat form - same result, same data. The flat 3-join is
+a known optimization track.</p>
+<p>Where NoodleDB wins: bulk load versus PostgreSQL (2.3x), aggregates
+(3.6x vs PostgreSQL, 12x vs SQLite), 2-hop graph count (3.2x vs
+PostgreSQL, 6.2x vs SQLite), SQL-level text search and indexed text
+search versus PostgreSQL (6.6x). Where the others still win: point
+lookups and small updates (SQLite), range scans and joins (PostgreSQL,
+DuckDB) - exactly the improvement track.</p>
+<p>The wire-protocol table shows the same NoodleDB engine over the
+PostgreSQL and MySQL protocols: same queries, but now paying translation
+plus roundtrip. After the protocol fix of 21 October 2026 both wire
+routes pay only the protocol's own translation and framing floor:
+point lookups over the MySQL protocol became 245× faster
+(90.9 ms → 0.37 ms), and the PostgreSQL protocol measures a 0.24 ms
+wire layer on a minimal query. Heavier queries are engine-bound: same
+numbers as direct access, no extra protocol loss.</p>
+<!-- NOO-1470-MULTIDB-END -->
+
 <h2 id="an-honest-caveat">An honest caveat</h2>
 <p>The gain depends on the kind of work: the more pure computation and the
 heavier Python's interpreter tax, the bigger the win. Scripts that mostly

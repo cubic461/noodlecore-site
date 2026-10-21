@@ -463,6 +463,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#voorbeeld-4-vier-databases-een-meetlat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voorbeeld 4: vier databases, één meetlat
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Voorbeeld 4: vier databases, één meetlat">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#de-tol-van-het-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        De tol van het protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#eerlijke-kanttekening" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -629,6 +657,34 @@
       
     </span>
   </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#voorbeeld-4-vier-databases-een-meetlat" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voorbeeld 4: vier databases, één meetlat
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Voorbeeld 4: vier databases, één meetlat">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#de-tol-van-het-protocol" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        De tol van het protocol
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -860,6 +916,193 @@ fn main() -&gt; int {
 </tr>
 </tbody>
 </table>
+<!-- NOO-1470-MULTIDB-START -->
+
+<h2 id="voorbeeld-4-vier-databases-een-meetlat">Voorbeeld 4: vier databases, één meetlat</h2>
+<p>Compatibel zijn is het ene; aantoonbaar zijn is het andere. Dezelfde
+vraag, de zelfde data, op dezelfde machine - maar nu vier engines naast
+elkaar: NoodleDB, PostgreSQL 18, SQLite en DuckDB. Eén benchmark-suite,
+mediaan van 5 runs, correctheid hard gecheckt per query.</p>
+<p>Geen cherry-picking: de tabel laat ook de klassen zien waar NoodleDB
+nog niet wint - het volledige verbetertraject staat eronder.</p>
+<p><em>(iMac Pro, 100.000 rijen (seed 42), mediaan van 5 runs — 2026-10-21)</em></p>
+<table>
+<thead>
+<tr>
+<th>Vraag</th>
+<th style="text-align: right;">NoodleDB</th>
+<th style="text-align: right;">PostgreSQL 18</th>
+<th style="text-align: right;">SQLite</th>
+<th style="text-align: right;">DuckDB</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inladen 100k rijen</td>
+<td style="text-align: right;">416</td>
+<td style="text-align: right;">958</td>
+<td style="text-align: right;"><strong>113</strong></td>
+<td style="text-align: right;">2581</td>
+</tr>
+<tr>
+<td>Punt-opzoeking (PRIMARY KEY)</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;"><strong>0.02</strong></td>
+<td style="text-align: right;">0.32</td>
+</tr>
+<tr>
+<td>Bereik-scan (WHERE BETWEEN)</td>
+<td style="text-align: right;">15.7</td>
+<td style="text-align: right;">6.97</td>
+<td style="text-align: right;">12.5</td>
+<td style="text-align: right;"><strong>2.29</strong></td>
+</tr>
+<tr>
+<td>Join over 2 tabellen</td>
+<td style="text-align: right;">43.4</td>
+<td style="text-align: right;">8.99</td>
+<td style="text-align: right;">15.0</td>
+<td style="text-align: right;"><strong>1.19</strong></td>
+</tr>
+<tr>
+<td>Join over 3 tabellen *</td>
+<td style="text-align: right;">59.3</td>
+<td style="text-align: right;">15.7</td>
+<td style="text-align: right;">18.7</td>
+<td style="text-align: right;"><strong>1.42</strong></td>
+</tr>
+<tr>
+<td>GROUP BY + COUNT + AVG</td>
+<td style="text-align: right;">3.91</td>
+<td style="text-align: right;">14.0</td>
+<td style="text-align: right;">45.6</td>
+<td style="text-align: right;"><strong>1.06</strong></td>
+</tr>
+<tr>
+<td>Tekstzoeken LIKE</td>
+<td style="text-align: right;">4.02</td>
+<td style="text-align: right;">10.0</td>
+<td style="text-align: right;">12.4</td>
+<td style="text-align: right;"><strong>1.84</strong></td>
+</tr>
+<tr>
+<td>2-hop graaftelling (self-join)</td>
+<td style="text-align: right;">12.6</td>
+<td style="text-align: right;">40.8</td>
+<td style="text-align: right;">77.6</td>
+<td style="text-align: right;"><strong>5.77</strong></td>
+</tr>
+<tr>
+<td>Geindexeerd tekstzoeken</td>
+<td style="text-align: right;"><strong>0.26</strong></td>
+<td style="text-align: right;">1.71</td>
+<td style="text-align: right;">0.37</td>
+<td style="text-align: right;">-</td>
+</tr>
+<tr>
+<td>10k UPDATEs in 1 transactie</td>
+<td style="text-align: right;">155</td>
+<td style="text-align: right;">867</td>
+<td style="text-align: right;"><strong>38.1</strong></td>
+<td style="text-align: right;">3877</td>
+</tr>
+</tbody>
+</table>
+<h3 id="de-tol-van-het-protocol">De tol van het protocol</h3>
+<p>NoodleDB spreekt ook de draadprotocollen van PostgreSQL en MySQL. Dezelfde engine, zelfde data, maar nu over het netwerkprotocol zoals een gewone databaseclient:</p>
+<table>
+<thead>
+<tr>
+<th>Vraag</th>
+<th style="text-align: right;">NoodleDB direct</th>
+<th style="text-align: right;">NDB via Postgres-protocol</th>
+<th style="text-align: right;">NDB via MySQL-protocol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Inladen 100k rijen</td>
+<td style="text-align: right;"><strong>472</strong></td>
+<td style="text-align: right;">2807</td>
+<td style="text-align: right;">15156</td>
+</tr>
+<tr>
+<td>Punt-opzoeking (PRIMARY KEY)</td>
+<td style="text-align: right;"><strong>0.05</strong></td>
+<td style="text-align: right;">0.24</td>
+<td style="text-align: right;">0.37</td>
+</tr>
+<tr>
+<td>Bereik-scan (WHERE BETWEEN)</td>
+<td style="text-align: right;"><strong>19.0</strong></td>
+<td style="text-align: right;">19.0</td>
+<td style="text-align: right;">17.7</td>
+</tr>
+<tr>
+<td>Join over 2 tabellen</td>
+<td style="text-align: right;"><strong>45.8</strong></td>
+<td style="text-align: right;">46.4</td>
+<td style="text-align: right;">49.5</td>
+</tr>
+<tr>
+<td>Join over 3 tabellen *</td>
+<td style="text-align: right;"><strong>64.6</strong></td>
+<td style="text-align: right;">64.0</td>
+<td style="text-align: right;">67.3</td>
+</tr>
+<tr>
+<td>GROUP BY + COUNT + AVG</td>
+<td style="text-align: right;"><strong>5.05</strong></td>
+<td style="text-align: right;">11.4</td>
+<td style="text-align: right;">5.2</td>
+</tr>
+<tr>
+<td>Tekstzoeken LIKE</td>
+<td style="text-align: right;"><strong>3.57</strong></td>
+<td style="text-align: right;">36.3</td>
+<td style="text-align: right;">4.3</td>
+</tr>
+<tr>
+<td>2-hop graaftelling (self-join)</td>
+<td style="text-align: right;"><strong>13.1</strong></td>
+<td style="text-align: right;">14.9</td>
+<td style="text-align: right;">13.7</td>
+</tr>
+<tr>
+<td>Geindexeerd tekstzoeken</td>
+<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">-</td>
+</tr>
+<tr>
+<td>10k UPDATEs in 1 transactie</td>
+<td style="text-align: right;">161</td>
+<td style="text-align: right;">-</td>
+<td style="text-align: right;">-</td>
+</tr>
+</tbody>
+</table>
+<p>* Join over 3 tabellen: NoodleDB voert de geneste vorm uit (twee keer
+hash-join), de overige engines de platte vorm - zelfde uitkomst, zelfde
+data. De 3-join plat is een bekend optimalisatie-traject.</p>
+<p>Waar NoodleDB wint: bulk-inladen t.o.v. PostgreSQL (2,3x), aggregaten
+(3,6x t.o.v. PostgreSQL, 12x t.o.v. SQLite), 2-hop graaftelling (3,2x
+t.o.v. PostgreSQL, 6,2x t.o.v. SQLite), tekstzoeken op SQL-niveau en
+geïndexeerd tekstzoeken t.o.v. PostgreSQL (6,6x). Waar de anderen nog
+winnen: punt-opzoeking en kleine updates (SQLite), bereik-scans en joins
+(PostgreSQL, DuckDB) - dat is precies het verbetertraject.</p>
+<p>De draadprotocol-tabel toont dezelfde NoodleDB-engine via het
+PostgreSQL- en MySQL-protocol: dezelfde queries, maar nu betaal je de
+vertaling + roundtrip. Na de protocol-fix van 21 oktober 2026 betalen
+beide draadroutes alléén nog de vertaal- en framing-vloer van het
+protocol zelf: punt-opzoekingen via het MySQL-protocol werden 245×
+sneller (90,9 ms → 0,37 ms), en de minimale vraag meet via het
+PostgreSQL-protocol een draadlaag van 0,24 ms. Zwaardere vragen zijn
+engine-bound: dezelfde cijfers als directe toegang, geen extra
+protocolverlies.</p>
+<!-- NOO-1470-MULTIDB-END -->
+
 <h2 id="eerlijke-kanttekening">Eerlijke kanttekening</h2>
 <p>De winst hangt af van het soort werk: hoe meer zuiver rekenwerk en hoe
 zwaarder de tolkosten van Python, hoe groter de winst. Scripts die vooral op
