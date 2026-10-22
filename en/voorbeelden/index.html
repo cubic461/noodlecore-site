@@ -491,6 +491,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#example-5-the-heaviest-join-self-join-on-1-million-rows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 5: the heaviest join — self-join on 1 million rows
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#an-honest-caveat" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -685,6 +696,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#example-5-the-heaviest-join-self-join-on-1-million-rows" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Example 5: the heaviest join — self-join on 1 million rows
+      
+    </span>
+  </a>
   
 </li>
       
@@ -926,7 +948,11 @@ side: NoodleDB, PostgreSQL 18, SQLite and DuckDB. One benchmark suite,
 median of 5 runs, correctness verified per query.</p>
 <p>No cherry-picking: the table also shows the classes where NoodleDB
 does not win yet - the full improvement track is noted below.</p>
-<p><em>(iMac Pro, 100,000 rows (seed 42), median of 5 runs — 2026-10-21)</em></p>
+<p><em>(iMac Pro, 100,000 rows (seed 42), median of 5 runs. NoodleDB
+re-measured on 22 October, after the join acceleration; the other
+engines measured on 21 October (unchanged versions). All measurements
+live in our benchmark database with timestamps and engine versions,
+so regressions are always visible.)</em></p>
 <table>
 <thead>
 <tr>
@@ -940,72 +966,86 @@ does not win yet - the full improvement track is noted below.</p>
 <tbody>
 <tr>
 <td>Bulk load 100k rows</td>
-<td style="text-align: right;">416</td>
+<td style="text-align: right;">426.50</td>
 <td style="text-align: right;">958</td>
 <td style="text-align: right;"><strong>113</strong></td>
 <td style="text-align: right;">2581</td>
 </tr>
 <tr>
 <td>Point lookup (PRIMARY KEY)</td>
-<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.05</td>
 <td style="text-align: right;">0.10</td>
 <td style="text-align: right;"><strong>0.02</strong></td>
 <td style="text-align: right;">0.32</td>
 </tr>
 <tr>
 <td>Range scan (WHERE BETWEEN)</td>
-<td style="text-align: right;">15.7</td>
+<td style="text-align: right;"><strong>0.33</strong></td>
 <td style="text-align: right;">6.97</td>
-<td style="text-align: right;">12.5</td>
-<td style="text-align: right;"><strong>2.29</strong></td>
+<td style="text-align: right;">12.50</td>
+<td style="text-align: right;">2.29</td>
 </tr>
 <tr>
 <td>2-table join</td>
-<td style="text-align: right;">43.4</td>
+<td style="text-align: right;"><strong>0.80</strong></td>
 <td style="text-align: right;">8.99</td>
-<td style="text-align: right;">15.0</td>
-<td style="text-align: right;"><strong>1.19</strong></td>
+<td style="text-align: right;">15.00</td>
+<td style="text-align: right;">1.19</td>
 </tr>
 <tr>
-<td>3-table join *</td>
-<td style="text-align: right;">59.3</td>
-<td style="text-align: right;">15.7</td>
-<td style="text-align: right;">18.7</td>
+<td>3-table join (nested) *</td>
+<td style="text-align: right;"><strong>1.21</strong></td>
+<td style="text-align: right;">15.70</td>
+<td style="text-align: right;">18.70</td>
+<td style="text-align: right;">1.42</td>
+</tr>
+<tr>
+<td>3-table join (flat) *</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">15.71</td>
+<td style="text-align: right;">18.70</td>
 <td style="text-align: right;"><strong>1.42</strong></td>
 </tr>
 <tr>
 <td>GROUP BY + COUNT + AVG</td>
-<td style="text-align: right;">3.91</td>
-<td style="text-align: right;">14.0</td>
-<td style="text-align: right;">45.6</td>
+<td style="text-align: right;">1.33</td>
+<td style="text-align: right;">14.00</td>
+<td style="text-align: right;">45.60</td>
 <td style="text-align: right;"><strong>1.06</strong></td>
 </tr>
 <tr>
 <td>Text search LIKE</td>
-<td style="text-align: right;">4.02</td>
-<td style="text-align: right;">10.0</td>
-<td style="text-align: right;">12.4</td>
+<td style="text-align: right;">3.38</td>
+<td style="text-align: right;">10.00</td>
+<td style="text-align: right;">12.40</td>
 <td style="text-align: right;"><strong>1.84</strong></td>
 </tr>
 <tr>
-<td>2-hop graph count (self-join)</td>
-<td style="text-align: right;">12.6</td>
-<td style="text-align: right;">40.8</td>
-<td style="text-align: right;">77.6</td>
-<td style="text-align: right;"><strong>5.77</strong></td>
+<td>Full-text index build</td>
+<td style="text-align: right;"><strong>24.76</strong></td>
+<td style="text-align: right;">691.28</td>
+<td style="text-align: right;">106.19</td>
+<td style="text-align: right;">—</td>
 </tr>
 <tr>
 <td>Indexed text search</td>
-<td style="text-align: right;"><strong>0.26</strong></td>
+<td style="text-align: right;"><strong>0.27</strong></td>
 <td style="text-align: right;">1.71</td>
 <td style="text-align: right;">0.37</td>
-<td style="text-align: right;">-</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>2-hop graph count (self-join)</td>
+<td style="text-align: right;"><strong>1.20</strong></td>
+<td style="text-align: right;">40.80</td>
+<td style="text-align: right;">77.60</td>
+<td style="text-align: right;">5.77</td>
 </tr>
 <tr>
 <td>10k UPDATEs in 1 transaction</td>
-<td style="text-align: right;">155</td>
-<td style="text-align: right;">867</td>
-<td style="text-align: right;"><strong>38.1</strong></td>
+<td style="text-align: right;">164.12</td>
+<td style="text-align: right;">867.00</td>
+<td style="text-align: right;"><strong>38.10</strong></td>
 <td style="text-align: right;">3877</td>
 </tr>
 </tbody>
@@ -1087,12 +1127,16 @@ does not win yet - the full improvement track is noted below.</p>
 <p>* 3-table join: NoodleDB executes the nested form (two hash joins), the
 other engines the flat form - same result, same data. The flat 3-join is
 a known optimization track.</p>
-<p>Where NoodleDB wins: bulk load versus PostgreSQL (2.3x), aggregates
-(3.6x vs PostgreSQL, 12x vs SQLite), 2-hop graph count (3.2x vs
-PostgreSQL, 6.2x vs SQLite), SQL-level text search and indexed text
-search versus PostgreSQL (6.6x). Where the others still win: point
-lookups and small updates (SQLite), range scans and joins (PostgreSQL,
-DuckDB) - exactly the improvement track.</p>
+<p>After the join acceleration of 21–22 October (evening re-measure):
+against PostgreSQL alone, NoodleDB now wins all 11 measured classes.
+Against SQLite, NoodleDB wins 8 of 11; SQLite stays ahead on bulk load,
+point lookups and small updates. Against DuckDB, NoodleDB wins 7 of 9;
+DuckDB keeps GROUP BY and text search. The improvement track now targets
+DuckDB (GROUP BY, text search, the flat 3-join) and the remaining SQLite
+classes — that is phase 2 of the campaign, running now; today it already
+flipped range scans (18.5 → 0.33 ms), the 2-table join (3.12 → 0.80 ms),
+the nested 3-join (26.4 → 1.21 ms) and the 2-hop graph count
+(14.6 → 1.20 ms).</p>
 <p>The wire-protocol table shows the same NoodleDB engine over the
 PostgreSQL and MySQL protocols: same queries, but now paying translation
 plus the network round trip. After the protocol fix of 21 October 2026 both wire
@@ -1102,6 +1146,51 @@ point lookups over the MySQL protocol became 245× faster
 wire layer on a minimal query. Heavier queries are engine-bound: same
 numbers as direct access, no extra protocol loss.</p>
 <!-- NOO-1470-MULTIDB-END -->
+
+<h2 id="example-5-the-heaviest-join-self-join-on-1-million-rows">Example 5: the heaviest join — self-join on 1 million rows</h2>
+<p>The self-join was the deepest gap of the entire campaign: 194.8×
+slower than SQLite. After the acceleration of 21 October 2026 the same
+query on the same machine runs in 42.12 ms — <strong>3.3× faster than
+SQLite</strong> (139.58 ms), with an identical row count.</p>
+<p>This is not an isolated measurement but the campaign's gate: all 16
+heaviest query shapes were measured together after the fix, and every
+single one is now faster than SQLite. Correctness strictly checked per
+query (rows 1/1 up to 632,117/632,117 exactly matching the oracle).</p>
+<p><em>(iMac Pro, 1 million rows, median of 5 runs, 21 October 2026)</em></p>
+<table>
+<thead>
+<tr>
+<th>Query</th>
+<th style="text-align: right;">NoodleDB</th>
+<th style="text-align: right;">SQLite</th>
+<th style="text-align: right;">NDB faster</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Self-join on 1 million rows</td>
+<td style="text-align: right;"><strong>42.12</strong></td>
+<td style="text-align: right;">139.58</td>
+<td style="text-align: right;">3.3×</td>
+</tr>
+<tr>
+<td>Heaviest aggregation (632,117 groups)</td>
+<td style="text-align: right;"><strong>390</strong></td>
+<td style="text-align: right;">1167</td>
+<td style="text-align: right;">3.0×</td>
+</tr>
+<tr>
+<td>Full gate (16 query shapes)</td>
+<td style="text-align: right;"><strong>16/16 faster</strong></td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+</tr>
+</tbody>
+</table>
+<p>The three classes that still lose to DuckDB on the 100k benchmark
+(range scans, flat joins, GROUP BY) remain on the improvement track —
+phase 2 of the campaign is running now.</p>
+<!-- NOO-1479-ZELFJOIN-END -->
 
 <h2 id="an-honest-caveat">An honest caveat</h2>
 <p>The gain depends on the kind of work: the more pure computation and the

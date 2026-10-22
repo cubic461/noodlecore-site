@@ -491,6 +491,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#voorbeeld-5-de-zwaarste-join-zelf-join-op-1-miljoen-rijen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voorbeeld 5: de zwaarste join — zelf-join op 1 miljoen rijen
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#eerlijke-kanttekening" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -685,6 +696,17 @@
         
       </ul>
     </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#voorbeeld-5-de-zwaarste-join-zelf-join-op-1-miljoen-rijen" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Voorbeeld 5: de zwaarste join — zelf-join op 1 miljoen rijen
+      
+    </span>
+  </a>
   
 </li>
       
@@ -925,7 +947,11 @@ elkaar: NoodleDB, PostgreSQL 18, SQLite en DuckDB. Eén benchmark-suite,
 mediaan van 5 runs, correctheid per query streng gecontroleerd.</p>
 <p>Niet alleen de winst: de tabel laat ook de klassen zien waar NoodleDB
 nog niet wint. Het volledige verbetertraject staat eronder.</p>
-<p><em>(iMac Pro, 100.000 rijen (seed 42), mediaan van 5 runs — 2026-10-21)</em></p>
+<p><em>(iMac Pro, 100.000 rijen (seed 42), mediaan van 5 runs. NoodleDB
+opnieuw gemeten op 22 oktober, na de join-versnelling; de overige
+engines gemeten op 21 oktober (ongewijzigde versies). Alle metingen
+staan in onze cijferdatabase met tijdstip en engine-versie, dus
+regressie is altijd zichtbaar.)</em></p>
 <table>
 <thead>
 <tr>
@@ -939,72 +965,86 @@ nog niet wint. Het volledige verbetertraject staat eronder.</p>
 <tbody>
 <tr>
 <td>Inladen 100k rijen</td>
-<td style="text-align: right;">416</td>
+<td style="text-align: right;">426,50</td>
 <td style="text-align: right;">958</td>
 <td style="text-align: right;"><strong>113</strong></td>
 <td style="text-align: right;">2581</td>
 </tr>
 <tr>
 <td>Punt-opzoeking (PRIMARY KEY)</td>
-<td style="text-align: right;">0.04</td>
-<td style="text-align: right;">0.10</td>
-<td style="text-align: right;"><strong>0.02</strong></td>
-<td style="text-align: right;">0.32</td>
+<td style="text-align: right;">0,05</td>
+<td style="text-align: right;">0,10</td>
+<td style="text-align: right;"><strong>0,02</strong></td>
+<td style="text-align: right;">0,32</td>
 </tr>
 <tr>
 <td>Bereik-scan (WHERE BETWEEN)</td>
-<td style="text-align: right;">15.7</td>
-<td style="text-align: right;">6.97</td>
-<td style="text-align: right;">12.5</td>
-<td style="text-align: right;"><strong>2.29</strong></td>
+<td style="text-align: right;"><strong>0,33</strong></td>
+<td style="text-align: right;">6,97</td>
+<td style="text-align: right;">12,50</td>
+<td style="text-align: right;">2,29</td>
 </tr>
 <tr>
 <td>Join over 2 tabellen</td>
-<td style="text-align: right;">43.4</td>
-<td style="text-align: right;">8.99</td>
-<td style="text-align: right;">15.0</td>
-<td style="text-align: right;"><strong>1.19</strong></td>
+<td style="text-align: right;"><strong>0,80</strong></td>
+<td style="text-align: right;">8,99</td>
+<td style="text-align: right;">15,00</td>
+<td style="text-align: right;">1,19</td>
 </tr>
 <tr>
-<td>Join over 3 tabellen *</td>
-<td style="text-align: right;">59.3</td>
-<td style="text-align: right;">15.7</td>
-<td style="text-align: right;">18.7</td>
-<td style="text-align: right;"><strong>1.42</strong></td>
+<td>Join over 3 tabellen (genest) *</td>
+<td style="text-align: right;"><strong>1,21</strong></td>
+<td style="text-align: right;">15,70</td>
+<td style="text-align: right;">18,70</td>
+<td style="text-align: right;">1,42</td>
+</tr>
+<tr>
+<td>Join over 3 tabellen (plat) *</td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">15,71</td>
+<td style="text-align: right;">18,70</td>
+<td style="text-align: right;"><strong>1,42</strong></td>
 </tr>
 <tr>
 <td>GROUP BY + COUNT + AVG</td>
-<td style="text-align: right;">3.91</td>
-<td style="text-align: right;">14.0</td>
-<td style="text-align: right;">45.6</td>
-<td style="text-align: right;"><strong>1.06</strong></td>
+<td style="text-align: right;">1,33</td>
+<td style="text-align: right;">14,00</td>
+<td style="text-align: right;">45,60</td>
+<td style="text-align: right;"><strong>1,06</strong></td>
 </tr>
 <tr>
 <td>Tekstzoeken LIKE</td>
-<td style="text-align: right;">4.02</td>
-<td style="text-align: right;">10.0</td>
-<td style="text-align: right;">12.4</td>
-<td style="text-align: right;"><strong>1.84</strong></td>
+<td style="text-align: right;">3,38</td>
+<td style="text-align: right;">10,00</td>
+<td style="text-align: right;">12,40</td>
+<td style="text-align: right;"><strong>1,84</strong></td>
 </tr>
 <tr>
-<td>2-hop graaftelling (self-join)</td>
-<td style="text-align: right;">12.6</td>
-<td style="text-align: right;">40.8</td>
-<td style="text-align: right;">77.6</td>
-<td style="text-align: right;"><strong>5.77</strong></td>
+<td>Full-text index bouwen</td>
+<td style="text-align: right;"><strong>24,76</strong></td>
+<td style="text-align: right;">691,28</td>
+<td style="text-align: right;">106,19</td>
+<td style="text-align: right;">—</td>
 </tr>
 <tr>
 <td>Geïndexeerd tekstzoeken</td>
-<td style="text-align: right;"><strong>0.26</strong></td>
-<td style="text-align: right;">1.71</td>
-<td style="text-align: right;">0.37</td>
-<td style="text-align: right;">-</td>
+<td style="text-align: right;"><strong>0,27</strong></td>
+<td style="text-align: right;">1,71</td>
+<td style="text-align: right;">0,37</td>
+<td style="text-align: right;">—</td>
+</tr>
+<tr>
+<td>2-hop graaftelling (self-join)</td>
+<td style="text-align: right;"><strong>1,20</strong></td>
+<td style="text-align: right;">40,80</td>
+<td style="text-align: right;">77,60</td>
+<td style="text-align: right;">5,77</td>
 </tr>
 <tr>
 <td>10k UPDATEs in 1 transactie</td>
-<td style="text-align: right;">155</td>
-<td style="text-align: right;">867</td>
-<td style="text-align: right;"><strong>38.1</strong></td>
+<td style="text-align: right;">164,12</td>
+<td style="text-align: right;">867,00</td>
+<td style="text-align: right;"><strong>38,10</strong></td>
 <td style="text-align: right;">3877</td>
 </tr>
 </tbody>
@@ -1086,12 +1126,16 @@ nog niet wint. Het volledige verbetertraject staat eronder.</p>
 <p>* Join over 3 tabellen: NoodleDB voert de geneste vorm uit (twee keer
 hash-join), de overige engines de platte vorm: dezelfde uitkomst, dezelfde
 data. De platte 3-join is een bekend optimalisatie-traject.</p>
-<p>Waar NoodleDB wint: bulk-inladen t.o.v. PostgreSQL (2,3x), aggregaten
-(3,6x t.o.v. PostgreSQL, 12x t.o.v. SQLite), 2-hop graaftelling (3,2x
-t.o.v. PostgreSQL, 6,2x t.o.v. SQLite), tekstzoeken op SQL-niveau en
-geïndexeerd tekstzoeken t.o.v. PostgreSQL (6,6x). Waar de anderen nog
-winnen: punt-opzoeking en kleine updates (SQLite), bereik-scans en joins
-(PostgreSQL, DuckDB). Dat is precies het verbetertraject.</p>
+<p>Stand na de join-versnelling van 21–22 oktober (avondmeting): tegen
+PostgreSQL wint NoodleDB alle 11 gemeten klassen. Tegen SQLite wint
+NoodleDB 8 van 11; SQLite blijft voor op inladen, punt-opzoeken en
+kleine updates. Tegen DuckDB wint NoodleDB 7 van 9; DuckDB houdt
+GROUP BY en tekstzoeken. De maatstaf waar het verbetertraject op
+richt is DuckDB (GROUP BY, tekstzoeken, de platte 3-join) én de
+resterende SQLite-klassen — dat is fase 2 van de campagne, die nu
+loopt en vandaag al bereik-scan (18,5 → 0,33 ms), join-2 (3,12 →
+0,80 ms), de geneste 3-join (26,4 → 1,21 ms) en de 2-hop graaftelling
+(14,6 → 1,20 ms) omsloeg.</p>
 <p>De draadprotocol-tabel toont dezelfde NoodleDB-engine via het
 PostgreSQL- en MySQL-protocol: dezelfde queries, maar nu betaal je de
 vertaling en de retourtijd. Na de protocol-fix van 21 oktober 2026 betalen
@@ -1102,6 +1146,51 @@ PostgreSQL-protocol een draadlaag van 0,24 ms. Zwaardere vragen zijn
 engine-bound: dezelfde cijfers als directe toegang, geen extra
 protocolverlies.</p>
 <!-- NOO-1470-MULTIDB-END -->
+
+<h2 id="voorbeeld-5-de-zwaarste-join-zelf-join-op-1-miljoen-rijen">Voorbeeld 5: de zwaarste join — zelf-join op 1 miljoen rijen</h2>
+<p>De zelf-join was het diepste gat van de hele campagne: 194,8× trager
+dan SQLite. Na de versnelling van 21 oktober 2026 draait dezelfde
+vraag op dezelfde machine in 42,12 ms — <strong>3,3× sneller dan SQLite</strong>
+(139,58 ms), met identiek uitkomstrijen-aantal.</p>
+<p>Dit is géén losse meting maar de poort van de campagne: alle 16
+zwaarste queryvormen zijn na de fix samen gemeten, en élke vorm is
+nu sneller dan SQLite. Correctheid per query streng gecontroleerd
+(rijen 1/1 tot 632.117/632.117 exact gelijk aan het orakel).</p>
+<p><em>(iMac Pro, 1 miljoen rijen, mediaan van 5 runs, 21 oktober 2026)</em></p>
+<table>
+<thead>
+<tr>
+<th>Vraag</th>
+<th style="text-align: right;">NoodleDB</th>
+<th style="text-align: right;">SQLite</th>
+<th style="text-align: right;">NDB sneller</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Zelf-join op 1 miljoen rijen</td>
+<td style="text-align: right;"><strong>42,12</strong></td>
+<td style="text-align: right;">139,58</td>
+<td style="text-align: right;">3,3×</td>
+</tr>
+<tr>
+<td>Zwaarste aggregatie (632.117 groepen)</td>
+<td style="text-align: right;"><strong>390</strong></td>
+<td style="text-align: right;">1167</td>
+<td style="text-align: right;">3,0×</td>
+</tr>
+<tr>
+<td>Volledige poort (16 queryvormen)</td>
+<td style="text-align: right;"><strong>16/16 sneller</strong></td>
+<td style="text-align: right;">—</td>
+<td style="text-align: right;">—</td>
+</tr>
+</tbody>
+</table>
+<p>De drie klassen die op de 100k-meetlat nog verliezen van DuckDB
+(bereik-scan, platte joins, GROUP BY) staan open op het
+verbetertraject — fase 2 van de campagne loopt nu.</p>
+<!-- NOO-1479-ZELFJOIN-END -->
 
 <h2 id="eerlijke-kanttekening">Eerlijke kanttekening</h2>
 <p>De winst hangt af van het soort werk: hoe meer zuiver rekenwerk en hoe
