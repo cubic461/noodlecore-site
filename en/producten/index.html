@@ -690,7 +690,7 @@ there's nothing to rewrite.</p>
 <tr>
 <td>MySQL / MariaDB</td>
 <td>import via mysqldump into NDB; direct connection is planned</td>
-<td>importer: 120k rows error-free; MySQL protocol connected (63/63 checks), query times within 3% of the PG protocol route</td>
+<td>importer: 120k rows error-free; MySQL protocol connected (63/63 checks); versus the PG protocol route it differs per query class: text search 88% and GROUP BY 54% faster, joins 5-7% slower, point lookups up to 54% slower (measurement in example 4)</td>
 </tr>
 <tr>
 <td>SQLite (embedded)</td>

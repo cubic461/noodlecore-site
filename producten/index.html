@@ -691,7 +691,7 @@ nieuwe kant hoeft u niets te herschrijven.</p>
 <tr>
 <td>MySQL / MariaDB</td>
 <td>import via mysqldump naar NDB; directe verbinding staat gepland</td>
-<td>importer: 120k rijen foutloos; MySQL-protocol verbonden (63/63 checks), querytijden binnen 3% van de PG-protocolroute</td>
+<td>importer: 120k rijen foutloos; MySQL-protocol verbonden (63/63 checks); t.o.v. de PG-protocolroute verschilt het per vraagklasse: tekstzoeken 88% en GROUP BY 54% sneller, joins 5-7% trager, punt-opzoeking tot 54% trager (meting in voorbeeld 4)</td>
 </tr>
 <tr>
 <td>SQLite (ingesloten)</td>
