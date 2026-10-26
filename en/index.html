@@ -353,6 +353,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ai-runs-inside-the-language" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🤖 AI runs inside the language
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#future-legacy-in-one" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -686,6 +697,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ai-runs-inside-the-language" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        🤖 AI runs inside the language
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#future-legacy-in-one" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -817,10 +839,16 @@ Running this way since May 2026.</p>
 <h3 id="database-included">🧱 Database included</h3>
 <p><code>SELECT</code> is a language construct, not an external server. Transactions, graph,
 vector search and full-text live in the same engine — no driver, no connector,
-no second language. Built on the lessons of the databases that already exist:
-we speak PostgreSQL fluently as well as SQLite, and your existing data plays
-along — import it and weigh what you already have. Up to 1.8× faster than
+no second language. Every PostgreSQL client connects directly; every MySQL
+client speaks to the MySQL protocol. Data from SQLite, PostgreSQL and MySQL
+imports right along.
+Up to 1.8× faster than
 SQLite per query type, A/B-tested on identical machines.</p>
+</div>
+<div class="nc-card">
+<h3 id="ai-runs-inside-the-language">🤖 AI runs inside the language</h3>
+<p>No external service, no API key: inference on our own kernels, on your own
+hardware. Proven down to a 2017 GPU: 41.7 tok/s, bit-exact.</p>
 </div>
 <div class="nc-card">
 <h3 id="future-legacy-in-one">🚀 Future + legacy in one</h3>
@@ -895,6 +923,7 @@ Self-hosting              proven         the compiler compiles itself, 228/228 m
 NIST COBOL suite          459/459        100% passed
 NoodleDB vs SQLite     up to 1.8×       faster per query type (A/B, identical machines)
 NDB assimilation          190,267 rows   production data, count-edges 55x -&gt; 391x
+Own AI kernels            41.7 tok/s     bit-exact, on a 2017 GPU (AMD Vega 56)
 </code></pre>
 <h2 id="contact">Contact</h2>
 <p>Interested in porting or a demo? Email
