@@ -224,3 +224,46 @@
 /* ── Logo's: 1 inline SVG met currentColor — zwart op licht, wit op donker (Michael 19okt) ── */
 .nc-svg { color: #1d1d1f; }
 [data-md-color-scheme="slate"] .nc-svg { color: #ffffff; }
+
+/* ── Stap 2 (28okt): nummer-secties, grotere sectiekoppen, CTA-links ── */
+.nc-eyebrow {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 650;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--nc-accent);
+  margin: 0 0 0.5rem;
+}
+.md-typeset .nc-eyebrow {
+  margin-top: 3.4rem;
+}
+.md-typeset .nc-section h2 {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: -0.018em;
+  font-weight: 700;
+  margin: 0 0 0.6rem;
+}
+.md-typeset .nc-section p {
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: var(--nc-text-2);
+}
+.nc-cta {
+  display: flex;
+  gap: 1.6rem;
+  flex-wrap: wrap;
+  margin: 1.3rem 0 0;
+}
+.md-typeset .nc-cta a {
+  font-weight: 600;
+  font-size: 1.02rem;
+  color: var(--nc-accent);
+  text-decoration: none;
+}
+.md-typeset .nc-cta a:hover {
+  text-decoration: underline;
+}
+.md-typeset .nc-cta a + a {
+  color: var(--nc-text);
+}
