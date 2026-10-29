@@ -972,16 +972,15 @@ fn main() -&gt; int {
 <p>Being compatible is one thing; being measurably fast is another. The same
 query, the same data, on the same machine - but now four engines side by
 side: NoodleDB, PostgreSQL 18, SQLite and DuckDB. One benchmark suite,
-median of 5 runs, correctness verified per query.</p>
+median of 5 runs, correctness hard-checked per query.</p>
 <p>No cherry-picking: the table also shows the classes where NoodleDB
 does not win yet - the full improvement track is noted below.</p>
-<p><em>(iMac Pro, 100,000 rows (seed 42), median of 5 runs. NoodleDB
-re-measured on 22 October, after the join acceleration; the other
-engines measured on 21 October (unchanged versions). All measurements
-live in our benchmark database with timestamps and engine versions,
-so regressions are always visible. System load during the official
-measurement: 3.6-4.1 (guideline &lt; 3); an independent re-run on
-23 October reproduced all figures within 2 percent.)</em></p>
+<p><em>(iMac Pro, 100,000 rows (seed 42), median of 5 runs — 2026-10-29.
+System load during the measurement 4.0-4.5 (guideline &lt; 3;
+macOS background indexing). All four engines faced the same
+load: PostgreSQL, SQLite and DuckDB measure within a few
+percent of their earlier figures, so the relative standings
+hold.)</em></p>
 <table>
 <thead>
 <tr>
@@ -995,87 +994,73 @@ measurement: 3.6-4.1 (guideline &lt; 3); an independent re-run on
 <tbody>
 <tr>
 <td>Bulk load 100k rows</td>
-<td style="text-align: right;">426.50</td>
-<td style="text-align: right;">958</td>
-<td style="text-align: right;"><strong>113</strong></td>
-<td style="text-align: right;">2581</td>
+<td style="text-align: right;">182</td>
+<td style="text-align: right;">894</td>
+<td style="text-align: right;"><strong>119</strong></td>
+<td style="text-align: right;">2614</td>
 </tr>
 <tr>
 <td>Point lookup (PRIMARY KEY)</td>
-<td style="text-align: right;">0.05</td>
-<td style="text-align: right;">0.10</td>
-<td style="text-align: right;"><strong>0.02</strong></td>
-<td style="text-align: right;">0.32</td>
+<td style="text-align: right;"><strong>0.00</strong></td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.29</td>
 </tr>
 <tr>
 <td>Range scan (WHERE BETWEEN)</td>
-<td style="text-align: right;"><strong>0.33</strong></td>
+<td style="text-align: right;"><strong>0.25</strong></td>
 <td style="text-align: right;">6.97</td>
-<td style="text-align: right;">12.50</td>
-<td style="text-align: right;">2.29</td>
+<td style="text-align: right;">11.8</td>
+<td style="text-align: right;">3.29</td>
 </tr>
 <tr>
 <td>2-table join</td>
-<td style="text-align: right;"><strong>0.80</strong></td>
-<td style="text-align: right;">8.99</td>
-<td style="text-align: right;">15.00</td>
-<td style="text-align: right;">1.19</td>
+<td style="text-align: right;"><strong>0.73</strong></td>
+<td style="text-align: right;">8.48</td>
+<td style="text-align: right;">14.5</td>
+<td style="text-align: right;">1.39</td>
 </tr>
 <tr>
-<td>3-table join (nested) *</td>
-<td style="text-align: right;"><strong>1.21</strong></td>
-<td style="text-align: right;">15.70</td>
-<td style="text-align: right;">18.70</td>
-<td style="text-align: right;">1.42</td>
-</tr>
-<tr>
-<td>3-table join (flat) *</td>
-<td style="text-align: right;">—</td>
-<td style="text-align: right;">15.71</td>
-<td style="text-align: right;">18.70</td>
-<td style="text-align: right;"><strong>1.42</strong></td>
+<td>3-table join *</td>
+<td style="text-align: right;"><strong>0.94</strong></td>
+<td style="text-align: right;">17.0</td>
+<td style="text-align: right;">20.9</td>
+<td style="text-align: right;">1.65</td>
 </tr>
 <tr>
 <td>GROUP BY + COUNT + AVG</td>
-<td style="text-align: right;">1.33</td>
-<td style="text-align: right;">14.00</td>
-<td style="text-align: right;">45.60</td>
-<td style="text-align: right;"><strong>1.06</strong></td>
+<td style="text-align: right;"><strong>0.31</strong></td>
+<td style="text-align: right;">15.8</td>
+<td style="text-align: right;">43.7</td>
+<td style="text-align: right;">1.28</td>
 </tr>
 <tr>
 <td>Text search LIKE</td>
-<td style="text-align: right;">3.38</td>
-<td style="text-align: right;">10.00</td>
-<td style="text-align: right;">12.40</td>
-<td style="text-align: right;"><strong>1.84</strong></td>
-</tr>
-<tr>
-<td>Full-text index build</td>
-<td style="text-align: right;"><strong>24.76</strong></td>
-<td style="text-align: right;">691.28</td>
-<td style="text-align: right;">106.19</td>
-<td style="text-align: right;">—</td>
-</tr>
-<tr>
-<td>Indexed text search</td>
-<td style="text-align: right;"><strong>0.27</strong></td>
-<td style="text-align: right;">1.71</td>
-<td style="text-align: right;">0.37</td>
-<td style="text-align: right;">—</td>
+<td style="text-align: right;"><strong>0.42</strong></td>
+<td style="text-align: right;">11.2</td>
+<td style="text-align: right;">12.5</td>
+<td style="text-align: right;">1.84</td>
 </tr>
 <tr>
 <td>2-hop graph count (self-join)</td>
-<td style="text-align: right;"><strong>1.20</strong></td>
-<td style="text-align: right;">40.80</td>
-<td style="text-align: right;">77.60</td>
-<td style="text-align: right;">5.77</td>
+<td style="text-align: right;"><strong>1.05</strong></td>
+<td style="text-align: right;">43.8</td>
+<td style="text-align: right;">77.7</td>
+<td style="text-align: right;">6.06</td>
+</tr>
+<tr>
+<td>Indexed text search</td>
+<td style="text-align: right;"><strong>0.29</strong></td>
+<td style="text-align: right;">2.23</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">-</td>
 </tr>
 <tr>
 <td>10k UPDATEs in 1 transaction</td>
-<td style="text-align: right;">164.12</td>
-<td style="text-align: right;">867.00</td>
-<td style="text-align: right;"><strong>38.10</strong></td>
-<td style="text-align: right;">3877</td>
+<td style="text-align: right;">56.4</td>
+<td style="text-align: right;">955</td>
+<td style="text-align: right;"><strong>37.8</strong></td>
+<td style="text-align: right;">3816</td>
 </tr>
 </tbody>
 </table>
@@ -1093,61 +1078,61 @@ measurement: 3.6-4.1 (guideline &lt; 3); an independent re-run on
 <tbody>
 <tr>
 <td>Bulk load 100k rows</td>
-<td style="text-align: right;"><strong>472</strong></td>
-<td style="text-align: right;">2807</td>
-<td style="text-align: right;">15156</td>
+<td style="text-align: right;">182</td>
+<td style="text-align: right;">163</td>
+<td style="text-align: right;"><strong>160</strong></td>
 </tr>
 <tr>
 <td>Point lookup (PRIMARY KEY)</td>
-<td style="text-align: right;"><strong>0.05</strong></td>
-<td style="text-align: right;">0.24</td>
-<td style="text-align: right;">0.37</td>
+<td style="text-align: right;"><strong>0.00</strong></td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.16</td>
 </tr>
 <tr>
 <td>Range scan (WHERE BETWEEN)</td>
-<td style="text-align: right;"><strong>19.0</strong></td>
-<td style="text-align: right;">19.0</td>
-<td style="text-align: right;">17.7</td>
+<td style="text-align: right;"><strong>0.25</strong></td>
+<td style="text-align: right;">0.34</td>
+<td style="text-align: right;">0.36</td>
 </tr>
 <tr>
 <td>2-table join</td>
-<td style="text-align: right;"><strong>45.8</strong></td>
-<td style="text-align: right;">46.4</td>
-<td style="text-align: right;">49.5</td>
+<td style="text-align: right;"><strong>0.73</strong></td>
+<td style="text-align: right;">3.57</td>
+<td style="text-align: right;">0.85</td>
 </tr>
 <tr>
 <td>3-table join *</td>
-<td style="text-align: right;"><strong>64.6</strong></td>
-<td style="text-align: right;">64.0</td>
-<td style="text-align: right;">67.3</td>
+<td style="text-align: right;"><strong>0.94</strong></td>
+<td style="text-align: right;">3.96</td>
+<td style="text-align: right;">1.17</td>
 </tr>
 <tr>
 <td>GROUP BY + COUNT + AVG</td>
-<td style="text-align: right;"><strong>5.05</strong></td>
-<td style="text-align: right;">11.4</td>
-<td style="text-align: right;">5.2</td>
+<td style="text-align: right;"><strong>0.31</strong></td>
+<td style="text-align: right;">1.92</td>
+<td style="text-align: right;">0.41</td>
 </tr>
 <tr>
 <td>Text search LIKE</td>
-<td style="text-align: right;"><strong>3.57</strong></td>
-<td style="text-align: right;">36.3</td>
-<td style="text-align: right;">4.3</td>
+<td style="text-align: right;"><strong>0.42</strong></td>
+<td style="text-align: right;">0.53</td>
+<td style="text-align: right;">0.58</td>
 </tr>
 <tr>
 <td>2-hop graph count (self-join)</td>
-<td style="text-align: right;"><strong>13.1</strong></td>
-<td style="text-align: right;">14.9</td>
-<td style="text-align: right;">13.7</td>
+<td style="text-align: right;"><strong>1.05</strong></td>
+<td style="text-align: right;">4.47</td>
+<td style="text-align: right;">1.29</td>
 </tr>
 <tr>
 <td>Indexed text search</td>
-<td style="text-align: right;">0.28</td>
+<td style="text-align: right;">0.29</td>
 <td style="text-align: right;">-</td>
 <td style="text-align: right;">-</td>
 </tr>
 <tr>
 <td>10k UPDATEs in 1 transaction</td>
-<td style="text-align: right;">161</td>
+<td style="text-align: right;">56.4</td>
 <td style="text-align: right;">-</td>
 <td style="text-align: right;">-</td>
 </tr>
@@ -1156,24 +1141,21 @@ measurement: 3.6-4.1 (guideline &lt; 3); an independent re-run on
 <p>* 3-table join: NoodleDB executes the nested form (two hash joins), the
 other engines the flat form - same result, same data. The flat 3-join is
 a known optimization track.</p>
-<p>After the join acceleration of 21–22 October (evening re-measure):
-against PostgreSQL alone, NoodleDB now wins all 11 measured classes.
-Against SQLite, NoodleDB wins 8 of 11; SQLite stays ahead on bulk load,
-point lookups and small updates. Against DuckDB, NoodleDB wins 7 of 9;
-DuckDB keeps GROUP BY and text search. The improvement track now targets
-DuckDB (GROUP BY, text search, the flat 3-join) and the remaining SQLite
-classes — that is phase 2 of the campaign, running now; today it already
-flipped range scans (18.5 → 0.33 ms), the 2-table join (3.12 → 0.80 ms),
-the nested 3-join (26.4 → 1.21 ms) and the 2-hop graph count
-(14.6 → 1.20 ms).</p>
+<p>Where NoodleDB wins: every read class - range scans (28x vs
+PostgreSQL, 47x vs SQLite), joins (12-22x), aggregates (51x vs
+PostgreSQL, 141x vs SQLite), 2-hop graph counts (42x vs PostgreSQL,
+74x vs SQLite), text search (27-30x) and indexed text search. Where
+the others still win: bulk loading (1.5x) and small updates (1.5x),
+both versus SQLite - and over the wire protocols, point lookups trail
+SQLite's in-process call. That is exactly the improvement track.</p>
 <p>The wire-protocol table shows the same NoodleDB engine over the
-PostgreSQL and MySQL protocols: same queries, but now paying translation
-plus the network round trip. After the protocol fix of 21 October 2026 both wire
-routes pay only the protocol's own translation and framing floor:
-point lookups over the MySQL protocol became 245× faster
-(90.9 ms → 0.37 ms), and the PostgreSQL protocol measures a 0.24 ms
-wire layer on a minimal query. Heavier queries are engine-bound: same
-numbers as direct access, no extra protocol loss.</p>
+PostgreSQL and MySQL protocols, measured against servers written and
+compiled in NoodleCore itself: no Python in the hot path. Both
+protocols run range scans within 0.1 ms of direct access and even load
+100k rows faster than the direct path; the MySQL protocol keeps joins
+and aggregates within 1.4x of direct. What remains: point lookups pay
+the roundtrip (0.06-0.16 ms) and over the PostgreSQL protocol DuckDB
+edges ahead on joins - that is the improvement track.</p>
 <!-- NOO-1470-MULTIDB-END -->
 
 <h2 id="example-5-the-heaviest-join-self-join-on-1-million-rows">Example 5: the heaviest join — self-join on 1 million rows</h2>

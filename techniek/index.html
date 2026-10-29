@@ -753,7 +753,7 @@ C-backend stdlib       240/240          100% compileerbaar
 LLVM-backend stdlib    309/309          100%, bit-exact vs C-backend (18/18)
 Self-hosting           bewezen          compiler compileert zichzelf, 228/228 modules
 NIST COBOL-suite       459/459          100% geslaagd
-NoodleDB vs SQLite     tot 1,8×         sneller per type vraag (A/B, identieke machines)
+NoodleDB vs SQLite     tot 141×          sneller op lees-klassen (A/B, identieke machines)
 NDB-assimilatie        190.267 rijen    productie-data, count-edges 55× → 391×
 Eigen AI-kernels       41,7 tok/s       bit-exact, GPU van 2017 (AMD Vega 56)
 </code></pre>
@@ -779,8 +779,10 @@ graph, vector-search en full-text zitten in dezelfde engine: geen
 driver, geen connector, geen tweede taal. Elke PostgreSQL-client kan
 rechtstreeks verbinden; elke MySQL-client sluit aan op het
 MySQL-protocol. Data uit SQLite, PostgreSQL en MySQL importeer je
-zomaar mee. Per type vraag tot 1,8× sneller dan SQLite, A/B-getest op
-identieke machines.</p>
+zomaar mee. Op leesvragen tot 141× sneller dan SQLite (bereik-scans,
+joins, aggregaten, graaftellingen; A/B op identieke machines, mediaan
+van 5). Schrijfklassen (bulk-inladen, updates) zitten binnen 1,5× -
+het verbetertraject staat op de voorbeelden-pagina.</p>
 <h2 id="geheugen">Geheugen</h2>
 <ul>
 <li>Gebruikerscode schrijft nooit zelf geheugen toe of vrij: de runtime

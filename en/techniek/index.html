@@ -753,7 +753,7 @@ C backend stdlib          240/240        100% compilable
 LLVM backend stdlib       309/309        100%, bit-exact vs C backend (18/18)
 Self-hosting              proven         compiler compiles itself, 228/228 modules
 NIST COBOL suite          459/459        100% passed
-NoodleDB vs SQLite        up to 1.8×     faster per query type (A/B, identical machines)
+NoodleDB vs SQLite        up to 141×     faster on read classes (A/B, identical machines)
 NDB assimilation          190,267 rows   production data, count-edges 55× → 391×
 Own AI kernels            41.7 tok/s     bit-exact, 2017 GPU (AMD Vega 56)
 </code></pre>
@@ -780,8 +780,10 @@ Transactions, graph, vector search and full-text live in the same
 engine — no driver, no connector, no second language. Every
 PostgreSQL client connects directly; every MySQL client speaks the
 MySQL protocol. Data from SQLite, PostgreSQL and MySQL imports right
-along. Up to 1.8× faster than SQLite per query type, A/B-tested on
-identical machines.</p>
+along. Up to 141× faster than SQLite on read queries (range scans,
+joins, aggregates, graph counts; A/B on identical machines, median of
+5). Write classes (bulk load, updates) sit within 1.5× - the
+improvement track is on the examples page.</p>
 <h2 id="memory">Memory</h2>
 <ul>
 <li>User code never allocates or frees memory itself: the runtime
