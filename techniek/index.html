@@ -788,9 +788,9 @@ identieke machines.</p>
   lengte/capaciteit-header).</li>
 <li>Bewijs: alle 240 stdlib-modules en de voorbeelden draaien zonder
   één handmatige geheugenverklaring.</li>
-<li>Grens (eerlijk): de typecontrole tussen getal-types is nog niet
-  waterdicht (een <code>int</code> in een <code>f32</code>-buffer geeft geen waarschuwing
-  en leest stil 0 terug). Verharding staat op de roadmap.</li>
+<li>Type-mismatch op getal-buffers is een harde compileerfout (4
+  richtingen afgedekt, met bestand:regel:kolom) — een vergissing kan
+  nooit meer stil als 0 teruggelezen worden (NOO-1700, pitfall P25).</li>
 </ul>
 <h2 id="ai-kernels">AI-kernels</h2>
 <p>NoodleCore zelf bevat geen model en stuurt niets naar buiten. Wil je

@@ -789,9 +789,9 @@ identical machines.</p>
   length/capacity header).</li>
 <li>Proof: all 240 stdlib modules and the examples run without a
   single manual memory declaration.</li>
-<li>Honest limit: type checking between number types isn't watertight
-  yet (an <code>int</code> in an <code>f32</code> buffer gives no warning and silently
-  reads back as 0). Hardening is on the roadmap.</li>
+<li>A type mismatch on number buffers is a hard compile error (4
+  directions covered, with file:line:column) — a mistake can never
+  silently read back as 0 again (NOO-1700, pitfall P25).</li>
 </ul>
 <h2 id="ai-kernels">AI kernels</h2>
 <p>NoodleCore itself contains no model and sends nothing anywhere. When
