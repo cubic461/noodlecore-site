@@ -16,7 +16,7 @@
         <link rel="prev" href="../cobol-porting/">
       
       
-        <link rel="next" href="../techniek/">
+        <link rel="next" href="../over-de-maker/">
       
       
         
@@ -538,6 +538,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../over-de-maker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Over de maker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../techniek/" class="md-nav__link">
         
   
@@ -980,6 +1007,9 @@ achtergrondindexering van macOS). Alle vier de engines ondervonden
 dezelfde last: PostgreSQL, SQLite en DuckDB meten binnen een paar
 procent van hun eerdere cijfers, dus de onderlinge verhoudingen
 staan.)</em></p>
+<p>† NoodleDB en SQLite op 7 november opnieuw gemeten na de
+update-optimizer; PostgreSQL en DuckDB gemeten op 29 oktober
+(ongewijzigde versies).</p>
 <table>
 <thead>
 <tr>
@@ -992,10 +1022,10 @@ staan.)</em></p>
 </thead>
 <tbody>
 <tr>
-<td>Inladen 100k rijen</td>
-<td style="text-align: right;">182</td>
+<td>Inladen 100k rijen †</td>
+<td style="text-align: right;">177.6</td>
 <td style="text-align: right;">894</td>
-<td style="text-align: right;"><strong>119</strong></td>
+<td style="text-align: right;"><strong>106.9</strong></td>
 <td style="text-align: right;">2614</td>
 </tr>
 <tr>
@@ -1055,10 +1085,10 @@ staan.)</em></p>
 <td style="text-align: right;">-</td>
 </tr>
 <tr>
-<td>10k UPDATEs in 1 transactie</td>
-<td style="text-align: right;">56.4</td>
+<td>10k UPDATEs in 1 transactie †</td>
+<td style="text-align: right;"><strong>23.7</strong></td>
 <td style="text-align: right;">955</td>
-<td style="text-align: right;"><strong>37.8</strong></td>
+<td style="text-align: right;">33.8</td>
 <td style="text-align: right;">3816</td>
 </tr>
 </tbody>
@@ -1144,9 +1174,8 @@ data. De 3-join plat is een bekend optimalisatie-traject.</p>
 PostgreSQL, 47x t.o.v. SQLite), joins (12-22x), aggregaten (51x t.o.v.
 PostgreSQL, 141x t.o.v. SQLite), 2-hop graaftelling (42x t.o.v.
 PostgreSQL, 74x t.o.v. SQLite), tekstzoeken (27-30x) en geïndexeerd
-tekstzoeken. Waar de anderen nog winnen: bulk-inladen (1,5x) en kleine
-updates (1,5x), beide op SQLite - en over de draadprotocollen blijven
-punt-opzoekingen achter op SQLite's in-process aanroep. Dat is precies
+tekstzoeken. Waar de anderen nog winnen: bulk-inladen (1,7x) op SQLite - en over de
+draadprotocollen blijven punt-opzoekingen achter op SQLite's in-process aanroep. Dat is precies
 het verbetertraject.</p>
 <p>De draadprotocol-tabel toont dezelfde NoodleDB-engine via het
 PostgreSQL- en MySQL-protocol, gemeten tegen C-servers die in
@@ -1212,7 +1241,8 @@ delen, geen hele programma's, en daarom publiceren wij per claim de methodiek.</
 <h2 id="volgende-stap">Volgende stap</h2>
 <p>Wil je een eigen traag stuk code doorgerekend hebben? Mail naar
 michael@noodlecore.io: wij vertalen, meten en sturen je het rapport toe.
-Een live testomgeving waarin je zelf code kunt plakken staat op de planning.</p>
+Een plek waar je zelf code kunt typen komt later (fase 2 van de site); nu
+lees je mee. Meer achtergrond: <a href="../over-de-maker/">over de maker</a>.</p>
 
 
 

@@ -16,7 +16,7 @@
         <link rel="prev" href="../cobol-porting/">
       
       
-        <link rel="next" href="../techniek/">
+        <link rel="next" href="../over-de-maker/">
       
       
         
@@ -538,6 +538,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../over-de-maker/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    About the maker
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../techniek/" class="md-nav__link">
         
   
@@ -981,6 +1008,9 @@ macOS background indexing). All four engines faced the same
 load: PostgreSQL, SQLite and DuckDB measure within a few
 percent of their earlier figures, so the relative standings
 hold.)</em></p>
+<p>† NoodleDB and SQLite re-measured on November 7 after the update
+optimizer; PostgreSQL and DuckDB measured October 29 (unchanged
+versions).</p>
 <table>
 <thead>
 <tr>
@@ -993,10 +1023,10 @@ hold.)</em></p>
 </thead>
 <tbody>
 <tr>
-<td>Bulk load 100k rows</td>
-<td style="text-align: right;">182</td>
+<td>Bulk load 100k rows †</td>
+<td style="text-align: right;">177.6</td>
 <td style="text-align: right;">894</td>
-<td style="text-align: right;"><strong>119</strong></td>
+<td style="text-align: right;"><strong>106.9</strong></td>
 <td style="text-align: right;">2614</td>
 </tr>
 <tr>
@@ -1056,10 +1086,10 @@ hold.)</em></p>
 <td style="text-align: right;">-</td>
 </tr>
 <tr>
-<td>10k UPDATEs in 1 transaction</td>
-<td style="text-align: right;">56.4</td>
+<td>10k UPDATEs in 1 transaction †</td>
+<td style="text-align: right;"><strong>23.7</strong></td>
 <td style="text-align: right;">955</td>
-<td style="text-align: right;"><strong>37.8</strong></td>
+<td style="text-align: right;">33.8</td>
 <td style="text-align: right;">3816</td>
 </tr>
 </tbody>
@@ -1145,9 +1175,9 @@ a known optimization track.</p>
 PostgreSQL, 47x vs SQLite), joins (12-22x), aggregates (51x vs
 PostgreSQL, 141x vs SQLite), 2-hop graph counts (42x vs PostgreSQL,
 74x vs SQLite), text search (27-30x) and indexed text search. Where
-the others still win: bulk loading (1.5x) and small updates (1.5x),
-both versus SQLite - and over the wire protocols, point lookups trail
-SQLite's in-process call. That is exactly the improvement track.</p>
+the others still win: bulk loading (1.7x) versus SQLite - and over the
+wire protocols, point lookups trail SQLite's in-process call. That is
+exactly the improvement track.</p>
 <p>The wire-protocol table shows the same NoodleDB engine over the
 PostgreSQL and MySQL protocols, measured against servers written and
 compiled in NoodleCore itself: no Python in the hot path. Both
@@ -1210,8 +1240,9 @@ wait on disk or network gain little. That is why we port the slow parts,
 not whole programs, and why we publish the method behind every claim.</p>
 <h2 id="next-step">Next step</h2>
 <p>Want your own slow piece of code measured? Mail michael@noodlecore.io:
-we translate, measure and send you the report. A live sandbox where you can
-paste your own code is on the roadmap.</p>
+we translate, measure and send you the report. A place where you can type
+your own code comes later (phase 2 of the site); for now, you read along.
+More background: <a href="../over-de-maker/">about the maker</a>.</p>
 
 
 
