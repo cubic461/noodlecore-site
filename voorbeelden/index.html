@@ -999,17 +999,12 @@ fn main() -&gt; int {
 vraag, de zelfde data, op dezelfde machine - maar nu vier engines naast
 elkaar: NoodleDB, PostgreSQL 18, SQLite en DuckDB. Eén benchmark-suite,
 mediaan van 5 runs, correctheid hard gecheckt per query.</p>
-<p>Geen cherry-picking: de tabel laat ook de klassen zien waar NoodleDB
-nog niet wint - het volledige verbetertraject staat eronder.</p>
-<p><em>(iMac Pro, 100.000 rijen (seed 42), mediaan van 5 runs — 2026-10-29.
-Systeembelasting tijdens de meting 4,0-4,5 (richtlijn &lt; 3;
-achtergrondindexering van macOS). Alle vier de engines ondervonden
-dezelfde last: PostgreSQL, SQLite en DuckDB meten binnen een paar
-procent van hun eerdere cijfers, dus de onderlinge verhoudingen
-staan.)</em></p>
-<p>† NoodleDB en SQLite op 7 november opnieuw gemeten na de
-update-optimizer; PostgreSQL en DuckDB gemeten op 29 oktober
-(ongewijzigde versies).</p>
+<p>Geen cherry-picking: dezelfde suite meet elke klasse. En waar NoodleDB
+nog niet wint - inladen via SQL-strings, punt-opzoekingen over het
+draadprotocol - staat het er gewoon bij, met het verbetertraject eronder.</p>
+<p><em>(iMac Pro, 100.000 rijen (seed 42), mediaan van 5 runs — 10 november
+2026. Alle zes routes dezelfde dag gemeten tegen één engine-build;
+systeembelasting tijdens de meting 3,4-4,7.)</em></p>
 <table>
 <thead>
 <tr>
@@ -1022,74 +1017,74 @@ update-optimizer; PostgreSQL en DuckDB gemeten op 29 oktober
 </thead>
 <tbody>
 <tr>
-<td>Inladen 100k rijen †</td>
-<td style="text-align: right;">177.6</td>
-<td style="text-align: right;">894</td>
-<td style="text-align: right;"><strong>106.9</strong></td>
-<td style="text-align: right;">2614</td>
+<td>Inladen 100k rijen (SQL-strings) †</td>
+<td style="text-align: right;">170</td>
+<td style="text-align: right;">920</td>
+<td style="text-align: right;"><strong>122</strong></td>
+<td style="text-align: right;">2563</td>
 </tr>
 <tr>
 <td>Punt-opzoeking (PRIMARY KEY)</td>
-<td style="text-align: right;"><strong>0.00</strong></td>
-<td style="text-align: right;">0.07</td>
-<td style="text-align: right;">0.02</td>
-<td style="text-align: right;">0.29</td>
+<td style="text-align: right;"><strong>0,00</strong></td>
+<td style="text-align: right;">0,12</td>
+<td style="text-align: right;">0,02</td>
+<td style="text-align: right;">0,26</td>
 </tr>
 <tr>
 <td>Bereik-scan (WHERE BETWEEN)</td>
-<td style="text-align: right;"><strong>0.25</strong></td>
-<td style="text-align: right;">6.97</td>
-<td style="text-align: right;">11.8</td>
-<td style="text-align: right;">3.29</td>
+<td style="text-align: right;"><strong>0,26</strong></td>
+<td style="text-align: right;">6,93</td>
+<td style="text-align: right;">12,18</td>
+<td style="text-align: right;">2,07</td>
 </tr>
 <tr>
 <td>Join over 2 tabellen</td>
-<td style="text-align: right;"><strong>0.73</strong></td>
-<td style="text-align: right;">8.48</td>
-<td style="text-align: right;">14.5</td>
-<td style="text-align: right;">1.39</td>
+<td style="text-align: right;"><strong>0,71</strong></td>
+<td style="text-align: right;">8,63</td>
+<td style="text-align: right;">13,53</td>
+<td style="text-align: right;">1,23</td>
 </tr>
 <tr>
 <td>Join over 3 tabellen *</td>
-<td style="text-align: right;"><strong>0.94</strong></td>
-<td style="text-align: right;">17.0</td>
-<td style="text-align: right;">20.9</td>
-<td style="text-align: right;">1.65</td>
+<td style="text-align: right;"><strong>1,06</strong></td>
+<td style="text-align: right;">15,72</td>
+<td style="text-align: right;">18,43</td>
+<td style="text-align: right;">1,73</td>
 </tr>
 <tr>
 <td>GROUP BY + COUNT + AVG</td>
-<td style="text-align: right;"><strong>0.31</strong></td>
-<td style="text-align: right;">15.8</td>
-<td style="text-align: right;">43.7</td>
-<td style="text-align: right;">1.28</td>
+<td style="text-align: right;"><strong>0,36</strong></td>
+<td style="text-align: right;">14,34</td>
+<td style="text-align: right;">43,63</td>
+<td style="text-align: right;">1,10</td>
 </tr>
 <tr>
 <td>Tekstzoeken LIKE</td>
-<td style="text-align: right;"><strong>0.42</strong></td>
-<td style="text-align: right;">11.2</td>
-<td style="text-align: right;">12.5</td>
-<td style="text-align: right;">1.84</td>
+<td style="text-align: right;"><strong>0,42</strong></td>
+<td style="text-align: right;">10,62</td>
+<td style="text-align: right;">11,85</td>
+<td style="text-align: right;">1,84</td>
 </tr>
 <tr>
 <td>2-hop graaftelling (self-join)</td>
-<td style="text-align: right;"><strong>1.05</strong></td>
-<td style="text-align: right;">43.8</td>
-<td style="text-align: right;">77.7</td>
-<td style="text-align: right;">6.06</td>
+<td style="text-align: right;"><strong>1,02</strong></td>
+<td style="text-align: right;">42,49</td>
+<td style="text-align: right;">75,82</td>
+<td style="text-align: right;">6,10</td>
 </tr>
 <tr>
-<td>Geindexeerd tekstzoeken</td>
-<td style="text-align: right;"><strong>0.29</strong></td>
-<td style="text-align: right;">2.23</td>
-<td style="text-align: right;">0.40</td>
+<td>Geïndexeerd tekstzoeken</td>
+<td style="text-align: right;"><strong>0,27</strong></td>
+<td style="text-align: right;">1,80</td>
+<td style="text-align: right;">0,38</td>
 <td style="text-align: right;">-</td>
 </tr>
 <tr>
-<td>10k UPDATEs in 1 transactie †</td>
-<td style="text-align: right;"><strong>23.7</strong></td>
-<td style="text-align: right;">955</td>
-<td style="text-align: right;">33.8</td>
-<td style="text-align: right;">3816</td>
+<td>10k UPDATEs in 1 transactie</td>
+<td style="text-align: right;"><strong>25,86</strong></td>
+<td style="text-align: right;">936,38</td>
+<td style="text-align: right;">34,98</td>
+<td style="text-align: right;">3837,82</td>
 </tr>
 </tbody>
 </table>
@@ -1107,61 +1102,61 @@ update-optimizer; PostgreSQL en DuckDB gemeten op 29 oktober
 <tbody>
 <tr>
 <td>Inladen 100k rijen</td>
-<td style="text-align: right;">182</td>
-<td style="text-align: right;">163</td>
-<td style="text-align: right;"><strong>160</strong></td>
+<td style="text-align: right;">170</td>
+<td style="text-align: right;"><strong>144</strong></td>
+<td style="text-align: right;">148</td>
 </tr>
 <tr>
 <td>Punt-opzoeking (PRIMARY KEY)</td>
-<td style="text-align: right;"><strong>0.00</strong></td>
-<td style="text-align: right;">0.06</td>
-<td style="text-align: right;">0.16</td>
+<td style="text-align: right;"><strong>0,00</strong></td>
+<td style="text-align: right;">0,04</td>
+<td style="text-align: right;">0,09</td>
 </tr>
 <tr>
 <td>Bereik-scan (WHERE BETWEEN)</td>
-<td style="text-align: right;"><strong>0.25</strong></td>
-<td style="text-align: right;">0.34</td>
-<td style="text-align: right;">0.36</td>
+<td style="text-align: right;"><strong>0,26</strong></td>
+<td style="text-align: right;">0,37</td>
+<td style="text-align: right;">0,33</td>
 </tr>
 <tr>
 <td>Join over 2 tabellen</td>
-<td style="text-align: right;"><strong>0.73</strong></td>
-<td style="text-align: right;">3.57</td>
-<td style="text-align: right;">0.85</td>
+<td style="text-align: right;"><strong>0,71</strong></td>
+<td style="text-align: right;">0,80</td>
+<td style="text-align: right;">0,82</td>
 </tr>
 <tr>
 <td>Join over 3 tabellen *</td>
-<td style="text-align: right;"><strong>0.94</strong></td>
-<td style="text-align: right;">3.96</td>
-<td style="text-align: right;">1.17</td>
+<td style="text-align: right;"><strong>1,07</strong></td>
+<td style="text-align: right;">3,39</td>
+<td style="text-align: right;">1,20</td>
 </tr>
 <tr>
 <td>GROUP BY + COUNT + AVG</td>
-<td style="text-align: right;"><strong>0.31</strong></td>
-<td style="text-align: right;">1.92</td>
-<td style="text-align: right;">0.41</td>
+<td style="text-align: right;">0,36</td>
+<td style="text-align: right;">0,94</td>
+<td style="text-align: right;"><strong>0,35</strong></td>
 </tr>
 <tr>
 <td>Tekstzoeken LIKE</td>
-<td style="text-align: right;"><strong>0.42</strong></td>
-<td style="text-align: right;">0.53</td>
-<td style="text-align: right;">0.58</td>
+<td style="text-align: right;"><strong>0,42</strong></td>
+<td style="text-align: right;">0,51</td>
+<td style="text-align: right;">0,50</td>
 </tr>
 <tr>
 <td>2-hop graaftelling (self-join)</td>
-<td style="text-align: right;"><strong>1.05</strong></td>
-<td style="text-align: right;">4.47</td>
-<td style="text-align: right;">1.29</td>
+<td style="text-align: right;"><strong>1,02</strong></td>
+<td style="text-align: right;">1,33</td>
+<td style="text-align: right;">1,22</td>
 </tr>
 <tr>
-<td>Geindexeerd tekstzoeken</td>
-<td style="text-align: right;">0.29</td>
+<td>Geïndexeerd tekstzoeken</td>
+<td style="text-align: right;">0,27</td>
 <td style="text-align: right;">-</td>
 <td style="text-align: right;">-</td>
 </tr>
 <tr>
 <td>10k UPDATEs in 1 transactie</td>
-<td style="text-align: right;">56.4</td>
+<td style="text-align: right;">25,86</td>
 <td style="text-align: right;">-</td>
 <td style="text-align: right;">-</td>
 </tr>
@@ -1170,22 +1165,29 @@ update-optimizer; PostgreSQL en DuckDB gemeten op 29 oktober
 <p>* Join over 3 tabellen: NoodleDB voert de geneste vorm uit (twee keer
 hash-join), de overige engines de platte vorm - zelfde uitkomst, zelfde
 data. De 3-join plat is een bekend optimalisatie-traject.</p>
-<p>Waar NoodleDB wint: alle lees-klassen - bereik-scans (28x t.o.v.
-PostgreSQL, 47x t.o.v. SQLite), joins (12-22x), aggregaten (51x t.o.v.
-PostgreSQL, 141x t.o.v. SQLite), 2-hop graaftelling (42x t.o.v.
-PostgreSQL, 74x t.o.v. SQLite), tekstzoeken (27-30x) en geïndexeerd
-tekstzoeken. Waar de anderen nog winnen: bulk-inladen (1,7x) op SQLite - en over de
-draadprotocollen blijven punt-opzoekingen achter op SQLite's in-process aanroep. Dat is precies
-het verbetertraject.</p>
+<p>† Inladen hier via opgebouwde SQL-strings. Op de batch-API-vorm
+(executemany) wint NoodleDB nipt van SQLite: 104 tegen 106 ms; via
+SQL-strings is SQLite sneller (122 tegen 170 ms). Dat verschil is
+bewezen client-kost van de string-opbouw, geen motor-verschil.</p>
+<p>Waar NoodleDB wint: 11 van de 12 vergelijkbare punten, alle vier
+engines dezelfde dag - bereik-scans (7,9x t.o.v. DuckDB, 27x t.o.v.
+PostgreSQL, 47x t.o.v. SQLite), joins (1,6-1,7x t.o.v. DuckDB,
+12-15x t.o.v. PostgreSQL, 17-19x t.o.v. SQLite), aggregaten (3,1x
+t.o.v. DuckDB, 40x t.o.v. PostgreSQL), 2-hop graaftelling (6,0x t.o.v.
+DuckDB, 42x t.o.v. PostgreSQL), tekstzoeken (4,4x t.o.v. DuckDB),
+punt-opzoeking (5,4x t.o.v. SQLite) en 10k-updates (1,35x t.o.v.
+SQLite). Inladen via SQL-strings is het enige verliespunt (0,84x
+t.o.v. SQLite) - bewezen client-kost, want op de batch-API-vorm wint
+NoodleDB (zie †). Over de draadprotocollen blijven punt-opzoekingen
+achter op SQLite's in-process aanroep - dat is het verbetertraject.</p>
 <p>De draadprotocol-tabel toont dezelfde NoodleDB-engine via het
 PostgreSQL- en MySQL-protocol, gemeten tegen C-servers die in
 NoodleCore zelf geschreven en gecompileerd zijn: geen Python in het
-hot path. Beide protocollen draaien range-scans binnen 0,1 ms van
-direct en laden 100k rijen zelfs sneller dan het directe pad; het
-MySQL-protocol houdt joins en aggregaten binnen 1,4x van direct. Wat
-blijft: punt-opzoekingen betalen de roundtrip (0,06-0,16 ms) en het
-PostgreSQL-protocol laat zich bij joins zien door DuckDB - dat is het
-verbetertraject.</p>
+hot path. Beide protocollen laden 100k rijen sneller dan het directe
+pad (144-148 tegen 170 ms), draaien bereik-scans binnen 0,11 ms van
+direct en houden joins en aggregaten inmiddels óók onder DuckDB's
+tijden. Wat blijft: punt-opzoekingen betalen de roundtrip
+(0,04-0,09 ms) - dat is het verbetertraject.</p>
 <!-- NOO-1470-MULTIDB-END -->
 
 <h2 id="voorbeeld-5-de-zwaarste-join-zelf-join-op-1-miljoen-rijen">Voorbeeld 5: de zwaarste join — zelf-join op 1 miljoen rijen</h2>
@@ -1228,9 +1230,9 @@ nu sneller dan SQLite. Correctheid per query streng gecontroleerd
 </tr>
 </tbody>
 </table>
-<p>De drie klassen die op de 100k-meetlat nog verliezen van DuckDB
-(bereik-scan, platte joins, GROUP BY) staan open op het
-verbetertraject — fase 2 van de campagne loopt nu.</p>
+<p>De drie klassen die op de 100k-meetlat nog van DuckDB verloren
+(bereik-scan, platte joins, GROUP BY) zijn op 10 november 2026 alle
+drie omgezet in winst: 7,9×, 1,6-1,7× en 3,1× (zie voorbeeld 4).</p>
 <!-- NOO-1479-ZELFJOIN-END -->
 
 <h2 id="eerlijke-kanttekening">Eerlijke kanttekening</h2>

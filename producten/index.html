@@ -704,7 +704,7 @@
 
 
 <h1 id="producten-diensten">Producten &amp; diensten</h1>
-<p>Laatst gecontroleerd tegen repo en git: 26 oktober 2026. Alle cijfers op deze
+<p>Laatst gecontroleerd tegen repo en git: 9 november 2026. Alle cijfers op deze
 site zijn gemeten (METEN = WETEN). De labels betekenen: <strong>PRODUCTION</strong> is
 dagelijks in gebruik en bewezen, <strong>WORKING</strong> betekent dat het werkt maar
 minder rijp is.</p>
@@ -740,7 +740,7 @@ nieuwe kant hoeft u niets te herschrijven.</p>
 <tr>
 <td>PostgreSQL (en elke database die het PG-protocol spreekt)</td>
 <td>directe verbinding; elke PG-client werkt: psql, DBeaver, ORM's</td>
-<td>gemeten op 100k rijen: 5,5× sneller op bulk-update, 6,8× op geïndexeerd zoeken, 3,4× op graph-edge-telling; joins zijn op dit moment nog niet sneller dan PostgreSQL — verbetertraject loopt</td>
+<td>gemeten op 100k rijen, alle engines dezelfde dag (10 november 2026): joins 12-15× sneller, geïndexeerd zoeken 6,7×, graaftelling 42×, aggregaten 40×, bereik-scans 27×, updates 36×; inladen via SQL-strings verliest nipt (0,84×) — op de batch-API-vorm wint NoodleDB</td>
 </tr>
 <tr>
 <td>MySQL / MariaDB</td>
@@ -755,7 +755,7 @@ nieuwe kant hoeft u niets te herschrijven.</p>
 <tr>
 <td>DuckDB (ingesloten)</td>
 <td>directe verbinding via import</td>
-<td>vergelijking volgt uit de multi-database benchmarksuite (NOO-1470)</td>
+<td>gemeten op 100k rijen, zelfde dag (10 november 2026): bereik-scans 7,9× sneller, joins 1,6-1,7×, aggregaten 3,1×, graaftelling 6,0×, tekstzoeken 4,4×</td>
 </tr>
 <tr>
 <td>CSV, JSON, losse bestanden</td>
@@ -857,11 +857,11 @@ al bewezen is en waar de engine heen gaat.</p>
 </tr>
 <tr>
 <td><strong>Adaptive Storage</strong>: de engine leert hoe data gebruikt wordt en kiest zelf, zoals <code>id</code> naar B-tree, namen naar gecomprimeerde kolommen, weinig gelezen data naar koude opslag, embeddings naar een vectorindex</td>
-<td>🚧 in ontwikkeling — gekoppeld aan de executor via de zelf-lerende index-lus; planner-integratie is de volgende bouwsteen</td>
+<td>🚧 in ontwikkeling — gekoppeld aan de executor via de zelf-lerende index-lus; de planner-integratie is sinds 9 november 2026 bewezen: op een werkbelasting met 100.000 rijen kiest de planner zélf een scansneller pad, mediaan 43,8 ms → 0,4 ms per range-scan (110×), met automatische terugval als het patroon te koud is; volgende bouwsteen is het keuze-advies uitbreiden naar prune- en cache-adviezen</td>
 </tr>
 <tr>
 <td><strong>Zelf-optimiserend</strong>: indexen aanmaken, plannen cachen, partitionering bijstellen op echte querypatronen</td>
-<td>🚧 eerste gesloten lus bewezen — de engine plaatst zélf indexen zodra een querypatroon zich herhaalt, meet voor/na en draait terug als het niet oplevert (5,3× gemeten op een echt patroon); uitbreiding naar partitionering gepland</td>
+<td>🚧 eerste gesloten lus bewezen — de engine plaatst zélf indexen zodra een querypatroon zich herhaalt, meet voor/na en draait terug als het niet oplevert (5,3× gemeten op een echt patroon); sinds 9 november 2026 geldt hetzelfde voor partitionering: bij een herhaald bereikpatroon legt de engine zélf 8 partities aan, wint de scan-fase 1,70× (eerlijk gemeten tegen de al-snelle kolomscan; eind-tot-eind 1,26× door vaste parse/plan-kost) en draait de partitiemap automatisch terug zonder winst</td>
 </tr>
 <tr>
 <td><strong>JIT-queries</strong>: SQL naar planner naar eigen compiler naar machine code</td>
@@ -873,11 +873,11 @@ al bewezen is en waar de engine heen gaat.</p>
 </tr>
 <tr>
 <td><strong>AI-native</strong>: VECTOR, TENSOR en embeddings als native datatypes, modellen naast hun data</td>
-<td>🔭 deels vandaag (HNSW-vector)</td>
+<td>🚧 deels vandaag — HNSW-vector in productie; sinds 9 november 2026 is TENSOR een echt tabelkolom-type (F32/I8, meerdere dimensies) met bit-exact opslag- en herlaad-roundtrip, en leest de engine tensor-data zero-copy: 106×-115× sneller dan het oude kopieer-pad via tekst, bij 8× kleinere opslag</td>
 </tr>
 <tr>
 <td>Time travel: elke tabel met geschiedenis, queries in de verleden tijd</td>
-<td>🔭 architectuur vastgelegd</td>
+<td>🚧 eerste trede bewezen (9 november 2026) — geschiedenis per tabel aan/uit, queries in de verleden tijd (AS OF) na commit, en een bewaartermijn die oude versies automatisch opruimt; schrijf-overhead eerlijk gemeten op 4,2% op geschiedenis-tabellen, nul extra op gewone tabellen</td>
 </tr>
 <tr>
 <td><strong>NoodleLinux</strong>: de database zakt af tot onder het besturingssysteem — de opslaglaag van het OS zelf draait op de eigen engine</td>

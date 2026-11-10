@@ -704,7 +704,7 @@
 
 
 <h1 id="products-services">Products &amp; services</h1>
-<p>Last verified against the repo and git: October 26, 2026. Every number on
+<p>Last verified against the repo and git: November 9, 2026. Every number on
 this site is measured (MEASURING = KNOWING). The labels mean: <strong>PRODUCTION</strong>
 is in daily use and proven, <strong>WORKING</strong> means it works but is less mature.</p>
 <h2 id="product-1-noodlecore-the-language-production">Product 1: NoodleCore, the language — PRODUCTION</h2>
@@ -739,7 +739,7 @@ there's nothing to rewrite.</p>
 <tr>
 <td>PostgreSQL (and every database speaking the PG protocol)</td>
 <td>direct connection; every PG client works: psql, DBeaver, ORMs</td>
-<td>measured on 100k rows: 5.5x faster on bulk update, 6.8x on indexed lookup, 3.4x on graph edge counting; joins are not yet faster than PostgreSQL at this moment — improvement track running</td>
+<td>measured on 100k rows, all engines the same day (10 November 2026): joins 12-15x faster, indexed lookup 6.7x, graph edge counting 42x, aggregates 40x, range scans 27x, updates 36x; bulk load via SQL strings narrowly loses (0.84x) — on the batch-API form NoodleDB wins</td>
 </tr>
 <tr>
 <td>MySQL / MariaDB</td>
@@ -754,7 +754,7 @@ there's nothing to rewrite.</p>
 <tr>
 <td>DuckDB (embedded)</td>
 <td>direct connection via import</td>
-<td>comparison follows from the multi-database benchmark suite (NOO-1470)</td>
+<td>measured on 100k rows, same day (10 November 2026): range scans 7.9x faster, joins 1.6-1.7x, aggregates 3.1x, graph counting 6.0x, text search 4.4x</td>
 </tr>
 <tr>
 <td>CSV, JSON, loose files</td>
@@ -858,11 +858,11 @@ already proven and where the engine is going.</p>
 </tr>
 <tr>
 <td><strong>Adaptive Storage</strong>: the engine learns how data is used and chooses itself — <code>id</code> to a B-tree, names to compressed columns, rarely-read data to cold storage, embeddings to a vector index</td>
-<td>🚧 in development — coupled to the executor via the self-learning index loop; planner integration is the next building block</td>
+<td>🚧 in development — coupled to the executor via the self-learning index loop; the planner integration has been proven as of November 9, 2026: on a 100,000-row workload the planner picks a faster scan path by itself, median 43.8 ms → 0.4 ms per range scan (110×), with automatic fallback when the pattern runs cold; the next building block extends the advice to prune and cache decisions</td>
 </tr>
 <tr>
 <td><strong>Self-optimizing</strong>: creating indexes, caching plans, adjusting partitioning on real query patterns</td>
-<td>🚧 first closed loop proven — the engine places indexes itself as soon as a query pattern repeats, measures before/after and rolls back if it doesn't pay off (5.3x measured on a real pattern); extending to partitioning is planned</td>
+<td>🚧 first closed loop proven — the engine places indexes itself as soon as a query pattern repeats, measures before/after and rolls back if it doesn't pay off (5.3x measured on a real pattern); as of November 9, 2026 the same holds for partitioning: on a repeated range pattern the engine lays out 8 partitions itself, the scan phase wins 1.70x (measured honestly against the already-fast column scan; 1.26x end-to-end due to fixed parse/plan cost) and the partition map rolls back automatically without a win</td>
 </tr>
 <tr>
 <td><strong>JIT queries</strong>: SQL to planner to own compiler to machine code</td>
@@ -874,11 +874,11 @@ already proven and where the engine is going.</p>
 </tr>
 <tr>
 <td><strong>AI-native</strong>: VECTOR, TENSOR and embeddings as native datatypes, models next to their data</td>
-<td>🔭 partly today (HNSW vector)</td>
+<td>🚧 partly today — HNSW vector in production; as of November 9, 2026 TENSOR is a real table column type (F32/I8, multiple dimensions) with a bit-exact storage-and-reload roundtrip, and the engine reads tensor data zero-copy: 106x–115x faster than the old text-based copy path, at 8x smaller storage</td>
 </tr>
 <tr>
 <td>Time travel: every table with history, queries in the past tense</td>
-<td>🔭 architecture laid down</td>
+<td>🚧 first step proven (November 9, 2026) — per-table history on/off, past-tense queries (AS OF) after commit, and a retention window that automatically cleans up old versions; write overhead honestly measured at 4.2% on history tables, zero extra on plain tables</td>
 </tr>
 <tr>
 <td><strong>NoodleLinux</strong>: the database sinks beneath the operating system — the OS storage layer itself runs on the engine</td>

@@ -780,7 +780,7 @@ C-backend stdlib       240/240          100% compileerbaar
 LLVM-backend stdlib    309/309          100%, bit-exact vs C-backend (18/18)
 Self-hosting           bewezen          compiler compileert zichzelf, 228/228 modules
 NIST COBOL-suite       459/459          100% geslaagd
-NoodleDB vs SQLite     tot 141×          sneller op lees-klassen (A/B, identieke machines)
+NoodleDB vs SQLite     tot 121×          sneller op lees-klassen (één dag, één build, 10 november 2026)
 NDB-assimilatie        190.267 rijen    productie-data, count-edges 55× → 391×
 Eigen AI-kernels       41,7 tok/s       bit-exact, GPU van 2017 (AMD Vega 56)
 </code></pre>
@@ -806,11 +806,12 @@ graph, vector-search en full-text zitten in dezelfde engine: geen
 driver, geen connector, geen tweede taal. Elke PostgreSQL-client kan
 rechtstreeks verbinden; elke MySQL-client sluit aan op het
 MySQL-protocol. Data uit SQLite, PostgreSQL en MySQL importeer je
-zomaar mee. Op leesvragen tot 141× sneller dan SQLite (bereik-scans,
-joins, aggregaten, graaftellingen; A/B op identieke machines, mediaan
-van 5). Kleine updates zijn sinds november 2026 zelf sneller dan SQLite;
-bulk-inladen zit binnen 1,7× - het verbetertraject staat op de
-voorbeelden-pagina.</p>
+zomaar mee. Op leesvragen tot 121× sneller dan SQLite (bereik-scans,
+joins, aggregaten, graaftellingen; alle engines dezelfde dag gemeten,
+mediaan van 5). Kleine updates zijn sinds november 2026 zelf sneller
+dan SQLite; bulk-inladen via de batch-API is eveneens sneller dan
+SQLite (mediaan van 5, 10 november 2026) - de volledige tabellen
+staan op de voorbeelden-pagina.</p>
 <h2 id="geheugen">Geheugen</h2>
 <ul>
 <li>Gebruikerscode schrijft nooit zelf geheugen toe of vrij: de runtime
@@ -820,7 +821,7 @@ voorbeelden-pagina.</p>
   één handmatige geheugenverklaring.</li>
 <li>Type-mismatch op getal-buffers is een harde compileerfout (4
   richtingen afgedekt, met bestand:regel:kolom) — een vergissing kan
-  nooit meer stil als 0 teruggelezen worden (NOO-1700, pitfall P25).</li>
+  nooit meer stil als 0 teruggelezen worden.</li>
 </ul>
 <h2 id="ai-kernels">AI-kernels</h2>
 <p>NoodleCore zelf bevat geen model en stuurt niets naar buiten. Wil je
