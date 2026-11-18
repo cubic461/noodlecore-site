@@ -488,33 +488,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../faq/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    FAQ
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../over-de-maker/" class="md-nav__link">
         
   
@@ -731,7 +704,7 @@
 
 
 <h1 id="producten-diensten">Producten &amp; diensten</h1>
-<p>Laatst gecontroleerd tegen repo en git: 9 november 2026. Alle cijfers op deze
+<p>Laatst gecontroleerd tegen repo en git: 18 november 2026. Alle cijfers op deze
 site zijn gemeten (METEN = WETEN). De labels betekenen: <strong>PRODUCTION</strong> is
 dagelijks in gebruik en bewezen, <strong>WORKING</strong> betekent dat het werkt maar
 minder rijp is.</p>
@@ -755,6 +728,12 @@ langzaam in te groeien. Applicaties op PostgreSQL en MySQL verbinden zonder
 dat u code aanpast. Data uit SQLite, PostgreSQL en MySQL importeert u met
 één commando. Aan de oude kant bent u niet vast aan een leverancier, aan de
 nieuwe kant hoeft u niets te herschrijven.</p>
+<p><strong>Op de eigen benchmark-matrix is NoodleDB vandaag de snelste van de vier gemeten
+engines.</strong> Gemeten op 100.000 rijen, alle engines dezelfde dag (10 november 2026):
+NoodleDB wint 11 van de 12 queryklassen van PostgreSQL, SQLite en DuckDB. De enige
+uitzondering is bulk-invoer, waar SQLite 1,4× voorsprong houdt — aan dichtlopen
+gewerkt. Op de analytics-suite van 1 miljoen rijen wint NoodleDB alle 16
+queryklassen van SQLite.</p>
 <table>
 <thead>
 <tr>
@@ -883,20 +862,32 @@ al bewezen is en waar de engine heen gaat.</p>
 <td>✅ bewezen — 3-node Raft-cluster op echte hardware (drie machines over TCP), 500/500 quorum-commits, nieuwe leader na kill in 222 ms</td>
 </tr>
 <tr>
-<td><strong>Adaptive Storage</strong>: de engine leert hoe data gebruikt wordt en kiest zelf, zoals <code>id</code> naar B-tree, namen naar gecomprimeerde kolommen, weinig gelezen data naar koude opslag, embeddings naar een vectorindex</td>
-<td>🚧 in ontwikkeling — gekoppeld aan de executor via de zelf-lerende index-lus; de planner-integratie is sinds 9 november 2026 bewezen: op een werkbelasting met 100.000 rijen kiest de planner zélf een scansneller pad, mediaan 43,8 ms → 0,4 ms per range-scan (110×), met automatische terugval als het patroon te koud is; volgende bouwsteen is het keuze-advies uitbreiden naar prune- en cache-adviezen</td>
-</tr>
-<tr>
-<td><strong>Zelf-optimiserend</strong>: indexen aanmaken, plannen cachen, partitionering bijstellen op echte querypatronen</td>
-<td>🚧 eerste gesloten lus bewezen — de engine plaatst zélf indexen zodra een querypatroon zich herhaalt, meet voor/na en draait terug als het niet oplevert (5,3× gemeten op een echt patroon); sinds 9 november 2026 geldt hetzelfde voor partitionering: bij een herhaald bereikpatroon legt de engine zélf 8 partities aan, wint de scan-fase 1,70× (eerlijk gemeten tegen de al-snelle kolomscan; eind-tot-eind 1,26× door vaste parse/plan-kost) en draait de partitiemap automatisch terug zonder winst</td>
-</tr>
-<tr>
 <td><strong>JIT-queries</strong>: SQL naar planner naar eigen compiler naar machine code</td>
 <td>✅ bewezen — 25,6× sneller dan het interpreter-pad, gemeten in een A/B-test, met automatische terugval naar de interpreter; nog niet standaard aangezet</td>
 </tr>
 <tr>
+<td><strong>Kosten-gestuurde planner</strong>: de planner kiest zelf het goedkoopste plan op echte statistieken (selectiviteit per promille), met de adaptieve laag als automatische terugval</td>
+<td>✅ bewezen — 17,2× snellere koude start dan de adaptieve laag, gemeten in een A/B-test; beslist op gemeten kosten in plaats van regels</td>
+</tr>
+<tr>
 <td><strong>Vectorized execution</strong>: kolomsgewijs rekenen in SIMD-batches voor analytics</td>
-<td>✅ bewezen — 2,1×-2,4× sneller op analytics-queries over 1 miljoen rijen; een group-by over 632.117 groepen daalde van ruim 40 minuten naar 1,7 seconde</td>
+<td>✅ bewezen — 2,1×-2,4× sneller dan het regel-voor-regel pad in dezelfde engine, op analytics-queries over 1 miljoen rijen; een GROUP BY-query die 632.117 groepen aggregeert, rekent die in 1,7 seconde</td>
+</tr>
+<tr>
+<td><strong>Columnar storage</strong>: kolom-opslag als eerste-klas opslagmodel naast rij-opslag</td>
+<td>✅ bewezen — koude bereik-scans 6,6× sneller dan rij-opslag, koude aggregaten 5,5×, gemeten in een A/B-test; de kolom-cache draait in productie</td>
+</tr>
+<tr>
+<td><strong>Mmap-opslag</strong>: tabellen rechtstreeks in het geheugen gemapt, zonder kopieerlaag tussen bestand en engine</td>
+<td>✅ bewezen — zero-copy toegang op query-snelheid gelijk aan rij-opslag, crash-herstel bewezen (5/5 kill-scenario's bit-exact hersteld); bulk-invoer is 2,1× trager omdat elke statement direct duurzaam wordt weggeschreven</td>
+</tr>
+<tr>
+<td><strong>Adaptive Storage</strong>: de engine leert hoe data gebruikt wordt en kiest zelf, zoals <code>id</code> naar B-tree, namen naar gecomprimeerde kolommen, weinig gelezen data naar koude opslag, embeddings naar een vectorindex</td>
+<td>🚧 in ontwikkeling — gekoppeld aan de executor via de zelf-lerende index-lus; de planner-integratie is sinds 9 november 2026 bewezen: op een werkbelasting met 100.000 rijen kiest de planner zélf een scansneller pad — een range-scan duurt dan mediaan 0,4 ms, 110× sneller dan de gewone scan zonder planner-keuze — met automatische terugval als het patroon te koud is; volgende bouwsteen is het keuze-advies uitbreiden naar prune- en cache-adviezen</td>
+</tr>
+<tr>
+<td><strong>Zelf-optimiserend</strong>: indexen aanmaken, plannen cachen, partitionering bijstellen op echte querypatronen</td>
+<td>🚧 eerste gesloten lus bewezen — de engine plaatst zélf indexen zodra een querypatroon zich herhaalt, meet voor/na en draait terug als het niet oplevert (de query wordt dan 5,3× sneller, gemeten op een echt patroon); sinds 9 november 2026 geldt hetzelfde voor partitionering: bij een herhaald bereikpatroon legt de engine zélf 8 partities aan, wint de scan-fase 1,70× (eerlijk gemeten tegen de al-snelle kolomscan; eind-tot-eind 1,26× door vaste parse/plan-kost) en draait de partitiemap automatisch terug zonder winst</td>
 </tr>
 <tr>
 <td><strong>AI-native</strong>: VECTOR, TENSOR en embeddings als native datatypes, modellen naast hun data</td>

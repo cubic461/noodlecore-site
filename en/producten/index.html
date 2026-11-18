@@ -488,33 +488,6 @@
   
   
     <li class="md-nav__item">
-      <a href="../faq/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    FAQ
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-    
-      
-      
-  
-  
-  
-  
-    <li class="md-nav__item">
       <a href="../over-de-maker/" class="md-nav__link">
         
   
@@ -731,7 +704,7 @@
 
 
 <h1 id="products-services">Products &amp; services</h1>
-<p>Last verified against the repo and git: November 9, 2026. Every number on
+<p>Last verified against the repo and git: November 18, 2026. Every number on
 this site is measured (MEASURING = KNOWING). The labels mean: <strong>PRODUCTION</strong>
 is in daily use and proven, <strong>WORKING</strong> means it works but is less mature.</p>
 <h2 id="product-1-noodlecore-the-language-production">Product 1: NoodleCore, the language — PRODUCTION</h2>
@@ -754,6 +727,12 @@ gradually. Applications on PostgreSQL and MySQL connect without changing
 your code. Data from SQLite, PostgreSQL and MySQL imports with a single
 command. On the old side you're not locked to one vendor; on the new side
 there's nothing to rewrite.</p>
+<p><strong>On our benchmark matrix NoodleDB is today the fastest of the four measured
+engines.</strong> Measured on 100,000 rows, all engines the same day (10 November 2026):
+NoodleDB wins 11 of the 12 query classes against PostgreSQL, SQLite and DuckDB.
+The only exception is bulk insert, where SQLite keeps a 1.4× lead — closing that
+gap is underway. On the 1-million-row analytics suite NoodleDB wins all 16 query
+classes against SQLite.</p>
 <table>
 <thead>
 <tr>
@@ -884,20 +863,32 @@ already proven and where the engine is going.</p>
 <td>✅ proven — 3-node Raft cluster on real hardware (three machines over TCP), 500/500 quorum commits, new leader after a kill in 222 ms</td>
 </tr>
 <tr>
-<td><strong>Adaptive Storage</strong>: the engine learns how data is used and chooses itself — <code>id</code> to a B-tree, names to compressed columns, rarely-read data to cold storage, embeddings to a vector index</td>
-<td>🚧 in development — coupled to the executor via the self-learning index loop; the planner integration has been proven as of November 9, 2026: on a 100,000-row workload the planner picks a faster scan path by itself, median 43.8 ms → 0.4 ms per range scan (110×), with automatic fallback when the pattern runs cold; the next building block extends the advice to prune and cache decisions</td>
-</tr>
-<tr>
-<td><strong>Self-optimizing</strong>: creating indexes, caching plans, adjusting partitioning on real query patterns</td>
-<td>🚧 first closed loop proven — the engine places indexes itself as soon as a query pattern repeats, measures before/after and rolls back if it doesn't pay off (5.3x measured on a real pattern); as of November 9, 2026 the same holds for partitioning: on a repeated range pattern the engine lays out 8 partitions itself, the scan phase wins 1.70x (measured honestly against the already-fast column scan; 1.26x end-to-end due to fixed parse/plan cost) and the partition map rolls back automatically without a win</td>
-</tr>
-<tr>
 <td><strong>JIT queries</strong>: SQL to planner to own compiler to machine code</td>
 <td>✅ proven — 25.6x faster than the interpreter path, measured in an A/B test, with automatic fallback to the interpreter; not enabled by default yet</td>
 </tr>
 <tr>
+<td><strong>Cost-based planner</strong>: the planner picks the cheapest plan itself, based on real statistics (selectivity per mille), with the adaptive layer as automatic fallback</td>
+<td>✅ proven — 17.2× faster cold start than the adaptive layer, measured in an A/B test; decides on measured costs instead of rules</td>
+</tr>
+<tr>
 <td><strong>Vectorized execution</strong>: column-wise computing in SIMD batches for analytics</td>
-<td>✅ proven — 2.1x–2.4x faster on analytics queries over 1 million rows; a group-by over 632,117 groups dropped from over 40 minutes to 1.7 seconds</td>
+<td>✅ proven — 2.1x–2.4x faster than the row-by-row path in the same engine, on analytics queries over 1 million rows; a GROUP BY query aggregating 632,117 groups computes them in 1.7 seconds</td>
+</tr>
+<tr>
+<td><strong>Columnar storage</strong>: column storage as a first-class storage model next to row storage</td>
+<td>✅ proven — cold range scans 6.6× faster than row storage, cold aggregates 5.5×, measured in an A/B test; the column cache runs in production</td>
+</tr>
+<tr>
+<td><strong>Mmap storage</strong>: tables mapped directly into memory, without a copy layer between file and engine</td>
+<td>✅ proven — zero-copy access at query speed equal to row storage, crash recovery proven (5/5 kill scenarios recovered bit-exact); bulk insert is 2.1× slower because every statement is made durable immediately</td>
+</tr>
+<tr>
+<td><strong>Adaptive Storage</strong>: the engine learns how data is used and chooses itself — <code>id</code> to a B-tree, names to compressed columns, rarely-read data to cold storage, embeddings to a vector index</td>
+<td>🚧 in development — coupled to the executor via the self-learning index loop; the planner integration has been proven as of November 9, 2026: on a 100,000-row workload the planner picks a faster scan path by itself — a range scan then takes a median of 0.4 ms, 110× faster than the plain scan without planner choice — with automatic fallback when the pattern runs cold; the next building block extends the advice to prune and cache decisions</td>
+</tr>
+<tr>
+<td><strong>Self-optimizing</strong>: creating indexes, caching plans, adjusting partitioning on real query patterns</td>
+<td>🚧 first closed loop proven — the engine places indexes itself as soon as a query pattern repeats, measures before/after and rolls back if it doesn't pay off (the query then becomes 5.3x faster, measured on a real pattern); as of November 9, 2026 the same holds for partitioning: on a repeated range pattern the engine lays out 8 partitions itself, the scan phase wins 1.70x (measured honestly against the already-fast column scan; 1.26x end-to-end due to fixed parse/plan cost) and the partition map rolls back automatically without a win</td>
 </tr>
 <tr>
 <td><strong>AI-native</strong>: VECTOR, TENSOR and embeddings as native datatypes, models next to their data</td>
