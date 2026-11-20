@@ -434,6 +434,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../download/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Download
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../cobol-porting/" class="md-nav__link">
         
   
@@ -777,7 +804,7 @@ classes against SQLite.</p>
 <tr>
 <td>MySQL / MariaDB</td>
 <td>import via mysqldump into NDB; <strong>direct connection over the MySQL protocol is available</strong></td>
-<td>importer: 120k rows error-free; MySQL protocol connected (63/63 checks); versus the PG protocol route it differs per query class: text search 88% and GROUP BY 54% faster, joins 5-7% slower, point lookups up to 54% slower (measurement in example 4)</td>
+<td>importer: 120k rows error-free; MySQL protocol connected (63/63 checks); versus the PG protocol route the MySQL route wins on heavier queries: 3-join 62% faster, GROUP BY 41% faster, graph count 14% faster, bulk load 29% faster; point lookups are 37% slower (measurement in example 4)</td>
 </tr>
 <tr>
 <td>SQLite (embedded)</td>

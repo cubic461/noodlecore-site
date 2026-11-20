@@ -343,6 +343,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../download/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Downloaden
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../cobol-porting/" class="md-nav__link">
         
   
@@ -1029,9 +1056,11 @@ mediaan van 5 runs, correctheid hard gecheckt per query.</p>
 <p>Geen cherry-picking: dezelfde suite meet elke klasse. En waar NoodleDB
 nog niet wint - inladen via SQL-strings, punt-opzoekingen over het
 draadprotocol - staat het er gewoon bij, met het verbetertraject eronder.</p>
-<p><em>(iMac Pro, 100.000 rijen (seed 42), mediaan van 5 runs — 10 november
-2026. Alle zes routes dezelfde dag gemeten tegen één engine-build;
-systeembelasting tijdens de meting 3,4-4,7.)</em></p>
+<p><em>(iMac Pro, 100.000 rijen (seed 42), mediaan van 5 runs — de
+vier-engines-tabel op 10 november 2026, de draadprotocol-tabel op 19
+november 2026 (zelfde machine, één engine-build per dag, alle routes
+binnen één dag in één venster gemeten; belasting respectievelijk
+3,4-4,7 en ~4,1).)</em></p>
 <table>
 <thead>
 <tr>
@@ -1129,51 +1158,51 @@ systeembelasting tijdens de meting 3,4-4,7.)</em></p>
 <tbody>
 <tr>
 <td>Inladen 100k rijen</td>
-<td style="text-align: right;">170</td>
-<td style="text-align: right;"><strong>144</strong></td>
-<td style="text-align: right;">148</td>
+<td style="text-align: right;"><strong>166</strong></td>
+<td style="text-align: right;">377</td>
+<td style="text-align: right;">269</td>
 </tr>
 <tr>
 <td>Punt-opzoeking (PRIMARY KEY)</td>
 <td style="text-align: right;"><strong>0,00</strong></td>
-<td style="text-align: right;">0,04</td>
-<td style="text-align: right;">0,09</td>
+<td style="text-align: right;">0,17</td>
+<td style="text-align: right;">0,23</td>
 </tr>
 <tr>
 <td>Bereik-scan (WHERE BETWEEN)</td>
-<td style="text-align: right;"><strong>0,26</strong></td>
-<td style="text-align: right;">0,37</td>
-<td style="text-align: right;">0,33</td>
+<td style="text-align: right;"><strong>0,28</strong></td>
+<td style="text-align: right;">0,40</td>
+<td style="text-align: right;">0,44</td>
 </tr>
 <tr>
 <td>Join over 2 tabellen</td>
-<td style="text-align: right;"><strong>0,71</strong></td>
-<td style="text-align: right;">0,80</td>
-<td style="text-align: right;">0,82</td>
+<td style="text-align: right;"><strong>0,72</strong></td>
+<td style="text-align: right;">0,96</td>
+<td style="text-align: right;">0,97</td>
 </tr>
 <tr>
 <td>Join over 3 tabellen *</td>
-<td style="text-align: right;"><strong>1,07</strong></td>
-<td style="text-align: right;">3,39</td>
-<td style="text-align: right;">1,20</td>
+<td style="text-align: right;"><strong>1,22</strong></td>
+<td style="text-align: right;">3,30</td>
+<td style="text-align: right;">1,27</td>
 </tr>
 <tr>
 <td>GROUP BY + COUNT + AVG</td>
-<td style="text-align: right;">0,36</td>
-<td style="text-align: right;">0,94</td>
-<td style="text-align: right;"><strong>0,35</strong></td>
+<td style="text-align: right;"><strong>0,43</strong></td>
+<td style="text-align: right;">0,99</td>
+<td style="text-align: right;">0,59</td>
 </tr>
 <tr>
 <td>Tekstzoeken LIKE</td>
-<td style="text-align: right;"><strong>0,42</strong></td>
-<td style="text-align: right;">0,51</td>
-<td style="text-align: right;">0,50</td>
+<td style="text-align: right;"><strong>0,49</strong></td>
+<td style="text-align: right;">0,81</td>
+<td style="text-align: right;">0,85</td>
 </tr>
 <tr>
 <td>2-hop graaftelling (self-join)</td>
-<td style="text-align: right;"><strong>1,02</strong></td>
-<td style="text-align: right;">1,33</td>
-<td style="text-align: right;">1,22</td>
+<td style="text-align: right;"><strong>1,08</strong></td>
+<td style="text-align: right;">1,64</td>
+<td style="text-align: right;">1,41</td>
 </tr>
 <tr>
 <td>Geïndexeerd tekstzoeken</td>
@@ -1183,7 +1212,7 @@ systeembelasting tijdens de meting 3,4-4,7.)</em></p>
 </tr>
 <tr>
 <td>10k UPDATEs in 1 transactie</td>
-<td style="text-align: right;">25,86</td>
+<td style="text-align: right;">21,30</td>
 <td style="text-align: right;">-</td>
 <td style="text-align: right;">-</td>
 </tr>
@@ -1208,13 +1237,13 @@ t.o.v. SQLite) - bewezen client-kost, want op de batch-API-vorm wint
 NoodleDB (zie †). Over de draadprotocollen blijven punt-opzoekingen
 achter op SQLite's in-process aanroep - dat is het verbetertraject.</p>
 <p>De draadprotocol-tabel toont dezelfde NoodleDB-engine via het
-PostgreSQL- en MySQL-protocol, gemeten tegen C-servers die in
-NoodleCore zelf geschreven en gecompileerd zijn: geen Python in het
-hot path. Beide protocollen laden 100k rijen sneller dan het directe
-pad (144-148 tegen 170 ms), draaien bereik-scans binnen 0,11 ms van
-direct en houden joins en aggregaten inmiddels óók onder DuckDB's
-tijden. Wat blijft: punt-opzoekingen betalen de roundtrip
-(0,04-0,09 ms) - dat is het verbetertraject.</p>
+PostgreSQL- en MySQL-protocol, één meetrun op één engine-build met de
+directe route ernaast. Over het protocol blijft de engine herkenbaar:
+bereik-scans draaien binnen 0,16 ms van direct, joins over 2 tabellen
+binnen 0,25 ms, en de MySQL-route houdt de 3-join binnen 0,06 ms van
+direct. Wat blijft: punt-opzoekingen betalen de roundtrip
+(0,17-0,23 ms) en inladen over het protocol is trager dan de directe
+batch-route - dat is het verbetertraject.</p>
 <!-- NOO-1470-MULTIDB-END -->
 
 <h2 id="voorbeeld-5-de-zwaarste-join-zelf-join-op-1-miljoen-rijen">Voorbeeld 5: de zwaarste join — zelf-join op 1 miljoen rijen</h2>
@@ -1223,10 +1252,13 @@ dan SQLite. Na de versnelling van 21 oktober 2026 draait dezelfde
 vraag op dezelfde machine in 42,12 ms — <strong>3,3× sneller dan SQLite</strong>
 (139,58 ms), met identiek uitkomstrijen-aantal.</p>
 <p>Dit is géén losse meting maar de poort van de campagne: alle 16
-zwaarste queryvormen zijn na de fix samen gemeten, en élke vorm is
-nu sneller dan SQLite. Correctheid per query streng gecontroleerd
-(rijen 1/1 tot 632.117/632.117 exact gelijk aan het orakel).</p>
-<p><em>(iMac Pro, 1 miljoen rijen, mediaan van 5 runs, 21 oktober 2026)</em></p>
+zwaarste queryvormen zijn in één coherente run na de fix samen
+gemeten — de gate-run op 1 miljoen rijen, 10 november 2026 — en álle
+16 vormen zijn nu sneller dan SQLite. Correctiteit per query streng
+gecontroleerd (rijen 1/1 tot 632.117/632.117 exact gelijk aan het
+orakel).</p>
+<p><em>(iMac Pro, 1 miljoen rijen, mediaan van 5 runs, 10 november 2026 — de
+coherent gate run van de volledige poort)</em></p>
 <table>
 <thead>
 <tr>

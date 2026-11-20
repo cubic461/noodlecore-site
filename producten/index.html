@@ -434,6 +434,33 @@
   
   
     <li class="md-nav__item">
+      <a href="../download/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Downloaden
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../cobol-porting/" class="md-nav__link">
         
   
@@ -778,7 +805,7 @@ queryklassen van SQLite.</p>
 <tr>
 <td>MySQL / MariaDB</td>
 <td>import via mysqldump naar NDB; <strong>directe verbinding via het MySQL-protocol is beschikbaar</strong></td>
-<td>importer: 120k rijen foutloos; MySQL-protocol verbonden (63/63 checks); t.o.v. de PG-protocolroute verschilt het per vraagklasse: tekstzoeken 88% en GROUP BY 54% sneller, joins 5-7% trager, punt-opzoeking tot 54% trager (meting in voorbeeld 4)</td>
+<td>importer: 120k rijen foutloos; MySQL-protocol verbonden (63/63 checks); t.o.v. de PG-protocolroute wint de MySQL-route bij zwaardere vragen: 3-join 62% sneller, GROUP BY 41% sneller, graaftelling 14% sneller, inladen 29% sneller; punt-opzoeking is 37% trager (meting in voorbeeld 4)</td>
 </tr>
 <tr>
 <td>SQLite (ingesloten)</td>
